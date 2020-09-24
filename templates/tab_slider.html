@@ -26,11 +26,11 @@
 								
 								<div class="fl-slider tab-product-slider">
 									<!--=======  single product  =======-->
-									
+									{% for category in categories %}
 									<div class="fl-product">
 										<div class="image sale-product">
 											<a href="single-product.html">
-												<img src="{% static 'img/products/product01.jpg' %}" class="img-fluid" alt="">
+												<img src="{{ category.image.url }}" class="img-fluid" alt="">
 												<img src="{% static 'img/products/product01-2.jpg' %}" class="img-fluid" alt="">
 											</a>
 											<!-- wishlist icon -->
@@ -39,7 +39,7 @@
 											</span>
 										</div>
 										<div class="content">
-											<h2 class="product-title"> <a href="single-product.html">Cillum dolore</a></h2>
+											<h2 class="product-title"> <a href="{{ category.image.url }}">{{ category }}</a></h2>
 											<div class="rating">
 												<i class="fa fa-star active"></i>
 												<i class="fa fa-star active"></i>
@@ -63,6 +63,7 @@
 									</div>
 									
 									<!--=======  End of single product  =======-->
+									{% endfor %}
 									<!--=======  single product  =======-->
 									
 									<div class="fl-product">

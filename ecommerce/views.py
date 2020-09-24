@@ -6,12 +6,15 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .forms import ContactForm, LoginForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from orders.models import Order
+from products.models import Category
 
 
 def home_page(request):
+    categories = Category.objects.all()
     context ={
         "title": "Hello world",
-        "content": " This is Home page"
+        "content": " This is Home page",
+        'categories': categories
     }
     if request.user.is_authenticated:
         context["premium_content"] = "YEAAAHHH" 

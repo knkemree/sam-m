@@ -6,6 +6,7 @@ from django.urls import reverse
 from .models import Order, OrderItem
 import csv
 import datetime
+from django.db.models import Count
 
 
 
@@ -51,15 +52,19 @@ def order_pdf(obj):
     return mark_safe(f'<a href="{url}">PDF</a>')
 order_pdf.short_description = 'Invoice'
 
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     
-    list_display = ['id', 'company_name', 'email',
+    list_display = ['id','company_name', 'email',
                     'address', 'postal_code', 'city', 'payment','fulfillment','delivery_method',"order_total","order_profit","profit_margin",
                     'created', 'updated',order_detail, ] #order_pdf
     list_filter = ['payment', 'created', 'updated', 'fulfillment','company_name']
     readonly_fields = ('order_total','order_profit','profit_margin','braintree_id',"campaign_discount",'campaign','delivery_method')
     inlines = [OrderItemInline]
     actions = [export_to_csv]
+
+
 
 
