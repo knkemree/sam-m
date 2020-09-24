@@ -1,0 +1,26 @@
+{% extends 'shop_base.html' %}
+{% block content %}
+      
+
+
+<h1>Register</h1>
+  {% if form.errors %}
+    <p>
+      Your username and password didn't match.
+      Please try again.
+    </p>
+  {% else %}
+    <p>Please, use the following form to register:</p>
+  {% endif %}
+  <div class="login-form">
+    <form action="{% url 'register' %}" method="post">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <p><input type="submit" value="Register"></p>
+    </form>
+    
+
+  </div>
+  
+{% endblock %}

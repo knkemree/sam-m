@@ -1,0 +1,117 @@
+{% extends "shop_base.html" %}
+{% block title %}
+  Checkout
+{% endblock %}
+{% block content %}
+  <h1>Checkout</h1>
+  <div class="order-info">
+    <h3>Your order</h3>
+    <ul>
+      {% for item in cart %}
+        <li>
+          {{ item.quantity }}x {{ item.product.name }}
+          <span>${{ item.total_price|floatformat:2 }}</span>
+        </li>
+      {% endfor %}
+      {% if cart.shipment %}
+        <li>
+          {{ cart.shipment.delivery_method }}
+          <span class="neg">+ ${{ cart.shipment_fee|floatformat:2 }}</span>
+        </li>
+      {% endif %}
+      {% if cart.campaign %}
+        <li>
+          {{ cart.campaign.campaign_discount }}% off
+          <span class="neg">- ${{ cart.get_discount|floatformat:2 }}</span>
+        </li>
+      {% endif %}
+      
+    </ul>
+    {% if cart.shipment %}
+    <p>Total: ${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</p>
+    {% else %}
+    <p>Total: ${{ cart.get_total_price_after_discount|floatformat:2 }}</p>
+    {% endif %}
+
+  </div>
+  <form method="post" class="order-form" id="form_place_order">
+    {{ form.as_p }}
+    
+    <p><input type="submit" value="Place order" onclick="eraseCookie('selectBoxValue');" id="btn_place_order"></p>
+    {% csrf_token %}
+  </form>
+  
+  <form name="delivery" method="post" action="{% url 'Delivery:shipping_view' %}" id="frm1">
+    {{ shipping_form }}
+    <p><input type="submit" value="GET"  id="btn" style="display: none;"></p>
+    {% csrf_token %}
+  </form>
+
+  <script type="text/javascript">
+// Adres formunu doldurup place order'i tikladiginda eger delivery method secilmediyse alert vermesi icin
+// eger empty_label="----Select----" ise bu kod calisacak aksi takdirde bozulacak. empty_label'i degistirirken dikkatli ol
+$('#btn_place_order').click(function(e){
+   if($("#id_delivery_method option:selected").text() == '----Select----'){
+      alert('Please choose a delivery method.');
+      e.preventDefault();
+   }
+});
+
+//window.onclose = eraseCookie('selectBoxValue')
+// $(window).unload(function () {
+//     // Remove the cookie
+//     eraseCookie('selectBoxValue')
+// });
+window.onload = function()
+  
+  {
+    
+      var cookieVal = readCookie('selectBoxValue');
+      console.log(cookieVal);
+      if(cookieVal!=null)
+      {
+          document.getElementById('id_delivery_method').selectedIndex = cookieVal;
+          eraseCookie('selectBoxValue')
+      }
+      
+  }
+  
+  
+  
+  function changeSelectedvalue()
+  {
+      var mySelectedIndex = document.getElementById('id_delivery_method').selectedIndex;
+      createCookie("selectBoxValue",mySelectedIndex,1000);
+      
+  }
+  
+  
+  
+  function createCookie(name,value,days) {
+      if (days) {
+          var date = new Date();
+          date.setTime(date.getTime()+(days*24*60*60*1000));
+          var expires = "; expires="+date.toGMTString();
+      }
+      else var expires = "";
+      document.cookie = name+"="+value+expires+"; path=/";
+  }
+  
+  function readCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1,c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      }
+      return null;
+  }
+  
+  function eraseCookie(name) {
+      createCookie(name,"",-1);
+  }
+    
+
+</script>
+{% endblock %}

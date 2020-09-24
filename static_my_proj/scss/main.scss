@@ -1,0 +1,56 @@
+/*-----------------------------------------------------------------------------------
+
+    
+    CSS INDEX
+    ===================
+	
+    01. Theme default CSS
+    02. Modal
+    03. Header
+    04. Hero
+    05. Slider
+    06. Banner
+    07. Product
+    08. Shop
+    09. Sidebar
+    10. Single Product
+    11. Blog
+    12. Blog Post
+    13. Cart
+    14. Checkout
+    15. Compare
+    16. My Account
+    17. Login Register
+    18. FAQ
+    19. Contact
+    20. About
+    21. Footer
+
+
+
+-----------------------------------------------------------------------------------*/
+
+
+@import 'variables';
+@import 'mixins';
+@import 'default';
+@import 'modal';
+@import 'header';
+@import 'hero';
+@import 'slider';
+@import 'banner';
+@import 'product';
+@import 'shop'; 
+@import 'sidebar';
+@import 'single-product';
+@import 'blog';
+@import 'blog-post';
+@import 'cart';
+@import 'checkout';
+@import 'compare';
+@import 'my-account';
+@import 'login-register';
+@import 'faq';
+@import 'contact';
+@import 'about';
+@import 'footer';

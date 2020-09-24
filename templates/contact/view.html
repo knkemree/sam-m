@@ -1,0 +1,73 @@
+<!doctype html>
+    <html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        <div class=text-center>
+            <h1>{{ title }}</h1>
+            <h1>Hello, world! we're working</h1>
+        </div>
+        <div class='container'>
+            <div class="row">
+                <div class="col">
+                    <p> {{ content }}</p>
+                        <div class="col-sm-6 col-12">
+                        <form method="POST"> 
+                            {% csrf_token %}
+                            {{ form.as_p}}
+                            <!--
+                            <input type="email" class="form-control" placeholder="Email" name="email">
+                            <br>
+                            <input type="text" class="form-control" placeholder="Full Name" name="fullname">
+                            <br>
+                            <input type="text" class="form-control" placeholder="Company Name" name="companyname">
+                            <br>
+                            
+                            
+                            <input type="text" class="form-control" placeholder="EIN #" onkeypress="return onlyNumberKey(event)" maxlength="9" size="50%" /> 
+                            <small>Nine-digit number provided to you by IRS</small>
+                            <br><br>
+                            <input class="form-control" type="tel" id="phone" name="phone" placeholder="Phone #" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                            <br>-->
+                            <button type="submit" class="btn btn-secondary" onclick="return detailssubmit()">Submit</button>
+                        </form>
+                        </div>
+                </div>
+                
+
+            </div>
+
+
+        </div>
+        
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!--<script> 
+            function onlyNumberKey(evt) { 
+                  
+                // Only ASCII charactar in that range allowed 
+                var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
+                if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
+                    return false; 
+                return true; 
+            } 
+        </script> 
+        <script> 
+            function detailssubmit() { 
+                alert("Your message successfully submitted!"); 
+            } 
+        </script> -->
+    </body>
+    </html>

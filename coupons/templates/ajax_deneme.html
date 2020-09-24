@@ -1,0 +1,41 @@
+<form id="form" method="POST">
+    <input id="first_name" type="text" name="title">
+    <input id="last_name" type="text" name="lang">
+    <input  type="submit" name="submit" value="submit">
+</form>
+
+
+<div id="output">
+
+</div>
+<script>
+
+$('#form').on('submit', function(e){
+
+e.preventDefault();
+
+  $.ajax({
+       type : "POST", 
+       url: "{% url 'coupons:ajax_posting' %}", /* django ajax posting url  */
+       data: {
+        first_name : $('#first_name').val(),
+        last_name : $('#last_name').val(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        dataType: "json",
+
+       },
+       
+       success: function(data){
+          $('#output').html(data.msg) /* response message */
+       },
+
+       failure: function() {
+           
+       }
+
+
+   });
+
+
+        }); 
+</script>

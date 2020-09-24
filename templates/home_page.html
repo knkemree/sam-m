@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block slider %}
+        {% include "slider.html" %}
+{% endblock %}
+
+<!-- kampanyalari yazabilecegin yer  -->
+{% block banner %}
+{% endblock %}
+
+<!-- new product, featured product kismi. uzerinde tabler var ve urunler kayiyor -->
+{% block tab_slider %}
+    {% include "tab_slider.html" %}
+{% endblock %}
+
+<!-- sol tarafta kategori isimleri yazan -->
+{% block slider_with_banner %}
+    {% include "slider_with_banner.html" %}
+{% endblock %}
+
+<!-- sol tarafta kategori isimleri yazanin ciftlisi -->
+{% block tab_product_with_banner %}
+    {% include "tab_product_with_banner.html" %}
+{% endblock %}
+
+{% block blog_post_slider %}
+    {% include "blog_post_slider.html" %}
+{% endblock %}

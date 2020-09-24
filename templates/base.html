@@ -1,0 +1,838 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{% block title %}SAM&M Trade{% endblock %}</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Favicon -->
+	<link rel="icon" href="{% static 'img/snm_favicon.png' %}">
+
+	<!-- CSS
+	============================================ -->
+	<!-- Bootstrap CSS -->
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+	<!-- FontAwesome CSS -->
+	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+
+	<!-- Ionicons CSS -->
+	<link href="{% static 'css/ionicons.min.css' %}" rel="stylesheet">
+
+	<!-- Plugins CSS -->
+	<link href="{% static 'css/plugins.css' %}" rel="stylesheet">
+
+	<!-- Helper CSS -->
+	<link href="{% static 'css/helper.css' %}" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link href="{% static 'css/main2.css' %}" rel="stylesheet">
+
+	<!-- Modernizer JS -->
+	<script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
+	
+    <script>
+      jQuery(document).ajaxSend(function(event, xhr, settings) {
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function sameOrigin(url) {
+        // url could be relative or scheme relative or absolute
+        var host = document.location.host; // host + port
+        var protocol = document.location.protocol;
+        var sr_origin = '//' + host;
+        var origin = protocol + sr_origin;
+        // Allow absolute or scheme relative URLs to same origin
+        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+            // or any other URL that isn't scheme relative or absolute i.e relative.
+            !(/^(\/\/|http:|https:).*/.test(url));
+    }
+    function safeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    }
+});
+      
+    </script>
+
+</head>
+
+<body>
+
+	
+
+	<!--=============================================
+	=            header container         =
+	=============================================-->
+	
+	<div class="header-container header-sticky">
+
+		<!--=============================================
+		=            header top         =
+		=============================================-->
+		
+		<div class="header-top pt-15 pb-15">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-lg-6">
+						<div class="header-top-text text-center text-lg-left mb-0 mb-md-15 mb-sm-15">
+								<p><i class="icon ion-md-alarm"></i> Ordered before 17:30, shipped today - <span class="support-no">Support: (346) 204 5786   </span></p>
+						</div>
+					</div>
+					<div class="col-12 col-lg-6">
+						<!--=======  header top dropdowns  =======-->
+							
+						<div class="header-top-dropdown d-flex justify-content-center justify-content-lg-end">
+								
+	
+							<!--=======  single dropdown  =======-->
+							
+							<div class="single-dropdown">
+								
+								<span class="d-none d-sm-inline-block">Language:</span> <a href="#" id="changeLanguage"><span id="languageName">English <i class="fa fa-angle-down"></i></span></a>
+								<div class="language-currency-list hidden" id="languageList">
+									<ul>
+										<li><a href="#">English</a></li>
+										<li><a href="#">Spanish</a></li>
+									</ul>
+								</div>
+							</div>
+	
+							<span class="separator pl-15 pr-15">|</span>
+							
+							<!--=======  End of single dropdown  =======-->
+	
+							<!--=======  single dropdown  =======-->
+							
+							{% if user.is_superuser is True %}
+							<div class="single-dropdown"> 
+							<a href="#" id="changeCurrency"><span id="currencyName">Admin <i class="fa fa-angle-down"></i></span></a>
+								<div class="language-currency-list hidden" id="currencyList">
+									<ul>
+										<li><a href="/admin">Control Panel</a></li>
+										<li><a href="/">Cost Finder</a></li>
+										<li><a href="/">Quantity Finder</a></li>
+									</ul>
+								</div>
+							</div>
+	
+							<span class="separator pl-15 pr-15">|</span>
+							{% endif %}
+							
+							<!--=======  End of single dropdown  =======-->
+							
+	
+							<!--=======  single dropdown  =======-->
+							
+							
+							<div class="single-dropdown">
+								<a href="#" id="changeAccount"><span id="accountMenuName">My Account <i class="fa fa-angle-down"></i></span></a>
+								<div class="language-currency-list hidden" id="accountList">
+									<ul>
+                                        {% if request.user.is_authenticated %}
+                                        <li><a {% if section == "dashboard" %}class="selected"{% endif %} href="{% url 'dashboard' %}"> My dashboard</a></li>
+										<li><a href="cart.html">Cart</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                                        {% else %}
+                                        <li><a href="{% url 'login' %}">Login</a></li>
+                                        <li><a href="{% url 'account:registration_view' %}">Register</a></li>
+                                        {% endif %}
+									</ul>
+								</div>
+							</div>
+							<!--=======  End of single dropdown  =======-->
+						</div>
+						<!--=======  End of header top dropdowns  =======-->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--=====  End of header top  ======-->
+	
+		<!--=============================================
+		=            navigation menu top            =
+		=============================================-->
+		
+	
+		<div class="navigation-menu-top pt-35 pb-35 pt-md-15 pb-md-15 pt-sm-15 pb-sm-15">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-6 col-lg-2 col-md-6 col-sm-6 order-1 order-lg-1">
+						<!--=======  logo  =======-->
+						
+						<div class="logo">
+							<a href="/">
+								<img src="{% static 'img/samnm_small_logo_buyuk.png' %}" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of logo  =======-->
+					</div>
+					<div class="col-12 col-lg-8 col-md-12 col-sm-12 order-3 order-lg-2">
+						<!--=======  header feature container  =======-->
+						
+						<div class="header-feature-container mt-md-15 mt-sm-15">
+							<!--=======  single feature  =======-->
+							
+							<div class="single-feature d-flex">
+								<div class="image">
+									<i class="icon ion-md-globe"></i>
+								</div>
+								<div class="content">
+									<h5>FREE DELIVERY</h5>
+									<p>On every order over $500</p>
+								</div>
+							</div>
+							
+							<!--=======  End of single feature  =======-->	
+							<!--=======  single feature  =======-->
+							
+							<div class="single-feature d-flex mb-sm-0">
+								<div class="image">
+									<i class="icon ion-md-notifications-outline"></i>
+								</div>
+								<div class="content">
+									<h5>10% DISCOUNT</h5>
+									<p>On every order over $1000</p>
+								</div>
+							</div>
+							
+							<!--=======  End of single feature  =======-->	
+							<!--=======  single feature  =======-->
+							
+							<div class="single-feature d-flex mb-sm-0">
+								<div class="image">
+									<i class="icon ion-md-notifications-outline"></i>
+								</div>
+								<div class="content">
+									<h5>15% DISCOUNT</h5>
+									<p>On every order over $2000</p>
+								</div>
+							</div>
+							
+							<!--=======  End of single feature  =======-->	
+	
+							
+						</div>
+						
+						<!--=======  End of header feature container  =======-->
+	
+						
+					</div>
+					<div class=" col-6 col-lg-2 col-md-6 col-sm-6 order-2 order-lg-3">
+						<!--=======  cart icon  =======-->
+						
+						<div class="minicart-section">
+						
+							<a href="#" id="cart-icon">
+							
+								<span class="image"><i class="icon ion-md-cart"></i></span>
+								{% with total_items=cart|length %}
+									{% if total_items > 0 %}
+										<h5>${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }} <i class="fa fa-angle-down"></i></h5>
+										<p>{{ total_items }} item{{ total_items|pluralize }}</p>
+									{% else %}
+										<h5>$0.00 <i class="fa"></i></h5>
+										<p>0 item</p>
+									{% endif %}
+								{% endwith %}
+							</a>
+							
+							<!-- cart floating box -->
+							<div class="cart-floating-box hidden" id="cart-floating-box">
+								<div class="cart-items">
+									<div class="cart-float-single-item d-flex">
+										<span class="remove-item" id="remove-item"><a href="#"><i class="icon ion-md-close"></i></a></span>
+										<div class="cart-float-single-item-image">
+											<a href="single-product.html"><img src="{% static 'img/products/product01.jpg' %}' %}" class="img-fluid" alt=""></a>
+										</div>
+										<div class="cart-float-single-item-desc">
+											<p class="product-title"> <a href="single-product.html">Duis pulvinar obortis eleifend </a></p>
+											<p class="quantity"> Qty: 1</p>
+											<p class="price">$20.50</p>
+										</div>
+									</div>
+									<div class="cart-float-single-item d-flex">
+										<span class="remove-item"><a href="#"><i class="icon ion-md-close"></i></a></span>
+										<div class="cart-float-single-item-image">
+											<a href="single-product.html"><img src="{% static 'img/products/product02.jpg' %}" class="img-fluid" alt=""></a>
+										</div>
+										<div class="cart-float-single-item-desc">
+											<p class="product-title"> <a href="single-product.html">Fusce ultricies dolor vitae</a></p>
+											<p class="quantity"> Qty: 1</p>
+											<p class="price">$20.50</p>
+										</div>
+									</div>
+								</div>
+								<div class="cart-calculation">
+									<div class="calculation-details">
+										<p class="total">Subtotal <span>$22</span></p>
+									</div>
+									<div class="floating-cart-btn text-center">
+										<a class="fl-btn pull-left" href="cart.html">View Cart</a>
+										<a class="fl-btn pull-right" href="checkout.html">Checkout</a>
+									</div>
+								</div>
+							</div>
+							<!-- end of cart floating box -->
+						</div>
+						
+						<!--=======  End of cart icon  =======-->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--=======  End of navigation menu top  =======-->
+	
+		<!--=============================================
+		=            navigation menu         =
+		=============================================-->
+		
+		<div class="navigation-menu">
+			<div class="container">
+				<div class="row align-items-center justify-content-between">
+					<div class="col-12 col-lg-3 col-md-12 col-sm-12">
+						<!--=======  category menu  =======-->
+						
+						<div class="hero-side-category">
+							<!-- Category Toggle Wrap -->
+							<div class="category-toggle-wrap">
+								<!-- Category Toggle -->
+								<button class="category-toggle"> <i class="fa fa-bars"></i> CATEGORIES </button>
+							</div>
+	
+							<!-- Category Menu -->
+							<nav class="category-menu">
+								<ul>
+									<li><a href="shop-left-sidebar.html">Sofas &amp; Chairs</a></li>
+									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Drawing Room</a>
+										<!-- category submenu -->
+										<ul class="category-mega-menu">
+											<li><a href="shop-left-sidebar.html">Sofas</a></li>
+											<li><a href="shop-left-sidebar.html">Armchairs</a></li>
+											<li><a href="shop-left-sidebar.html">Dining Chairs &amp; Benches</a></li>
+											<li><a href="shop-left-sidebar.html">Desk Chairs</a></li>
+										</ul>
+									</li>
+									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Dinning Room</a>
+										<!-- category submenu -->
+										<ul class="category-mega-menu">
+											<li><a href="shop-left-sidebar.html">Sofas</a></li>
+											<li><a href="shop-left-sidebar.html">Armchairs</a></li>
+											<li><a href="shop-left-sidebar.html">Dining Chairs &amp; Benches</a></li>
+											<li><a href="shop-left-sidebar.html">Desk Chairs</a></li>
+										</ul>
+									</li>
+									<li><a href="shop-left-sidebar.html">Out Door Room</a></li>
+									<li><a href="shop-left-sidebar.html">Room living</a></li>
+									<li><a href="shop-left-sidebar.html">Estilo</a></li>
+									<li><a href="shop-left-sidebar.html">Living Chairs</a></li>
+									<li class="hidden"><a href="shop-left-sidebar.html">New Sofas</a></li>
+									<li class="hidden"><a href="shop-left-sidebar.html">Sleight Sofas</a></li>
+									<li><a href="#" id="more-btn">... More</a></li>
+								</ul>
+							</nav>
+						</div>
+						
+						<!--=======  End of category menu =======-->
+
+						<!--=======  sticky logo  =======-->
+						
+						<div class="sticky-logo">
+							<a href="index.html">
+								<img src="{% static 'img/samnm_small_logo.png' %}" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of sticky logo  =======-->
+
+						<!--=======  search icon for tablet  =======-->
+                                
+						<div class="search-icon-menutop-tablet text-right d-inline-block d-lg-none">
+							<a href="#" id="search-overlay-active-button">
+								<i class="icon ion-md-search"></i>
+							</a>
+						</div>
+						
+						<!--=======  End of search icon for tablet  =======-->
+					</div>
+					<div class="col-12 col-lg-6">
+						<!-- navigation section -->
+						<div class="main-menu">
+							<nav>
+								<ul>
+									<li class="active menu-item-has-children"><a href="/">HOME</a>
+										<ul class="sub-menu">
+											<li><a href="/">Home Shop 1</a></li>
+											<li><a href="/">Home Shop 2</a></li>
+											<li><a href="/">Home Shop 3</a></li>
+											<li><a href="/">Home Shop 4</a></li>
+										</ul>
+									</li>
+									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Shop</a>
+										<ul class="sub-menu">
+											<li class="menu-item-has-children"><a href="shop-4-column.html">shop grid</a>
+												<ul class="sub-menu">
+													<li><a href="shop-3-column.html">shop 3 column</a></li>
+													<li><a href="shop-4-column.html">shop 4 column</a></li>
+													<li><a href="shop-left-sidebar.html">shop left sidebar</a></li>
+													<li><a href="shop-right-sidebar.html">shop right sidebar</a></li>
+												</ul>
+											</li>
+											<li class="menu-item-has-children"><a href="shop-list.html">shop List</a>
+												<ul class="sub-menu">
+													<li><a href="shop-list.html">shop List</a></li>
+													<li><a href="shop-list-left-sidebar.html">shop List Left Sidebar</a></li>
+													<li><a href="shop-list-right-sidebar.html">shop List Right Sidebar</a></li>
+												</ul>
+											</li>
+											<li class="menu-item-has-children"><a href="single-product.html">Single Product</a>
+												<ul class="sub-menu">
+													<li><a href="single-product.html">Single Product</a></li>
+													<li><a href="single-product-variable.html">Single Product variable</a></li>
+													<li><a href="single-product-affiliate.html">Single Product affiliate</a></li>
+													<li><a href="single-product-group.html">Single Product group</a></li>
+													<li><a href="single-product-tabstyle-2.html">Tab Style 2</a></li>
+													<li><a href="single-product-tabstyle-3.html">Tab Style 3</a></li>
+													<li><a href="single-product-gallery-left.html">Gallery Left</a></li>
+													<li><a href="single-product-gallery-right.html">Gallery Right</a></li>
+													<li><a href="single-product-sticky-left.html">Sticky Left</a></li>
+													<li><a href="single-product-sticky-right.html">Sticky Right</a></li>
+													<li><a href="single-product-slider-box.html">Slider Box</a></li>
+													
+												</ul>
+											</li>
+										</ul>
+									</li>
+									
+									<li class="menu-item-has-children"><a href="#">PAGES</a>
+										<ul class="mega-menu three-column">
+											<li><a href="#">Column One</a>
+												<ul>
+													<li><a href="cart.html">Cart</a></li>
+													<li><a href="checkout.html">Checkout</a></li>
+													<li><a href="wishlist.html">Wishlist</a></li>
+													
+												</ul>
+											</li>
+											<li><a href="#">Column Two</a>
+												<ul>
+													<li><a href="my-account.html">My Account</a></li>
+													<li><a href="login-register.html">Login Register</a></li>
+													<li><a href="faq.html">FAQ</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Column Three</a>
+												<ul>
+													<li><a href="compare.html">Compare</a></li>
+													<li><a href="contact.html">Contact</a></li>
+													<li><a href="about.html">About Us</a></li>
+												</ul>
+											</li>
+											<li class="megamenu-banner text-center d-none d-lg-block">
+												<a href="shop-left-sidebar.html">
+													<img src="{% static 'img/banners/megamenu-banner.jpg' %}" class="img-fluid" alt="">
+												</a>
+											</li>
+										</ul>
+									</li>
+									<li class="menu-item-has-children"><a href="#">BLOG</a>
+										<ul class="sub-menu">
+											<li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
+											<li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
+											<li><a href="blog-post-left-sidebar.html">Blog Post Left Sidebar</a></li>
+											<li><a href="blog-post-right-sidebar.html">Blog Post Right Sidebar</a></li>
+											<li><a href="blog-post-image-format.html">Blog Post Image Format</a></li>
+											<li><a href="blog-post-image-gallery.html">Blog Post Image Gallery Format</a></li>
+											<li><a href="blog-post-audio-format.html">Blog Post Audio Format</a></li>
+											<li><a href="blog-post-video-format.html">Blog Post Video Format</a></li>
+										</ul>
+									</li>
+									<li><a href="contact.html">CONTACT</a></li>
+								</ul>
+							</nav>
+						</div>
+						<!-- end of navigation section -->
+					</div>
+					<div class="col-12 col-lg-3">
+						<!--=======  navigation search bar  =======-->
+						
+						<div class="navigation-search d-none d-lg-block">
+							<input type="search" placeholder="Search product ...">
+							<button><i class="icon ion-md-search"></i></button>
+						</div>
+						
+						<!--=======  End of navigation search bar  =======-->
+					</div>
+					<div class="col-12 d-block d-lg-none">
+						<!-- Mobile Menu -->
+						<div class="mobile-menu"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--=====  End of navigation menu  ======-->
+			
+	</div>
+	
+	<!--=====  End of header container  ======-->
+
+
+	{% block slider %}
+	{% endblock %}
+
+	{% block banner %}
+    {% endblock %}
+    
+    {% block tab_slider %}
+    {% endblock %}
+    
+    {% block slider_with_banner %}
+    {% endblock %}
+    
+    {% block tab_product_with_banner %}
+    {% endblock %}
+
+    {% block blog_post_slider %}
+    {% endblock %}
+    
+    {% block blank %}
+	{% endblock %}
+
+
+	<!--=============================================
+	=            footer         =
+	=============================================-->
+	
+	<div class="footer-container">
+		<!--=======  footer navigation  =======-->
+		
+		<div class="footer-navigation pt-40 pb-20 pb-lg-40 pt-sm-30 pb-sm-10">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4 col-md-6">
+						<!--=======  address block  =======-->
+						
+						<div class="address-block">
+							<div class="image">
+								<a href="index.html">
+									<img src="{% static 'img/samnm_small_logo_buyuk.png' %}" class="img-fluid" alt="">
+								</a>
+							</div>
+
+							<div class="address-text">
+								<ul>
+									<li>Address: 1112 Staffordshire Rd, Stafford, TX 77477 - USA.</li>
+									<li>Phone: (346) 204 5786</li>
+									<!-- <li>Fax: (012) 800 456 789</li> -->
+									<li>Email: info@samnmtrade.com</li>
+								</ul>
+							</div>
+
+							<div class="social-links">
+								<ul>
+									<li><a href="//www.twitter.com" class="twitter"  data-tooltip="Twitter"><i class="fa fa-twitter"></i></a></li>
+									<li><a href="//www.facebook.com" class="facebook"  data-tooltip="Facebook"><i class="fa fa-facebook"></i></a></li>
+									<li><a href="//www.behance.com" class="behance" data-tooltip="Behance"><i class="fa fa-behance"></i></a></li>
+									<li><a href="//www.pinterest.com" class="pinterest" data-tooltip="Pinterest"><i class="fa fa-pinterest"></i></a></li>
+									<li><a href="//www.rss.com" class="rss" data-tooltip="RSS"><i class="fa fa-rss"></i></a></li>
+								</ul>
+							</div>
+						</div>
+						
+						<!--=======  End of address block  =======-->
+					</div>
+					<div class="col-lg-2 col-md-6">
+						<!--=======  widget block  =======-->
+						
+						<div class="widget-block">
+							<h4 class="footer-widget-title mb-sm-10">INFORMATION</h4>
+							<ul>
+								<li><a href="about.html">About Us</a></li>
+								<li><a href="contact.html">Contact</a></li>
+								<li><a href="blog-left-sidebar.html">Blog</a></li>
+								<!-- <li><a href="#">Services</a></li> -->
+								<!-- <li><a href="#">Seller Login</a></li> -->
+								<!-- <li><a href="#l">Site Map</a></li> -->
+							</ul>
+						</div>
+						
+						<!--=======  End of widget block  =======-->
+					</div>
+					<div class="col-lg-2 col-md-6">
+						<!--=======  widget block  =======-->
+						
+						<div class="widget-block">
+							<h4 class="footer-widget-title mt-sm-20 mb-sm-10">MY ACCOUNT</h4>
+							<ul>
+								<li><a href="contact.html">Contact</a></li>
+								<li><a href="#">Order History</a></li>
+								<li><a href="my-account.html">My Account</a></li>
+								<li><a href="wishlist">Wishlist</a></li>
+								<li><a href="cart.html">Cart</a></li>
+							</ul>
+						</div>
+						
+						<!--=======  End of widget block  =======-->
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<!--=======  widget block  =======-->
+						
+						<div class="widget-block">
+							<h4 class="footer-widget-title mt-sm-20 mb-sm-10">JOIN OUR NEWSLETTER NOW</h4>
+							<p>Get E-mail updates about our latest shop and special offers.</p>
+
+							<!--=======  newsletter formq  =======-->
+							
+							<div class="newsletter-form mb-20">
+								<form id="mc-form" class="mc-form">
+									<input type="email" placeholder="Enter your email" required>
+									<button type="submit" value="submit">subscribe</button>
+								</form>
+							</div>
+
+							<!-- mailchimp-alerts Start -->
+							<div class="mailchimp-alerts">
+								<div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
+								<div class="mailchimp-success"></div><!-- mailchimp-success end -->
+								<div class="mailchimp-error"></div><!-- mailchimp-error end -->
+							</div><!-- mailchimp-alerts end -->
+							
+							<!--=======  End of newsletter formq  =======-->
+						</div>
+						
+						<!--=======  End of widget block  =======-->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--=======  End of footer navigation  =======-->
+
+		<!--=======  footer copyright  =======-->
+		
+		<div class="footer-copyright pt-20 pb-20">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-6 text-center text-md-left mb-20 mb-md-0">
+						<!--=======  footer copyright text  =======-->
+						
+						<div class="footer-copyright-text">
+							<p>Copyright &copy; 2020 <a href="#">SAM&M Trade</a>, All Rights Reserved.</p>
+						</div>
+						
+						<!--=======  End of footer copyright text  =======-->
+					</div>
+					<div class="col-md-6 text-center text-md-right">
+						<!--=======  payment logo  =======-->
+						
+						<div class="payment-logo">
+							<img src="{% static 'img/payment.png" class="img-fluid" alt="">
+						</div>
+						
+						<!--=======  End of payment logo  =======-->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--=======  End of footer copyright  =======-->
+	</div>
+	
+	<!--=====  End of footer  ======-->
+
+	<!--=============================================
+	=            search overlay         =
+	=============================================-->
+	
+	<div class="search-overlay" id="search-overlay">
+		<a href="#" class="search-overlay-close" id="search-overlay-close"><i class="fa fa-times"></i></a>
+		<div class="search-box">
+			<input type="search" placeholder="Search entire store here">
+			<button><i class="icon ion-md-search"></i></button>
+		</div>
+	</div>
+		
+	<!--=====  End of search overlay  ======-->
+
+	<!--=============================================
+	=            Quick view modal         =
+	=============================================-->
+	
+	<div class="modal fade quick-view-modal-container" id="quick-view-modal-container" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-5 col-md-6 col-xs-12 mb-xxs-25 mb-xs-25 mb-sm-25">
+							<!-- single product tabstyle one image gallery -->
+							<div class="product-image-slider fl-product-image-slider fl3-product-image-slider quickview-product-image-slider">
+								<!--product large image start -->
+								<div class="tab-content product-large-image-list fl-product-large-image-list fl3-product-large-image-list quickview-product-large-image-list" id="myTabContent2">
+									<div class="tab-pane fade show active" id="single-slide-1-q" role="tabpanel" aria-labelledby="single-slide-tab-1-q">
+										<!--Single Product Image Start-->
+										<div class="single-product-img img-full">
+											<img src="{% static 'img/single-product-slider/01.jpg' %}" class="img-fluid" alt="">
+										</div>
+										<!--Single Product Image End-->
+									</div>
+									<div class="tab-pane fade" id="single-slide-2-q" role="tabpanel" aria-labelledby="single-slide-tab-2-q">
+										<!--Single Product Image Start-->
+										<div class="single-product-img img-full">
+											<img src="{% static 'img/single-product-slider/02.jpg' %}" class="img-fluid" alt="">
+										</div>
+										<!--Single Product Image End-->
+									</div>
+									<div class="tab-pane fade" id="single-slide-3-q" role="tabpanel" aria-labelledby="single-slide-tab-3-q">
+										<!--Single Product Image Start-->
+										<div class="single-product-img img-full">
+											<img src="{% static 'img/single-product-slider/03.jpg' %}" class="img-fluid" alt="">
+										</div>
+										<!--Single Product Image End-->
+									</div>
+									<div class="tab-pane fade" id="single-slide-4-q" role="tabpanel" aria-labelledby="single-slide-tab-4-q">
+										<!--Single Product Image Start-->
+										<div class="single-product-img img-full">
+											<img src="{% static 'img/single-product-slider/04.jpg' %}" class="img-fluid" alt="">
+										</div>
+										<!--Single Product Image End-->
+									</div>
+									<div class="tab-pane fade" id="single-slide-5-q" role="tabpanel" aria-labelledby="single-slide-tab-5-q">
+										<!--Single Product Image Start-->
+										<div class="single-product-img img-full">
+											<img src="{% static 'img/single-product-slider/05.jpg' %}" class="img-fluid" alt="">
+										</div>
+										<!--Single Product Image End-->
+									</div>
+								</div>
+								<!--product large image End-->
+		
+								<!--product small image slider Start-->
+								<div class="product-small-image-list fl-product-small-image-list fl3-product-small-image-list quickview-product-small-image-list"> 
+									<div class="nav small-image-slider fl3-small-image-slider" role="tablist">
+										<div class="single-small-image img-full">
+											<a data-toggle="tab" id="single-slide-tab-1-q" href="#single-slide-1-q"><img src="{% static 'img/single-product-slider/01.jpg' %}"
+												class="img-fluid" alt=""></a>
+										</div>
+										<div class="single-small-image img-full">
+											<a data-toggle="tab" id="single-slide-tab-2-q" href="#single-slide-2-q"><img src="{% static 'img/single-product-slider/02.jpg' %}"
+												class="img-fluid" alt=""></a>
+										</div>
+										<div class="single-small-image img-full">
+											<a data-toggle="tab" id="single-slide-tab-3-q" href="#single-slide-3-q"><img src="{% static 'img/single-product-slider/03.jpg' %}"
+												class="img-fluid" alt=""></a>
+										</div>
+										<div class="single-small-image img-full">
+											<a data-toggle="tab" id="single-slide-tab-4-q" href="#single-slide-4-q"><img src="{% static 'img/single-product-slider/04.jpg' %}"
+												alt=""></a>
+										</div>
+										<div class="single-small-image img-full">
+											<a data-toggle="tab" id="single-slide-tab-5-q" href="#single-slide-5-q"><img src="{% static 'img/single-product-slider/05.jpg' %}"
+												alt=""></a>
+										</div>
+									</div>
+								</div>
+								<!--product small image slider End-->
+							</div>
+							<!-- end of single product tabstyle one image gallery -->
+						</div>
+						<div class="col-lg-7 col-md-6 col-xs-12">
+							<!-- product quick view description -->
+							<div class="product-feature-details">
+								<h2 class="product-title mb-15">Kaoreet lobortis sagittis</h2>
+
+								<h2 class="product-price mb-15"> 
+									<span class="main-price discounted">$12.90</span> 
+									<span class="discounted-price"> $10.00</span>
+									<span class="discount-percentage">Save 8%</span>
+								</h2>
+
+								<p class="product-description mb-20">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco,Proin lectus ipsum, gravida et mattis vulputate, tristique ut lectus</p>
+								
+
+								<div class="cart-buttons mb-20">
+									<div class="pro-qty mr-10">
+										<input type="text" value="1">
+									</div>
+									<div class="add-to-cart-btn">
+										<a href="#" class="fl-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
+									</div>
+								</div>
+
+						
+								<div class="social-share-buttons">
+									<h3>share this product</h3>
+									<ul>
+										<li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+										<li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+										<li><a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
+										<li><a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a></li>
+									</ul>
+								</div>
+							</div>
+							<!-- end of product quick view description -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!--=====  End of Quick view modal  ======-->
+
+	<!-- scroll to top  -->
+	<a href="#" class="scroll-top"></a>
+	<!-- end of scroll to top -->
+
+	<!-- JS
+	============================================ -->
+	<!-- jQuery JS -->
+	<script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+
+	<!-- Popper JS -->
+	<script src="{% static 'js/popper.min.js' %}"></script>
+
+	<!-- Bootstrap JS -->
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+	<!-- Plugins JS -->
+	<script src="{% static 'js/plugins.js' %}"></script>
+
+	<!-- Main JS -->
+	<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

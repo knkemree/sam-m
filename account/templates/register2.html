@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+      
+<h1>Register</h1>
+  <div class="login-form">
+    <form action="{% url 'account:registration_view' %}" method="post">
+      {% csrf_token %}
+      {% for field in registration_form %}
+      
+        <p>
+            {{ field.label_tag}}
+            {{ field }}
+          </p>
+            <!--{% if field.help_text %}
+                <small style='color:grey;'> {{ field.help_text }}</small>
+            {% endif %}-->
+          <p>
+            {% for error in field.errors %}
+                <p style='color:red;'>{{ error }}</p>
+            {% endfor %}
+          </p>
+      {% endfor %}
+      <p><input type="submit" value="Register"></p>
+    </form>
+    
+
+  </div>
+  
+{% endblock %}
+
+{% block blank %}
+    
+<div class="breadcrumb-area pt-15 pb-15">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <!--=======  breadcrumb container  =======-->
+        
+        <div class="breadcrumb-container">
+          <nav>
+            <ul>
+              <li class="parent-page"><a href="/">Home</a></li>
+              <li><a href="{% url 'account:registration_view' %}">Register</a></li>
+            </ul>
+          </nav>
+        </div>
+        
+        <!--=======  End of breadcrumb container  =======-->
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!--=====  End of breadcrumb area  ======-->
+  
+  <!--=============================================
+  =            Register page content         =
+  =============================================-->
+
+  <div class="page-section mb-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+        
+        <form action="{% url 'account:registration_view' %}" method="post">
+          {% csrf_token %}
+          {% for field in registration_form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        
+        
+    </div>
+{% endfor %}
+          <div class="login-form">
+
+            <h4 class="login-title">Register</h4>
+            
+            <div class="row">
+              <div class="col-md-6 col-12 mb-20">
+                <label for="id_first_name">Company Owner's First Name:</label>
+                <input class="mb-0" placeholder="Company Owner's First Name" type="text" name="first_name" maxlength="30" required="" id="id_first_name">
+                
+              </div>
+              <div class="col-md-6 col-12 mb-20">
+                <label for="id_last_name">Company Owner's Last Name:</label>
+                <input placeholder="Company Owner's Last Name" type="text" class="mb-0" name="last_name" maxlength="30" required="" id="id_last_name">
+              
+              </div>
+              <div class="col-md-12 mb-20">
+                <label for="id_company_name">Business Legal Name:</label>
+                <input class="mb-0" placeholder="Business Legal Name" type="text" name="company_name" maxlength="30" required="" id="id_company_name">
+                
+              </div>
+              <div class="col-md-12 mb-20">
+                <label for="id_email">Email Address*</label>
+                <input placeholder="Email Address" class="mb-0" type="email" name="email" maxlength="60" autofocus="" required="" id="id_email">
+              </div>
+              <div class="col-md-12 mb-20">
+                <label for="id_phone">Phone:</label>
+                <input class="mb-0" type="tel" name="phone" placeholder="2107249073" id="id_phone">
+              </div>
+              <div class="col-md-12 mb-20">
+                <label for="id_ein">Tax Payer Number:</label>
+                <input class="mb-0" type="text" name="ein" maxlength="15" id="id_ein">
+              </div>
+              <div class="col-md-6 mb-20">
+                <label for="id_password1">Password:</label>
+                <input class="mb-0" type="password" placeholder="Password" name="password1" autocomplete="new-password" required="" id="id_password1" aria-autocomplete="list">
+                
+              </div>
+              <div class="col-md-6 mb-20">
+                <label for="id_password2">Confirm Password:</label>
+                <input class="mb-0" type="password" placeholder="Confirm Password" name="password2" autocomplete="new-password" required="" id="id_password2">
+              </div>
+              <div class="col-12">
+                <button class="register-button mt-0">Register</button>
+              </div>
+              
+            </div>
+            
+          </div>
+
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!--=====  End of Login Register page content  ======-->
+  
+    <!--=====  End of Login Register page content  ======-->
+{% endblock %}

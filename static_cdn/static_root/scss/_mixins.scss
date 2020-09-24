@@ -1,0 +1,40 @@
+
+//  font property 
+
+
+
+@mixin font-property($font-size: $body-font-size, $line-height: $body-line-height, $font-weight: $body-font-weight, $font-color: $body-text-color, $font-style: normal) {
+    font-size: $font-size;
+    line-height: $line-height;
+    font-weight: $font-weight;
+    color: $font-color;
+    font-style: $font-style;
+  } 
+
+
+//  transition 
+
+@mixin transition($value: 0.3s){
+  transition: $value;
+}
+
+
+
+//  furnilife button  
+
+@mixin fl-button($background: #f2f2f2, $color: #363f4d, $font-size: 12px, $line-height: 12px, $font-weight: 500, $padding: 15px 30px ){
+  background: $background;
+  line-height: $line-height;
+  display: inline-block;
+  padding: $padding;
+  border-radius: 3px;
+  color: $color;
+  font-weight: $font-weight;
+  font-size: $font-size;
+} 
+
+
+@mixin fl-button-hover($background: $hover-color, $color: $white ) {
+    background-color: $background;
+    color: $color;
+}

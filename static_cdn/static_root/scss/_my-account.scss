@@ -1,0 +1,160 @@
+
+/*=============================================
+=           16.  My Account            =
+=============================================*/
+
+
+.myaccount-tab-menu {
+    flex-direction: column;
+    background-color: $white;
+
+    & a {
+        border: 1px solid #eeeeee;
+        border-bottom: none;
+        color: $body-text-color;
+        font-weight: 500;
+        font-size: 12px;
+        display: block;
+        padding: 15px 15px 13px;
+        text-transform: uppercase;
+
+        &:last-child {
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        &:hover,
+        &.active {
+            background-color: $theme-color;
+            color: $white;
+        }
+
+        & i {
+            font-size: 14px;
+            text-align: center;
+            width: 25px;
+        }
+    }
+}
+
+/*-- My Account Content -*/
+.myaccount-content {
+    background-color: $white;
+    font-size: 14px;
+    border: 1px solid #eeeeee;
+    padding: 30px;
+
+    @media #{$small-mobile} {
+        padding: 20px 15px;
+    }
+
+    & h3 {
+        border-bottom: 1px dashed #eeeeee;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+    }
+
+    & .welcome {
+        & a {
+            color: $black;
+
+            &:hover {
+                color: $theme-color;
+            }
+        }
+
+        & strong {
+            font-weight: 600;
+        }
+    }
+
+    a.edit-address-btn {
+        background: none;
+        border: none;
+        font-weight: 400;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #ffffff;
+        background-color: $heading-text-color;
+        border-color: $heading-text-color;
+        padding: 10px 20px;  
+        border-radius: 3px; 
+
+        i {
+            padding-right: 5px;
+        }
+
+        &:hover {
+            background-color: $hover-color;
+        }
+    }
+
+    button.save-change-btn {
+        background: none;
+        border: none;
+        font-weight: 400;
+        text-transform: uppercase;
+        color: #ffffff;
+        background-color: $heading-text-color;
+        border-color: $heading-text-color;
+        width: 140px;
+        padding: 10px 0;  
+        border-radius: 3px;
+
+        &:hover {
+            background-color: $hover-color;
+        }
+    }
+}
+
+/*-- My Account Table -*/
+.myaccount-table {
+    white-space: nowrap;
+    font-size: 15px;
+
+    & table,
+    & .table {
+        & th {
+            padding: 10px;
+        }
+
+        & td {
+            padding: 20px 10px;
+            vertical-align: middle;
+
+            a{
+                &:hover{
+                    color: $hover-color;
+                }
+            }
+        }
+    }
+}
+
+.saved-message {
+    border-top: 3px solid $theme-color;
+    border-radius: 5px 5px 0 0;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 20px;
+}
+
+/*-- My Account Details Form -*/
+.account-details-form {
+    & h4 {
+        margin: 0;
+    }
+
+    & input {
+        display: block;
+        width: 100%;
+        border: 1px solid #ebebeb;
+        border-radius: 0;
+        line-height: 24px;
+        padding: 11px 25px;
+        color: #656565;
+    }
+}
+
+
+/*=====  End of 16. My Account  ======*/
+

@@ -1,0 +1,225 @@
+{% extends "shop_base.html" %}
+{% load static %}
+{% block title %}
+  Your shopping cart
+{% endblock %}
+{% block content %}
+
+  <h1>Your shopping cart</h1>
+  <table class="cart">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Remove</th>
+        <th>Unit price</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+        {% with product=item.product %}
+          <tr>
+            <td>
+              <a href="{{ product.get_absolute_url }}">
+                <img src="{% if product.image %}{{ product.image.url }}
+                {% else %}{% static "img/no_image.png" %}{% endif %}">
+              </a>
+            </td>
+            <td>{{ product.name }}</td>
+            <td>
+                <form id ="update_form" action="{% url "cart:cart_add" product.id %}" method="post">
+                  {{ item.update_quantity_form.quantity }}
+                  {{ item.update_quantity_form.override }}
+                  <input id="update_button" type="submit" value="Update" name="update" style="display: none;">
+                  {% csrf_token %}
+                </form>
+              </td>
+            <td>
+              <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                <input type="submit" value="Remove" id="remove">
+                {% csrf_token %}
+              </form>
+            </td>
+            <td class="num">${{ item.price }}</td>
+            <td class="num">${{ item.total_price }}</td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+  {% if cart.campaign %}
+  <tr class="subtotal">
+    <td>Subtotal</td>
+    <td colspan="4"></td>
+    <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
+  </tr>
+  <tr>
+    <td>
+      {{ cart.campaign.campaign_name }}
+      ({{ cart.campaign.campaign_discount }}% off)
+    </td>
+    <td colspan="4"></td>
+    <td class="num neg">
+      - ${{ cart.get_discount|floatformat:2 }}
+    </td>
+  </tr>
+{% endif %}
+<tr class="total">
+  <td>Total</td>
+  <td colspan="4"></td>
+  <td id="last_price" class="num">
+    ${{ cart.get_total_price_after_discount|floatformat:2 }}
+  </td>
+</tr>
+
+    </tbody>
+  </table>
+
+
+
+  <p class="text-right">
+    <a href="{% url "products:product_list_view" %}" class="button
+    light">Continue shopping</a>
+    <a href="{% url 'orders:order_create' %}" class="button">
+      Checkout
+    </a>
+    
+  </p>
+  <br>
+
+  
+  <!-- <p class="text-right">
+    <input type="button" class="button" id="deneme" name="isimsiz" value="Get Discount !"style="color: #fff;
+    background: #5993bb;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: 0;" >
+    
+  </p> -->
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+
+
+
+
+$(document).ready(function (){
+
+  $("input[name=isimsiz]").click(function (){
+    
+    $.ajax({
+      type : "POST", 
+       url: "{% url 'coupons:campaign_apply' %}",
+
+       data: {
+        campaign_discount : "{{ cart.get_total_price_after_discount|floatformat:2 }}",
+        dataType: "json",
+
+       },
+       success: $(document).ready(function(){
+        setTimeout(function(){ location.reload() }, 500)
+        
+        
+       })
+       
+    });
+  });
+  
+})
+
+  
+
+
+
+
+
+
+// function autoclick(){
+// document.getElementById("update_form").onchange = function () {
+//     document.getElementById("update_button").click();
+    
+//   }};
+
+//   function autoclick2(){
+// $( document ).ready(function () {
+// $( "#btn" ).trigger( "click" );
+    
+//   }};
+
+// $('#ajax-form').on('submit1', function(e){
+
+// e.preventDefault();
+
+//   $.ajax({
+//        type : "GET", 
+//        url: "{% url 'coupons:campaign_apply' %}", /* django ajax posting url  */
+//        data: {
+//         campaign_discount : $('#last_price').text(),
+//         dataType: "json",
+
+//        },
+       
+//        success: function(response){
+//         $('#last_price').text() /* response message */
+//        },
+
+//        failure: function() {
+           
+//        }})
+
+
+//    });
+  
+
+     
+  
+  
+  
+  
+  // };
+//   $( document ).ready(function autoclick() {
+//    $( "#btn" ).trigger( "click" );
+// });
+  
+
+// window.onload=autoclick;
+
+// window.stop();
+  //alert("The value of slider 1 is: " + sliderValue);
+
+
+</script>
+  
+  <!-- <script>document.getElementById('id_campaign_id').submit()</script>
+  <document.getElementById("form1").onchange = function() {
+    document.getElementById("form").submit();
+    document.getElementById("campaign_form").submit();
+  var x =document.getElementsByClassName("myButtonToClick");
+x[0].click();
+
+$(form).on('change',  function() {
+      var x =document.getElementsByClassName("myButtonToClick");
+x[0].click();
+  
+});
+
+function test(){
+  alert("Hi");
+}
+
+window.onload = function(){
+ document.getElementById('btn').click();
+ 
+var scriptTag = document.createElement("script");
+scriptTag.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
+document.getElementsByTagName("head")[0].appendChild(scriptTag);
+}
+
+  window.onload=function(e){
+    e.preventDefault();
+  document.getElementById("btn").click();
+};
+
+  -->
+{% endblock %}
