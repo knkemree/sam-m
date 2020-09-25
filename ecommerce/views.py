@@ -10,7 +10,7 @@ from products.models import Category
 
 
 def home_page(request):
-    categories = Category.objects.all()
+    categories = Category.objects.exclude(image='')
     context ={
         "title": "Hello world",
         "content": " This is Home page",
