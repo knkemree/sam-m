@@ -6,18 +6,26 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .forms import ContactForm, LoginForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from orders.models import Order
-from products.models import Category
+from products.models import Category, Product
+from cart.forms import CartAddProductForm
 
 
 def home_page(request):
-    categories = Category.objects.exclude(image='')
+    top_level_cats = Category.objects.filter(parent__isnull=True)
+    area_rugs = Category.objects.filter(parent_id=18)
+    bed_sheets = Product.objects.filter(category_id=17)
+    towels = Product.objects.filter(category_id=19)
+    cart_product_form = CartAddProductForm()
     context ={
         "title": "Hello world",
         "content": " This is Home page",
-        'categories': categories
+        'area_rugs': area_rugs,
+        'bed_sheets': bed_sheets,
+        'towels':towels,
+        'top_level_cats': top_level_cats,
+        'cart_product_form':cart_product_form
     }
-    if request.user.is_authenticated:
-        context["premium_content"] = "YEAAAHHH" 
+    
     return render(request, "home_page.html", context)
 
 def about_page(request):

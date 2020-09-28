@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 # Register your models here.
 @admin.register(Category) 
 class CategoryAdmin(admin.ModelAdmin): 
-    list_display = ['name', 'slug', 'image'] 
+    # list_display = ['parent','name', 'slug', 'image'] 
     prepopulated_fields = {'slug': ('name',)} 
 
     

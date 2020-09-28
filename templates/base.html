@@ -147,25 +147,33 @@
 	
 							<!--=======  single dropdown  =======-->
 							
-							
+							{% if request.user.is_authenticated %}
 							<div class="single-dropdown">
 								<a href="#" id="changeAccount"><span id="accountMenuName">My Account <i class="fa fa-angle-down"></i></span></a>
 								<div class="language-currency-list hidden" id="accountList">
 									<ul>
-                                        {% if request.user.is_authenticated %}
                                         <li><a {% if section == "dashboard" %}class="selected"{% endif %} href="{% url 'dashboard' %}"> My dashboard</a></li>
 										<li><a href="cart.html">Cart</a></li>
                                         <li><a href="checkout.html">Checkout</a></li>
                                         <li><a href="{% url 'logout' %}">Logout</a></li>
-                                        {% else %}
+									</ul>
+								</div>
+							</div>
+							{% else %}
+							<div class="single-dropdown">
+								<a href="#" id="changeAccount"><span id="accountMenuName">Dealer Login/Register <i class="fa fa-angle-down"></i></span></a>
+								<div class="language-currency-list hidden" id="accountList">
+									<ul>
                                         <li><a href="{% url 'login' %}">Login</a></li>
                                         <li><a href="{% url 'account:registration_view' %}">Register</a></li>
-                                        {% endif %}
+                                        
 									</ul>
 								</div>
 							</div>
 							<!--=======  End of single dropdown  =======-->
+							{% endif %}
 						</div>
+
 						<!--=======  End of header top dropdowns  =======-->
 					</div>
 				</div>
@@ -324,38 +332,27 @@
 							<!-- Category Toggle Wrap -->
 							<div class="category-toggle-wrap">
 								<!-- Category Toggle -->
-								<button class="category-toggle"> <i class="fa fa-bars"></i> CATEGORIES </button>
+								<button class="category-toggle"> <i class="fa fa-bars"></i> COLLECTIONS </button>
 							</div>
 	
 							<!-- Category Menu -->
 							<nav class="category-menu">
 								<ul>
-									<li><a href="shop-left-sidebar.html">Sofas &amp; Chairs</a></li>
-									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Drawing Room</a>
+									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Area Rugs</a>
 										<!-- category submenu -->
+										
 										<ul class="category-mega-menu">
-											<li><a href="shop-left-sidebar.html">Sofas</a></li>
-											<li><a href="shop-left-sidebar.html">Armchairs</a></li>
-											<li><a href="shop-left-sidebar.html">Dining Chairs &amp; Benches</a></li>
-											<li><a href="shop-left-sidebar.html">Desk Chairs</a></li>
+											{% for c in area_rugs %}
+											<li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+											{% endfor %}
+											
 										</ul>
 									</li>
-									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Dinning Room</a>
-										<!-- category submenu -->
-										<ul class="category-mega-menu">
-											<li><a href="shop-left-sidebar.html">Sofas</a></li>
-											<li><a href="shop-left-sidebar.html">Armchairs</a></li>
-											<li><a href="shop-left-sidebar.html">Dining Chairs &amp; Benches</a></li>
-											<li><a href="shop-left-sidebar.html">Desk Chairs</a></li>
-										</ul>
-									</li>
-									<li><a href="shop-left-sidebar.html">Out Door Room</a></li>
-									<li><a href="shop-left-sidebar.html">Room living</a></li>
-									<li><a href="shop-left-sidebar.html">Estilo</a></li>
-									<li><a href="shop-left-sidebar.html">Living Chairs</a></li>
-									<li class="hidden"><a href="shop-left-sidebar.html">New Sofas</a></li>
+									<li><a href="/">Bed Sheets</a></li>
+									<li><a href="/">Towels</a></li>
+									<!-- <li class="hidden"><a href="shop-left-sidebar.html">New Sofas</a></li>
 									<li class="hidden"><a href="shop-left-sidebar.html">Sleight Sofas</a></li>
-									<li><a href="#" id="more-btn">... More</a></li>
+									<li><a href="#" id="more-btn">... More</a></li> -->
 								</ul>
 							</nav>
 						</div>
@@ -387,33 +384,27 @@
 						<div class="main-menu">
 							<nav>
 								<ul>
-									<li class="active menu-item-has-children"><a href="/">HOME</a>
-										<ul class="sub-menu">
-											<li><a href="/">Home Shop 1</a></li>
-											<li><a href="/">Home Shop 2</a></li>
-											<li><a href="/">Home Shop 3</a></li>
-											<li><a href="/">Home Shop 4</a></li>
-										</ul>
-									</li>
+									<li><a href="/">HOME</a></li>
 									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Shop</a>
 										<ul class="sub-menu">
-											<li class="menu-item-has-children"><a href="shop-4-column.html">shop grid</a>
+											
+											<li class="menu-item-has-children"><a href="#">Area Rugs</a>
 												<ul class="sub-menu">
-													<li><a href="shop-3-column.html">shop 3 column</a></li>
-													<li><a href="shop-4-column.html">shop 4 column</a></li>
-													<li><a href="shop-left-sidebar.html">shop left sidebar</a></li>
-													<li><a href="shop-right-sidebar.html">shop right sidebar</a></li>
+													{% for c in area_rugs %}
+													<li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+													{% endfor %}
+													
 												</ul>
 											</li>
-											<li class="menu-item-has-children"><a href="shop-list.html">shop List</a>
-												<ul class="sub-menu">
+											<li><a href="#">Bed Sheets</a>
+												<!-- <ul class="sub-menu">
 													<li><a href="shop-list.html">shop List</a></li>
 													<li><a href="shop-list-left-sidebar.html">shop List Left Sidebar</a></li>
 													<li><a href="shop-list-right-sidebar.html">shop List Right Sidebar</a></li>
-												</ul>
+												</ul> -->
 											</li>
-											<li class="menu-item-has-children"><a href="single-product.html">Single Product</a>
-												<ul class="sub-menu">
+											<li><a href="#">Towels</a>
+												<!-- <ul class="sub-menu">
 													<li><a href="single-product.html">Single Product</a></li>
 													<li><a href="single-product-variable.html">Single Product variable</a></li>
 													<li><a href="single-product-affiliate.html">Single Product affiliate</a></li>
@@ -425,56 +416,12 @@
 													<li><a href="single-product-sticky-left.html">Sticky Left</a></li>
 													<li><a href="single-product-sticky-right.html">Sticky Right</a></li>
 													<li><a href="single-product-slider-box.html">Slider Box</a></li>
-													
-												</ul>
+												</ul> -->
 											</li>
 										</ul>
 									</li>
-									
-									<li class="menu-item-has-children"><a href="#">PAGES</a>
-										<ul class="mega-menu three-column">
-											<li><a href="#">Column One</a>
-												<ul>
-													<li><a href="cart.html">Cart</a></li>
-													<li><a href="checkout.html">Checkout</a></li>
-													<li><a href="wishlist.html">Wishlist</a></li>
-													
-												</ul>
-											</li>
-											<li><a href="#">Column Two</a>
-												<ul>
-													<li><a href="my-account.html">My Account</a></li>
-													<li><a href="login-register.html">Login Register</a></li>
-													<li><a href="faq.html">FAQ</a></li>
-												</ul>
-											</li>
-											<li><a href="#">Column Three</a>
-												<ul>
-													<li><a href="compare.html">Compare</a></li>
-													<li><a href="contact.html">Contact</a></li>
-													<li><a href="about.html">About Us</a></li>
-												</ul>
-											</li>
-											<li class="megamenu-banner text-center d-none d-lg-block">
-												<a href="shop-left-sidebar.html">
-													<img src="{% static 'img/banners/megamenu-banner.jpg' %}" class="img-fluid" alt="">
-												</a>
-											</li>
-										</ul>
-									</li>
-									<li class="menu-item-has-children"><a href="#">BLOG</a>
-										<ul class="sub-menu">
-											<li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
-											<li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-											<li><a href="blog-post-left-sidebar.html">Blog Post Left Sidebar</a></li>
-											<li><a href="blog-post-right-sidebar.html">Blog Post Right Sidebar</a></li>
-											<li><a href="blog-post-image-format.html">Blog Post Image Format</a></li>
-											<li><a href="blog-post-image-gallery.html">Blog Post Image Gallery Format</a></li>
-											<li><a href="blog-post-audio-format.html">Blog Post Audio Format</a></li>
-											<li><a href="blog-post-video-format.html">Blog Post Video Format</a></li>
-										</ul>
-									</li>
-									<li><a href="contact.html">CONTACT</a></li>
+									<li><a href="/">BLOG</a></li>
+									<li><a href="/">CONTACT</a></li>
 								</ul>
 							</nav>
 						</div>
@@ -509,13 +456,15 @@
 	{% endblock %}
 
 	{% block banner %}
+	{% endblock %}
+	
+	{% block slider_with_banner %}
     {% endblock %}
     
     {% block tab_slider %}
     {% endblock %}
     
-    {% block slider_with_banner %}
-    {% endblock %}
+    
     
     {% block tab_product_with_banner %}
     {% endblock %}
@@ -654,7 +603,7 @@
 						<!--=======  payment logo  =======-->
 						
 						<div class="payment-logo">
-							<img src="{% static 'img/payment.png" class="img-fluid" alt="">
+							<img src="{% static 'img/payment.png' %}" class="img-fluid" alt="">
 						</div>
 						
 						<!--=======  End of payment logo  =======-->

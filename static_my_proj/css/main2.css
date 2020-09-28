@@ -3728,7 +3728,8 @@ a#more-btn {
       display: block;
       position: relative; }
       .fl-product .image a img {
-        width: 100%; }
+        width: 100%;
+        height: 300px; }
         .fl-product .image a img:first-child {
           visibility: visible;
           opacity: 1; }

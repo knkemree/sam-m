@@ -11,13 +11,17 @@ def product_list_view(request, category_slug=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
-    
+    parent_cats = Category.objects.filter(parent__isnull=True)
+
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
+        #parent_cats_products =  products.filter(category__contains=category)
+        print("product_list_view")
+       # print(parent_cats_products)
         
         object_list = Product.objects.filter(available=True, category=category)
-        paginator = Paginator(object_list, 1) # 3 posts in each page
+        paginator = Paginator(object_list, 20) # 3 posts in each page
         page = request.GET.get('page')
         try:
             products = paginator.page(page)
@@ -30,7 +34,7 @@ def product_list_view(request, category_slug=None):
 
     else:
         object_list = Product.objects.filter(available=True)
-        paginator = Paginator(object_list, 1) # 3 posts in each page
+        paginator = Paginator(object_list, 20) # 3 posts in each page
         page = request.GET.get('page')
         try:
             products = paginator.page(page)

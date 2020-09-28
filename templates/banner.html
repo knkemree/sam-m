@@ -1,60 +1,50 @@
 {% load static %}
+<style>
+	h3 {
+		color:white;
+}
+h4 {
+		color:white;
+}
+h5 {
+		color:white;
+}
+</style>
 <!--=============================================
 	=            banner three column         =
 	=============================================-->
 	
 	<div class="banner-three-column mb-50">
 		<div class="container">
+			
 			<div class="row">
-				<div class="col-lg-4 col-md-4 mb-sm-30">
+				{% for category in categories|slice:":16" %}
+				
+				<div class="col-lg-3 col-md-3 mb-sm-30">
+				
 					<!--=======  single banner  =======-->
 					
 					<div class="single-banner">
 						<a href="shop-left-sidebar.html">
-							<img src="{% static 'img/banners/banner1.jpg' %}" class="img-fluid" alt="">
+							<img src="{{ category.image.url }}" class="img-fluid" alt="">
 						</a>
-						<div class="text-content">
-							<h5>Design Creative</h5>
-							<h3>Modern and Clean</h3>
-							<h4>From  $60.99 - Sale 20%</h4>
+						<div class="text-content center">
+							<h5 style="color:darkslategray;">Design Creative</h5>
+							<h3 style="color:darkslategray; background-color: white; opacity:0.8">{{ category }}</h3>
+							<h4 style="color:white;">From  $60.99 - Sale 20%</h4>
 						</div>
 					</div>
 					
-					<!--=======  End of single banner  =======-->	
+					<!--=======  End of single banner  =======-->
+				</br>	
 				</div>
-				<div class="col-lg-4 col-md-4 mb-sm-30">
-					<!--=======  single banner  =======-->
-					
-					<div class="single-banner">
-						<a href="shop-left-sidebar.html">
-							<img src="{% static 'img/banners/banner2.jpg' %}" class="img-fluid" alt="">
-						</a>
-						<div class="text-content">
-							<h5>Bestselling Products</h5>
-							<h3>Ceiling Light Modern</h3>
-							<h4>Only  from  $79.00</h4>
-						</div>
-					</div>
-					
-					<!--=======  End of single banner  =======-->	
-				</div>
-				<div class="col-lg-4 col-md-4">
-					<!--=======  single banner  =======-->
-					
-					<div class="single-banner">
-						<a href="shop-left-sidebar.html">
-							<img src="{% static 'img/banners/banner3.jpg' %}" class="img-fluid" alt="">
-						</a>
-						<div class="text-content">
-							<h5>Onsale Products</h5>
-							<h3>Drop Chair - Quickship</h3>
-							<h4>Selling Off  30%</h4>
-						</div>
-					</div>
-					
-					<!--=======  End of single banner  =======-->	
-				</div>
+				
+				{% endfor %}
+				
+				
+				
 			</div>
+			
 		</div>
 	</div>
 	
