@@ -5,11 +5,18 @@ from django.views import generic
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
+from products.models import Category, Product
 
 
 def registration_view(request):
     context = {}
-    print(request.user.is_anonymous)
+
+    area_rugs = Category.objects.filter(parent_id=18)
+    bed_sheets = Product.objects.filter(category_id=17)
+    towels = Product.objects.filter(category_id=19)
+    context = {'area_rugs': area_rugs,
+                    'bed_sheets': bed_sheets,
+                    'towels':towels,}
     if request.user.is_anonymous == False:
         return redirect('dashboard')
 

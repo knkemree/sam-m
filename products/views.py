@@ -12,6 +12,9 @@ def product_list_view(request, category_slug=None):
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
     parent_cats = Category.objects.filter(parent__isnull=True)
+    area_rugs = Category.objects.filter(parent_id=18)
+    bed_sheets = Product.objects.filter(category_id=17)
+    towels = Product.objects.filter(category_id=19)
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
@@ -51,7 +54,10 @@ def product_list_view(request, category_slug=None):
                   {'category': category,
                    'categories': categories,
                    'products': products,
-                   'page': page,})
+                   'page': page,
+                   'area_rugs': area_rugs,
+                    'bed_sheets': bed_sheets,
+                    'towels':towels,})
 
 
 
@@ -62,11 +68,17 @@ def product_detail_view(request, id, slug):
                                 slug=slug,
                                 available=True)
     cart_product_form = CartAddProductForm()
+    area_rugs = Category.objects.filter(parent_id=18)
+    bed_sheets = Product.objects.filter(category_id=17)
+    towels = Product.objects.filter(category_id=19)
     request.session["page"] = product.slug
     
     
     return render(request,
                   'product_detail_view.html',
                   {'product': product,
-                  'cart_product_form': cart_product_form}
+                  'cart_product_form': cart_product_form,
+                  'area_rugs': area_rugs,
+                    'bed_sheets': bed_sheets,
+                    'towels':towels,}
                   )

@@ -19,7 +19,7 @@
 									<div class="sidebar-list">
 										<ul>
 											{% for c in area_rugs %}
-											<li><a href="{{ category.get_absolute_url }}">{{ c.get_cat_name }}</a></li>
+											<li><a href="{{ c.get_absolute_url }}">{{ c.get_cat_name }}</a></li>
 											{% endfor %}
 										</ul>
 									</div>
@@ -49,9 +49,9 @@
 											
 											<p class="product-price">
 												{% if c.get_cat_name == "F Collection" %}
-												<span class="discounted-price">{{ c.get_cat_name }}</span>
+												<span class="discounted-price"><a href="{{ c.get_absolute_url }}">{{ c.get_cat_name }}</a></span>
 												{% else %}
-												<span class="discounted-price">{{ c.get_cat_name }} Collection</span>
+												<span class="discounted-price"><a href="{{ c.get_absolute_url }}">{{ c.get_cat_name }} Collection</a></span>
 												{% endif %}
 											</p>
 

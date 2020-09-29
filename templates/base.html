@@ -421,7 +421,7 @@
 										</ul>
 									</li>
 									<li><a href="/">BLOG</a></li>
-									<li><a href="/">CONTACT</a></li>
+									<li><a href="{% url 'contact_page' %}">CONTACT</a></li>
 								</ul>
 							</nav>
 						</div>
@@ -507,11 +507,11 @@
 
 							<div class="social-links">
 								<ul>
-									<li><a href="//www.twitter.com" class="twitter"  data-tooltip="Twitter"><i class="fa fa-twitter"></i></a></li>
-									<li><a href="//www.facebook.com" class="facebook"  data-tooltip="Facebook"><i class="fa fa-facebook"></i></a></li>
-									<li><a href="//www.behance.com" class="behance" data-tooltip="Behance"><i class="fa fa-behance"></i></a></li>
+									<!-- <li><a href="//www.twitter.com" class="twitter"  data-tooltip="Twitter"><i class="fa fa-twitter"></i></a></li> -->
+									<li><a href="https://facebook.com/profile.php?id=100015856773627&_rdr" class="facebook"  data-tooltip="Facebook"><i class="fa fa-facebook"></i></a></li>
+									<!-- <li><a href="//www.behance.com" class="behance" data-tooltip="Behance"><i class="fa fa-behance"></i></a></li>
 									<li><a href="//www.pinterest.com" class="pinterest" data-tooltip="Pinterest"><i class="fa fa-pinterest"></i></a></li>
-									<li><a href="//www.rss.com" class="rss" data-tooltip="RSS"><i class="fa fa-rss"></i></a></li>
+									<li><a href="//www.rss.com" class="rss" data-tooltip="RSS"><i class="fa fa-rss"></i></a></li> -->
 								</ul>
 							</div>
 						</div>
@@ -524,9 +524,9 @@
 						<div class="widget-block">
 							<h4 class="footer-widget-title mb-sm-10">INFORMATION</h4>
 							<ul>
-								<li><a href="about.html">About Us</a></li>
-								<li><a href="contact.html">Contact</a></li>
-								<li><a href="blog-left-sidebar.html">Blog</a></li>
+								<li><a href="/">About Us</a></li>
+								<li><a href="{% url 'contact_page' %}">Contact</a></li>
+								<li><a href="/">Blog</a></li>
 								<!-- <li><a href="#">Services</a></li> -->
 								<!-- <li><a href="#">Seller Login</a></li> -->
 								<!-- <li><a href="#l">Site Map</a></li> -->
@@ -537,18 +537,25 @@
 					</div>
 					<div class="col-lg-2 col-md-6">
 						<!--=======  widget block  =======-->
-						
+						{% if request.user.is_authenticated %}
 						<div class="widget-block">
 							<h4 class="footer-widget-title mt-sm-20 mb-sm-10">MY ACCOUNT</h4>
 							<ul>
-								<li><a href="contact.html">Contact</a></li>
-								<li><a href="#">Order History</a></li>
-								<li><a href="my-account.html">My Account</a></li>
-								<li><a href="wishlist">Wishlist</a></li>
-								<li><a href="cart.html">Cart</a></li>
+								<li><a {% if section == "dashboard" %}class="selected"{% endif %} href="{% url 'dashboard' %}">Dashboard</a></li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
+								
 							</ul>
 						</div>
-						
+						{% else %}
+						<div class="widget-block">
+							<h4 class="footer-widget-title mt-sm-20 mb-sm-10">ACCOUNT</h4>
+							<ul>
+								<li><a href="{% url 'login' %}">Dealer Login</a></li>
+								<li><a href="{% url 'account:registration_view' %}">Register as Dealer</a></li>
+								
+							</ul>
+						</div>
+						{% endif %}
 						<!--=======  End of widget block  =======-->
 					</div>
 					<div class="col-lg-4 col-md-6">

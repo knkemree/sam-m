@@ -1,3 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Contact Us
+{% endblock %}
+{% block blank %}
+<!--=============================================
+	=            breadcrumb area         =
+	=============================================-->
+	
+	<div class="breadcrumb-area pt-15 pb-15 mb-0">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<!--=======  breadcrumb container  =======-->
+					
+					<div class="breadcrumb-container">
+						<nav>
+							<ul>
+								<li class="parent-page"><a href="/">Home</a></li>
+								<li><a href="{% url 'contact_page' %}">Contact</a></li>
+							</ul>
+						</nav>
+					</div>
+					
+					<!--=======  End of breadcrumb container  =======-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <!--=====  End of breadcrumb area  ======-->
+
+ <!--=============================================
+	=            Contact page content         =
+	=============================================-->
+	
+	<div class="page-content mb-5">
+
+		<!--=============================================
+		=            google map container         =
+		=============================================-->
+		
+		<div class="google-map-container mb-45">
+            
+			<div id="google-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3468.961536078823!2d-95.55189928492113!3d29.604804382044442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640e897c1709d03%3A0xcac73c1ec2973385!2s1112%20Staffordshire%20Rd%2C%20Stafford%2C%20TX%2077477!5e0!3m2!1sen!2sus!4v1601390240983!5m2!1sen!2sus" width="1520" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+            </div>
+		</div>
+		
+		<!--=====  End of google map container  ======-->
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 offset-lg-1 col-md-12 mb-sm-45 order-1 order-lg-2 mb-md-45">
+					<!--=======  contact page side content  =======-->
+					
+					<div class="contact-page-side-content">
+						<h3 class="contact-page-title">Contact Us</h3>
+                        <p class="contact-page-message mb-30">
+                            <strong>Help Us Help You:</strong>
+                            For all product related questions please include the following information in "Your Message."
+                            <ul style="list-style:inside">
+                                
+                                <li>Purchase Order Number</li>
+                                <li>Tracking Number</li>
+                            </ul>
+                        </p>
+                        <hr>
+                        <br>
+						<!--=======  single contact block  =======-->
+						
+						<div class="single-contact-block">
+							<h4><i class="fa fa-fax"></i> Address</h4>
+							<p>112 Staffordshire Rd, Stafford, TX 77477 - USA</p>
+						</div>
+						
+						<!--=======  End of single contact block  =======-->
+
+						<!--=======  single contact block  =======-->
+						
+						<div class="single-contact-block">
+							<h4><i class="fa fa-phone"></i> Phone</h4>
+							<p>Phone: (346) 204 5786</p>
+						
+						</div>
+						
+						<!--=======  End of single contact block  =======-->
+
+						<!--=======  single contact block  =======-->
+						
+						<div class="single-contact-block">
+							<h4><i class="fa fa-envelope-o"></i> Email</h4>
+							<p>info@samnmtrade.com</p>
+							
+						</div>
+						
+						<!--=======  End of single contact block  =======-->
+					</div>
+					
+					<!--=======  End of contact page side content  =======-->
+
+				</div>
+				<div class="col-lg-6 col-md-12 order-2 order-lg-1">
+					<!--=======  contact form content  =======-->
+					
+					<div class="contact-form-content">
+						<h3 class="contact-page-title">Tell Us Your Message</h3>
+
+						<div class="contact-form">
+                            <form method="POST"> 
+                                {% csrf_token %}
+                                {{ form.as_p}}
+                                <!--
+                                <input type="email" class="form-control" placeholder="Email" name="email">
+                                <br>
+                                <input type="text" class="form-control" placeholder="Full Name" name="fullname">
+                                <br>
+                                <input type="text" class="form-control" placeholder="Company Name" name="companyname">
+                                <br>
+                                
+                                
+                                <input type="text" class="form-control" placeholder="EIN #" onkeypress="return onlyNumberKey(event)" maxlength="9" size="50%" /> 
+                                <small>Nine-digit number provided to you by IRS</small>
+                                <br><br>
+                                <input class="form-control" type="tel" id="phone" name="phone" placeholder="Phone #" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                                <br>-->
+                                <button type="submit" class="fl-btn" onclick="return detailssubmit()">Send</button>
+                            </form>
+							<!-- <form  id="contact-form" action="assets/php/mail.php" method="post">
+								<div class="form-group">
+									<label>Your Name <span class="required">*</span></label>
+									<input type="text" name="customerName" id="customername" required>
+								</div>
+								<div class="form-group">
+									<label>Your Email <span class="required">*</span></label>
+									<input type="email" name="customerEmail" id="customerEmail" required>
+								</div>
+								<div class="form-group">
+									<label>Subject</label>
+									<input type="text" name="contactSubject" id="contactSubject">
+								</div>
+								<div class="form-group">
+									<label>Your Message</label>
+									<textarea name="contactMessage" id="contactMessage" ></textarea>
+								</div>
+								<div class="form-group mb-0">
+								<button type="submit" value="submit" id="submit" class="fl-btn" name="submit">send</button>
+								</div> -->
+							</form>
+						</div>
+						<p class="form-messege pt-10 pb-10 mt-10 mb-10"></p>
+					</div>
+					
+					<!--=======  End of contact form content =======-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--=====  End of Contact page content  ======-->
+{% endblock %}
 <!doctype html>
     <html lang="en">
     <head>

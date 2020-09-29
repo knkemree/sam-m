@@ -36,11 +36,17 @@ def about_page(request):
     return render(request, "home_page.html", context)
 
 def contact_page(request):
+    area_rugs = Category.objects.filter(parent_id=18)
+    bed_sheets = Product.objects.filter(category_id=17)
+    towels = Product.objects.filter(category_id=19)
     contact_form = ContactForm(request.POST or None)
     context = {
         "title": "Contact Page",
         "content": " This is contact page",
-        "form": contact_form
+        "form": contact_form,
+        'area_rugs': area_rugs,
+                    'bed_sheets': bed_sheets,
+                    'towels':towels,
     }
     if contact_form.is_valid():
         print(contact_form.cleaned_data)

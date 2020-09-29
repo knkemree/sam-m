@@ -19,9 +19,9 @@
 					<div class="breadcrumb-container">
 						<nav>
 							<ul>
-								<li class="parent-page"><a href="index.html">Home</a></li>
-								<li class="parent-page"><a href="shop-left-sidebar.html">Shop</a></li>
-								<li>Single Product</li>
+								<li class="parent-page"><a href="/">Home</a></li>
+								<li class="parent-page"><a href="#">{{ product.category.parent }}</a></li>
+								<li><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -140,11 +140,11 @@
                         </h2>
 
                         <p class="product-description mb-20">{{ product.description|linebreaks }}</p>
-                        
+                        <hr>
                         <div class="cart-buttons mb-20">
                           <form action="{% url "cart:cart_add" product.id %}" method="post">
                             
-                            {{ cart_product_form }}
+                            {{ cart_product_form.as_p }}
                             {% csrf_token %}
                             <input onlick="myFunction()" type="submit" value="Add to cart">
                           </form>
