@@ -7,7 +7,7 @@ from Delivery.models import Delivery_methods
 def shipping_view(request): 
     context ={} 
     # create object of form 
-    
+    print("shipping_view")
     delivery_form = ShippingForm(request.POST)  
     # check if form data is valid 
     

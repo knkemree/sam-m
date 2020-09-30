@@ -33,6 +33,26 @@
 	</div>
 	
     <!--=====  End of breadcrumb area  ======-->
+
+   <!--=============================================
+    =            added to cart message         =
+    =============================================-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-{{message.tags}}" role="alert">
+					{{message}}
+				</div>
+				{% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!--=====  End of message  ======-->
     
     
 
@@ -178,8 +198,6 @@
                                 <div class="sort-by-dropdown d-flex align-items-center mb-xs-10">
                                     <p class="mr-10 mb-0">Sort By: </p>
                                     <select name="sort-by" id="sort-by" class="nice-select">
-                                        <option value="0">Sort By Popularity</option>
-                                        <option value="0">Sort By Average Rating</option>
                                         <option value="0">Sort By Newness</option>
                                         <option value="0">Sort By Price: Low to High</option>
                                         <option value="0">Sort By Price: High to Low</option>
@@ -188,7 +206,14 @@
                                 
                                 <!--=======  End of Sort by dropdown  =======-->
 
-                                <p class="result-show-message">Showing 1–12 of 41 results</p>
+                                <p class="result-show-message">
+                                    {% include "pagination.html" with page=products %}
+                                {% for c in categories %}
+                                  {% if not category.slug == c.slug %}
+                                  
+                                  {% endif %}
+                                {% endfor %}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -196,7 +221,7 @@
                     <!--=======  End of Shop header  =======-->
 
                     <!--=======  shop product display area  =======-->
-                    <div class="shop-product-wrap list row mb-30 no-gutters">
+                    <div class="shop-product-wrap grid row mb-30 no-gutters">
                         {% for product in products %}
                         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                             <!--=======  grid view product  =======-->
@@ -208,7 +233,7 @@
                                     <a href="{{ product.get_absolute_url }}">
                                         
                                         <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                        <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
+                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                     </a>
                                     <!-- wishlist icon -->
                                     <!-- <span class="wishlist-icon">
@@ -217,25 +242,57 @@
                                 </div>
                                 <div class="content">
                                     <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
-                                    <!-- <div class="rating">
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div> -->
+                                    
+                                    
+                                    {% if request.user.is_authenticated %}
                                     <p class="product-price">
                                         <!-- <span class="main-price discounted">$71</span> -->
                                         <span class="discounted-price">${{ product.price }}</span>
                                     </p>
+                                    <p>
+                                        
+                                        
+                                        <div class="cart-buttons mb-20">
+                                            
+                                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                                {{ cart_product_form.as_p }}
+                                                {% csrf_token %}
+                                                <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart">
+                                            
+                                                </form>
+                
+                                        </div>
+                                    
+                                        {% else%}
+                                        <div class="rating">
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                        </div>
+                                        <div class="product-feature-details">
+                                            <div class="cart-buttons mb-20">
+                                                <div class="add-to-cart-btn d-block">
+                                                    <a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa fa-check-circle"> </i> Become A Dealer</a>
+                                                    
+                                                </div>
+                                            <small><p>Already Delaer? <a href="{% url 'login' %}">Login</a></p></small>
+                                            </div>
+                                            
+                                        </div>
+                                    {% endif %}
 
-                                    <div class="hover-icons">
+                                    </p>
+
+                                    <!-- <div class="hover-icons">
+                                        
                                         <ul>
                                             <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-                                            <!-- <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-                                            <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li> -->
+                                            <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
+                                            <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             

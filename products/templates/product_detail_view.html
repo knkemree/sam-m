@@ -35,6 +35,26 @@
     <!--=====  End of breadcrumb area  ======-->
 
     <!--=============================================
+    =            added to cart message         =
+    =============================================-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-{{message.tags}}" role="alert">
+					{{message}}
+				</div>
+				{% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!--=====  End of message  ======-->
+
+    <!--=============================================
     =            single product content         =
     =============================================-->
     
@@ -138,15 +158,17 @@
                             <!-- <span class="main-price discounted">$12.90</span>  -->
                             <span class="discounted-price"> ${{ product.price }}</span>
                         </h2>
-
-                        <p class="product-description mb-20">{{ product.description|linebreaks }}</p>
                         <hr>
+                        {% if request.user.is_authenticated %}<a><strong>Availability: </strong>{% if product.stock >= 5 %} In Stock{% else %} Out of Stock{% endif %}</a>{% endif %}
+                        
+                        <p class="product-description mb-20">{{ product.description|truncatechars:500 }}</p>
+                        {% if request.user.is_authenticated %}
                         <div class="cart-buttons mb-20">
                           <form action="{% url "cart:cart_add" product.id %}" method="post">
                             
                             {{ cart_product_form.as_p }}
                             {% csrf_token %}
-                            <input onlick="myFunction()" type="submit" value="Add to cart">
+                            <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart">
                           </form>
                             <!-- <span class="quantity-title mr-10">Quantity: </span>
                             <div class="pro-qty mb-20">
@@ -156,6 +178,14 @@
                                 <a href="#" class="fl-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
                             </div> -->
                         </div>
+                        {% else%}
+                        <div class="add-to-cart-btn d-block">
+                            <p><a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa"></i> Become a Dealer</a></p>
+                            <!-- <p>Already Dealer?</p> -->
+                            <p><a href="{% url 'login' %}">Login</a> If you are a Dealer !</p>
+                            
+                        </div>
+                        {% endif %}
 
                         <!-- <p class="wishlist-link mb-20 pb-15">
                             <a href="#"> <i class="icon ion-md-heart-empty"></i> Browse Wishlist</a>

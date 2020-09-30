@@ -274,36 +274,34 @@
 							<!-- cart floating box -->
 							<div class="cart-floating-box hidden" id="cart-floating-box">
 								<div class="cart-items">
+									{% for rs in cart %}
+											{% with product=rs.product %}
 									<div class="cart-float-single-item d-flex">
-										<span class="remove-item" id="remove-item"><a href="#"><i class="icon ion-md-close"></i></a></span>
+										<span onclick="window.location.href = '{% url 'cart:cart_remove' product.id %}';" class="remove-item" id="remove-item"><a><i class="icon ion-md-close"></i></a></span>
 										<div class="cart-float-single-item-image">
-											<a href="single-product.html"><img src="{% static 'img/products/product01.jpg' %}" class="img-fluid" alt=""></a>
+											<a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" class="img-fluid" alt=""></a>
 										</div>
 										<div class="cart-float-single-item-desc">
-											<p class="product-title"> <a href="single-product.html">Duis pulvinar obortis eleifend </a></p>
-											<p class="quantity"> Qty: 1</p>
-											<p class="price">$20.50</p>
+											<p class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name }} </a></p>
+											<p class="quantity"> Qty: {{ rs.quantity }}</p>
+											<p class="price">${{ rs.price }}</p>
 										</div>
 									</div>
-									<div class="cart-float-single-item d-flex">
-										<span class="remove-item"><a href="#"><i class="icon ion-md-close"></i></a></span>
-										<div class="cart-float-single-item-image">
-											<a href="single-product.html"><img src="{% static 'img/products/product02.jpg' %}" class="img-fluid" alt=""></a>
-										</div>
-										<div class="cart-float-single-item-desc">
-											<p class="product-title"> <a href="single-product.html">Fusce ultricies dolor vitae</a></p>
-											<p class="quantity"> Qty: 1</p>
-											<p class="price">$20.50</p>
-										</div>
-									</div>
+									{% endwith %}
+									{% endfor %}
+									<p class="total">CART TOTAL :  <span>${{ cart.get_total_price|floatformat:2 }}</span></p>
+									{% if cart.campaign %}<p>%{{ cart.campaign.campaign_discount }} OFF : <span>-${{ cart.get_discount|floatformat:2 }}</span></p>{% endif %}
+									
 								</div>
+								
 								<div class="cart-calculation">
 									<div class="calculation-details">
-										<p class="total">Subtotal <span>$22</span></p>
+										
+										<p class="total">Subtotal <span>${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</span></p>
 									</div>
 									<div class="floating-cart-btn text-center">
-										<a class="fl-btn pull-left" href="cart.html">View Cart</a>
-										<a class="fl-btn pull-right" href="checkout.html">Checkout</a>
+										<a class="fl-btn pull-left" href="{% url 'cart:cart_detail' %}">View Cart</a>
+										<a class="fl-btn pull-right" href="{% url 'orders:order_create' %}">Checkout</a>
 									</div>
 								</div>
 							</div>
@@ -338,7 +336,7 @@
 							<!-- Category Menu -->
 							<nav class="category-menu">
 								<ul>
-									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Area Rugs</a>
+									<li class="menu-item-has-children"><a href="#">Area Rugs</a>
 										<!-- category submenu -->
 										
 										<ul class="category-mega-menu">
@@ -385,7 +383,7 @@
 							<nav>
 								<ul>
 									<li><a href="/">HOME</a></li>
-									<li class="menu-item-has-children"><a href="shop-left-sidebar.html">Shop</a>
+									<li class="menu-item-has-children"><a href="#">Shop</a>
 										<ul class="sub-menu">
 											
 											<li class="menu-item-has-children"><a href="#">Area Rugs</a>

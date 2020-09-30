@@ -1,117 +1,254 @@
-{% extends "shop_base.html" %}
+{% extends "base.html" %}
 {% block title %}
   Checkout
 {% endblock %}
-{% block content %}
-  <h1>Checkout</h1>
-  <div class="order-info">
-    <h3>Your order</h3>
-    <ul>
-      {% for item in cart %}
-        <li>
-          {{ item.quantity }}x {{ item.product.name }}
-          <span>${{ item.total_price|floatformat:2 }}</span>
-        </li>
-      {% endfor %}
-      {% if cart.shipment %}
-        <li>
-          {{ cart.shipment.delivery_method }}
-          <span class="neg">+ ${{ cart.shipment_fee|floatformat:2 }}</span>
-        </li>
-      {% endif %}
-      {% if cart.campaign %}
-        <li>
-          {{ cart.campaign.campaign_discount }}% off
-          <span class="neg">- ${{ cart.get_discount|floatformat:2 }}</span>
-        </li>
-      {% endif %}
-      
-    </ul>
-    {% if cart.shipment %}
-    <p>Total: ${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</p>
-    {% else %}
-    <p>Total: ${{ cart.get_total_price_after_discount|floatformat:2 }}</p>
-    {% endif %}
+{% block blank %}
 
-  </div>
-  <form method="post" class="order-form" id="form_place_order">
-    {{ form.as_p }}
+
+  
+<!--=============================================
+	=            breadcrumb area         =
+	=============================================-->
+	
+	<div class="breadcrumb-area pt-15 pb-15">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<!--=======  breadcrumb container  =======-->
+					
+					<div class="breadcrumb-container">
+						<nav>
+							<ul>
+								<li class="parent-page"><a href="/">Home</a></li>
+								<li>Checkout</li>
+							</ul>
+						</nav>
+					</div>
+					
+					<!--=======  End of breadcrumb container  =======-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <!--=====  End of breadcrumb area  ======-->
     
-    <p><input type="submit" value="Place order" onclick="eraseCookie('selectBoxValue');" id="btn_place_order"></p>
-    {% csrf_token %}
-  </form>
-  
-  <form name="delivery" method="post" action="{% url 'Delivery:shipping_view' %}" id="frm1">
-    {{ shipping_form }}
-    <p><input type="submit" value="GET"  id="btn" style="display: none;"></p>
-    {% csrf_token %}
-  </form>
+    <!--=============================================
+	=            Checkout page content         =
+	=============================================-->
+	
+	<div class="page-section mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    
+                    <!-- Checkout Form s-->
+                    
+                      <div class="row row-40">
+                          
+                          <div class="col-lg-7 mb-20">
+                              
+                              <!-- Billing Address -->
+                              <div id="billing-form" class="mb-40">
+                                  <h4 class="checkout-title">Checkout Form</h4>
 
-  <script type="text/javascript">
-// Adres formunu doldurup place order'i tikladiginda eger delivery method secilmediyse alert vermesi icin
-// eger empty_label="----Select----" ise bu kod calisacak aksi takdirde bozulacak. empty_label'i degistirirken dikkatli ol
-$('#btn_place_order').click(function(e){
-   if($("#id_delivery_method option:selected").text() == '----Select----'){
-      alert('Please choose a delivery method.');
-      e.preventDefault();
-   }
-});
+                                  
+                                    <div class="row">
+                                      <div class="col-12 mb-20">
+                                        <form name="delivery" method="post" action="{% url 'Delivery:shipping_view' %}" id="frm1" class="checkout-form">
+                                          {{ shipping_form.as_p }}
+                                          <!-- <p><input type="submit" value="GET"  id="btn" style="display: none;"></p> -->
+                                          <button type="submit" value="submit" id="btn" class="place-order" style="display: none;">GET</button>
+                                          {% csrf_token %}
+                                        </form>
+                                      </div>
+                                    </div>
+                                  
 
-//window.onclose = eraseCookie('selectBoxValue')
-// $(window).unload(function () {
-//     // Remove the cookie
-//     eraseCookie('selectBoxValue')
-// });
-window.onload = function()
+                                  <form method="post" id="form_place_order" class="checkout-form">
+                                    <div class="row">
+                                    
+                                      <div class="col-12 mb-20">
+                                        <label for="id_address">Address:</label>
+                                        <input type="text" name="address" maxlength="250" required="" id="id_address" placeholder="Address line">
+                                        
+                                      </div>
   
-  {
+                                      <div class="col-md-6 col-12 mb-20">
+                                        <label for="id_city">City:</label>
+                                        <input type="text" name="city" maxlength="100" required="" id="id_city" placeholder="City">
+                                      
+                                      </div>
+  
+                                      <div class="col-md-6 col-12 mb-20">
+                                        <label for="id_state">State:</label>
+                                        <input type="text" name="state" maxlength="100" id="id_state" placeholder="State">
+                                         
+                                      </div>
+  
+                                      <div class="col-md-6 col-12 mb-20">
+                                        <label for="id_postal_code">Postal code:</label>
+                                        <input type="text" name="postal_code" required="" id="id_postal_code" placeholder="Postal code:">
+                                          
+                                      </div>
+                                      {% csrf_token %}
+                                      <div class="col-12 mb-20">
+                                        <!-- <input type="submit" value="Go to Payment" onclick="eraseCookie('selectBoxValue');" id="btn_place_order"> -->
+                                        <button type="submit" id="btn_place_order" class="place-order" onclick="eraseCookie('selectBoxValue');">Checkout <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                      <script type="text/javascript">
+                                        // Adres formunu doldurup place order'i tikladiginda eger delivery method secilmediyse alert vermesi icin
+                                        // eger empty_label="----Select----" ise bu kod calisacak aksi takdirde bozulacak. empty_label'i degistirirken dikkatli ol
+                                        $('#btn_place_order').click(function(e){
+                                           if($("#id_delivery_method option:selected").text() == '----Select----'){
+                                              alert('Please choose a delivery method.');
+                                              e.preventDefault();
+                                           }
+                                        });
+                                        
+                                        window.onload = function()
+                                          {
+                                            
+                                              var cookieVal = readCookie('selectBoxValue');
+                                              console.log(cookieVal);
+                                              if(cookieVal!=null)
+                                              {
+                                                  document.getElementById('id_delivery_method').selectedIndex = cookieVal;
+                                                  eraseCookie('selectBoxValue')
+                                              }
+                                              
+                                          }
+                                          
+                                          
+                                          
+                                          function changeSelectedvalue()
+                                          {
+                                              var mySelectedIndex = document.getElementById('id_delivery_method').selectedIndex;
+                                              createCookie("selectBoxValue",mySelectedIndex,1000);
+                                              
+                                          }
+                                          
+                                          
+                                          
+                                          function createCookie(name,value,days) {
+                                              if (days) {
+                                                  var date = new Date();
+                                                  date.setTime(date.getTime()+(days*24*60*60*1000));
+                                                  var expires = "; expires="+date.toGMTString();
+                                              }
+                                              else var expires = "";
+                                              document.cookie = name+"="+value+expires+"; path=/";
+                                          }
+                                          
+                                          function readCookie(name) {
+                                              var nameEQ = name + "=";
+                                              var ca = document.cookie.split(';');
+                                              for(var i=0;i < ca.length;i++) {
+                                                  var c = ca[i];
+                                                  while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                                                  if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                                              }
+                                              return null;
+                                          }
+                                          
+                                          function eraseCookie(name) {
+                                              createCookie(name,"",-1);
+                                          }
+                                            
+                                        
+                                        </script>
+                                    
+                              </div>
+                              
+                          </div>
+
+                          <div class="col-lg-5">
+                            <div class="row">
+                                <!-- Cart Total -->
+                                <div class="col-12 mb-60">
+                                    <h4 class="checkout-title">Cart Total</h4>
+                                    <div class="checkout-cart-total">
+                                        <h4>Product <span>Total</span></h4>
+                                        <ul>
+                                          {% for item in cart %}
+                                            <li>
+                                              {{ item.quantity }}x {{ item.product.name }}
+                                              <span>${{ item.total_price|floatformat:2 }}</span>
+                                            </li>
+                                          {% endfor %}
+                                        </ul>
+                                        <p>Sub Total <span>${{ cart.get_total_price }}</span></p>
+                                        {% if cart.shipment %}
+                                        <p>{{ cart.shipment.delivery_method }} <span>+ ${{ cart.shipment_fee|floatformat:2 }}</span></p>
+                                        {% endif %}
+                                        {% if cart.campaign %}
+                                        <p>%{{ cart.campaign.campaign_discount }} OFF<span>- ${{ cart.get_discount|floatformat:2 }}</span></p>
+                                        {% endif %}
+                                        {% if cart.shipment %}
+                                        <h4>Grand Total <span>${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</span></h4>
+                                        {% else %}
+                                        <h4>Grand Total <span>${{ cart.get_total_price_after_discount|floatformat:2 }}</span></h4>
+                                        {% endif %}
+                                    </div>
+                                    
+                                </div>
+                                
+                                <!-- Payment Method -->
+                                <!-- <div class="col-12">
+                                    <h4 class="checkout-title">Payment Method</h4>
+                                    <div class="checkout-payment-method">
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_check" name="payment-method" value="check">
+                                            <label for="payment_check">Check Payment</label>
+                                            <p data-method="check">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
+                                        </div>
+                                        
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_bank" name="payment-method" value="bank">
+                                            <label for="payment_bank">Direct Bank Transfer</label>
+                                            <p data-method="bank">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
+                                        </div>
+                                        
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_cash" name="payment-method" value="cash">
+                                            <label for="payment_cash">Cash on Delivery</label>
+                                            <p data-method="cash">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
+                                        </div>
+                                        
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_paypal" name="payment-method" value="paypal">
+                                            <label for="payment_paypal">Paypal</label>
+                                            <p data-method="paypal">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
+                                        </div>
+                                        
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_payoneer" name="payment-method" value="payoneer">
+                                            <label for="payment_payoneer">Payoneer</label>
+                                            <p data-method="payoneer">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
+                                        </div>
+                                        
+                                        <div class="single-method">
+                                            <input type="checkbox" id="accept_terms">
+                                            <label for="accept_terms">I’ve read and accept the terms & conditions</label>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <button class="place-order">Place order</button> -->
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                      </div>    
+                </div>
+            </div>
+        </div>
+    </div>
     
-      var cookieVal = readCookie('selectBoxValue');
-      console.log(cookieVal);
-      if(cookieVal!=null)
-      {
-          document.getElementById('id_delivery_method').selectedIndex = cookieVal;
-          eraseCookie('selectBoxValue')
-      }
-      
-  }
-  
-  
-  
-  function changeSelectedvalue()
-  {
-      var mySelectedIndex = document.getElementById('id_delivery_method').selectedIndex;
-      createCookie("selectBoxValue",mySelectedIndex,1000);
-      
-  }
-  
-  
-  
-  function createCookie(name,value,days) {
-      if (days) {
-          var date = new Date();
-          date.setTime(date.getTime()+(days*24*60*60*1000));
-          var expires = "; expires="+date.toGMTString();
-      }
-      else var expires = "";
-      document.cookie = name+"="+value+expires+"; path=/";
-  }
-  
-  function readCookie(name) {
-      var nameEQ = name + "=";
-      var ca = document.cookie.split(';');
-      for(var i=0;i < ca.length;i++) {
-          var c = ca[i];
-          while (c.charAt(0)==' ') c = c.substring(1,c.length);
-          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-      }
-      return null;
-  }
-  
-  function eraseCookie(name) {
-      createCookie(name,"",-1);
-  }
-    
-
-</script>
+    <!--=====  End of Checkout page content  ======-->
 {% endblock %}
+

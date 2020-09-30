@@ -6,11 +6,14 @@ from .forms import CartAddProductForm
 from coupons.forms import CouponApplyForm
 from coupons.models import Campaign
 from Delivery.models import Delivery_methods
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 
 
 @require_POST
 def cart_add(request, product_id):
+    url = request.META.get('HTTP_REFERER')
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     
@@ -23,6 +26,7 @@ def cart_add(request, product_id):
         cart.add(product=product,
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
+        messages.success(request, "Product added to cart...")
     
     campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
     request.session["campaign_id4"]=campaign.id
@@ -32,20 +36,22 @@ def cart_add(request, product_id):
     print("cart add yapinca campaign id print oluyor mu")
     print(campaign.id)
     
-    return redirect('cart:cart_detail')
+    return HttpResponseRedirect(url)
+    #return redirect('cart:cart_detail')
 
 
 @require_POST
 def cart_remove(request, product_id):
+    url = request.META.get('HTTP_REFERER')
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
     campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
-    print("cart add yapinca campaign id print oluyor mu")
-    print(campaign.id)
+    
     request.session["campaign_id4"]=campaign.id
     
-    return redirect('cart:cart_detail')
+    return redirect(url)
+    #return redirect('cart:cart_detail')
 
 
 def cart_detail(request):

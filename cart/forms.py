@@ -8,7 +8,9 @@ class CartAddProductForm(forms.Form):
     quantity = forms.TypedChoiceField(
                                 choices=PRODUCT_QUANTITY_CHOICES,
                                 coerce=int,
-                                widget=forms.Select(attrs={'onchange':'this.form.submit();'}))
+                                
+                                #widget=forms.Select(attrs={'onchange':'this.form.submit();'}),
+                                )
     override = forms.BooleanField(required=False,
                                   initial=False,
                                   widget=forms.HiddenInput
