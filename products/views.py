@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Category, Product
 from django.contrib.sessions.models import Session
 from cart.forms import CartAddProductForm
-from products.models import ProductImage, Variation
+from products.models import ProductImage
 
 
 def product_list_view(request, category_slug=None):
@@ -76,9 +76,9 @@ def product_detail_view(request, id, slug):
                                 available=True)
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
-    sizes = Variation.objects.filter(product_id=id, category="size")
+    #sizes = Variation.objects.filter(product_id=id, category="size")
     print("product_detail_view")
-    print(sizes)
+   # print(sizes)
     #alttakini calistirinca sag ustte cartin icinde neler oldugunu gosteren acilir sekme product detail sayfasinda calismiyor. 
     #request.session["page"] = product.slug
     
@@ -88,6 +88,6 @@ def product_detail_view(request, id, slug):
                   {'product': product,
                   'cart_product_form': cart_product_form,
                   'gallery':gallery,
-                  'sizes':sizes,
+                  #'sizes':sizes,
                   } 
                   )

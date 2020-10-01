@@ -17,8 +17,7 @@ def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     
-    for key, value in request.session.items():
-                print('{} => {}'.format(key, value))
+    
                 
     form = CartAddProductForm(request.POST)
     if form.is_valid():
@@ -30,6 +29,9 @@ def cart_add(request, product_id):
     
     campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
     request.session["campaign_id4"]=campaign.id
+
+    for key, value in request.session.items():
+                print('{} => {}'.format(key, value))
     
     
     return HttpResponseRedirect(url)

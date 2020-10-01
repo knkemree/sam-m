@@ -130,16 +130,44 @@
                         <p class="product-description mb-20">{{ product.description|truncatechars:250 }}</p>
                         {% if request.user.is_authenticated %}
                         
-                        {% if product.variation_set.all %}
+                    
+
+                        {% if product.variation_set.sizes %}
                         <div class="size mb-20">
                             <span class="title"> Size:</span> <br>
                             <select name="size" class="nice-select">
                                 {% for item in product.variation_set.sizes %}
                                 <option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
-                            {% endfor %}
+                                {% endfor %}
                             </select>
                         </div>
                         {% endif %}
+
+                        {% if product.variation_set.colors %}
+                        <div class="size mb-20">
+                            <span class="title"> Color:</span> <br>
+                            <select name="size" class="nice-select">
+                                {% for item in product.variation_set.colors %}
+                                <option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+
+                        {% if product.variation_set.packages %}
+                        <div class="size mb-20">
+                            <span class="title"> Package:</span> <br>
+                            <select name="size" class="nice-select">
+                                {% for item in product.variation_set.packages %}
+                                <option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                    
+
+
+
                         <div class="cart-buttons mb-20">
                           <form action="{% url "cart:cart_add" product.id %}" method="post">
                             

@@ -2,6 +2,7 @@ from django import forms
 from cart.cart import Cart
 from coupons.models import Campaign
 
+
 PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(5, 31)]
 class CartAddProductForm(forms.Form):
     
@@ -15,5 +16,7 @@ class CartAddProductForm(forms.Form):
                                   initial=False,
                                   widget=forms.HiddenInput
                                   )
+
+
 
     

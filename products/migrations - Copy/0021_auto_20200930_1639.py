@@ -13,13 +13,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='variation',
             name='cost',
-            field=models.DecimalField(decimal_places=2, default='', max_digits=10),
+            field=models.DecimalField(decimal_places=2, default='0.00', max_digits=10),
             preserve_default=False,
         ),
-        migrations.AddField(
-            model_name='variation',
-            name='sale_price',
-            field=models.DecimalField(decimal_places=2, default='0', max_digits=10),
-            preserve_default=False,
-        ),
+        
     ]

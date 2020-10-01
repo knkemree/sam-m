@@ -72,6 +72,8 @@ class Product(models.Model):
             breadcrumb[i] = '/'.join(breadcrumb[-1:i-1:-1])
         return breadcrumb[-1:0:-1]  
 
+    
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/%Y/%m/%d',default= 'img/no_image.png')
@@ -83,34 +85,48 @@ class ProductImage(models.Model):
     def __str__(self): 
         return self.product.name
 
-class VariationManager(models.Manager):
-    def all(self):
-        return super(VariationManager, self).filter(active=True)
+# class VariationManager(models.Manager):
+#     def all(self):
+#         return super(VariationManager, self).filter(active=True)
 
-    def sizes(self):
-        return self.all().filter(category='size')
+#     def sizes(self):
+#         return self.all().filter(category='size')
 
-    def colors(self):
-        return self.all().filter(category='color')
+#     def colors(self):
+#         return self.all().filter(category='color')
+
+#     def packages(self):
+#         return self.all().filter(category='package')
     
-VAR_CATEGORIES = (
-    ('size', 'size'),
-    ('color','color'),
-    ('package', 'package')
-)
+# VAR_CATEGORIES = (
+#     ('size', 'size'),
+#     ('color','color'),
+#     ('package', 'package')
+# )
 
-class Variation(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    category = models.CharField(max_length=120, choices= VAR_CATEGORIES, default='size')
-    title = models.CharField(max_length=120) 
-    sku = models.CharField(max_length=60, blank=True, null=True) 
-    image = models.ForeignKey(ProductImage, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00 )
-    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
-    active = models.BooleanField(default=True)
+# class Variation(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     category = models.CharField(max_length=120, choices= VAR_CATEGORIES, default='size')
+#     title = models.CharField(max_length=120) 
+#     #sku = models.CharField(max_length=60, blank=True, null=True) 
+#     image = models.ForeignKey(ProductImage, on_delete=models.CASCADE)
+#     #price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00 )
+#     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+#     active = models.BooleanField(default=True)
 
-    objects = VariationManager()
+#     objects = VariationManager()
 
-    def __str__(self): 
-        return self.title
+#     def __str__(self): 
+#         return self.title
+
+# class AttributeBase(models.Model):
+#     label = models.CharField(max_length=255) # e.g. color, size, shape, etc.
+
+# class Attribute(models.Model):
+#     base = models.ForeignKey('AttributeBase', related_name='attributes', on_delete=models.CASCADE)
+#     value = models.CharField(max_length=255) # e.g. red, L, round, etc.
+#     internal_value = models.CharField(max_length=255, null=True, blank=True) # other values you may need e.g. #ff0000, etc.
+
+# class ProductAttribute(Attribute):
+#     product = models.ForeignKey('Product', related_name='attributes', on_delete=models.CASCADE)
 
