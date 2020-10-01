@@ -5,88 +5,7 @@
 {% endblock %}
 {% block blank %}
 
-  <h1>Your shopping cart</h1>
-  <table class="cart">
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Remove</th>
-        <th>Unit price</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in cart %}
-        {% with product=item.product %}
-          <tr>
-            <td>
-              <a href="{{ product.get_absolute_url }}">
-                <img src="{% if product.image %}{{ product.image.url }}
-                {% else %}{% static "img/no_image.png" %}{% endif %}">
-              </a>
-            </td>
-            <td>{{ product.name }}</td>
-            <td>
-                <form id ="update_form" action="{% url "cart:cart_add" product.id %}" method="post">
-                  {{ item.update_quantity_form.quantity }}
-                  {{ item.update_quantity_form.override }}
-                  <input id="update_button" type="submit" value="Update" name="update" style="display: none;">
-                  {% csrf_token %}
-                </form>
-              </td>
-            <td>
-              <form action="{% url "cart:cart_remove" product.id %}" method="post">
-                <input type="submit" value="Remove" id="remove">
-                {% csrf_token %}
-              </form>
-            </td>
-            <td class="num">${{ item.price }}</td>
-            <td class="num">${{ item.total_price }}</td>
-          </tr>
-        {% endwith %}
-      {% endfor %}
-  {% if cart.campaign %}
-  <tr class="subtotal">
-    <td>Subtotal</td>
-    <td colspan="4"></td>
-    <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
-  </tr>
-  <tr>
-    <td>
-      {{ cart.campaign.campaign_name }}
-      ({{ cart.campaign.campaign_discount }}% off)
-    </td>
-    <td colspan="4"></td>
-    <td class="num neg">
-      - ${{ cart.get_discount|floatformat:2 }}
-    </td>
-  </tr>
-{% endif %}
-<tr class="total">
-  <td>Total</td>
-  <td colspan="4"></td>
-  <td id="last_price" class="num">
-    ${{ cart.get_total_price_after_discount|floatformat:2 }}
-  </td>
-</tr>
-
-    </tbody>
-  </table>
-
-
-
-  <p class="text-right">
-    <a href="{% url "products:product_list_view" %}" class="button
-    light">Continue shopping</a>
-    <a href="{% url 'orders:order_create' %}" class="button">
-      Checkout
-    </a>
-    
-  </p>
-  <br>
-
+  
   
 <!--=============================================
 	=            breadcrumb area         =
@@ -101,7 +20,7 @@
 					<div class="breadcrumb-container">
 						<nav>
 							<ul>
-								<li class="parent-page"><a href="index.html">Home</a></li>
+								<li class="parent-page"><a href="/">Home</a></li>
 								<li>Cart</li>
 							</ul>
 						</nav>
@@ -113,7 +32,27 @@
 		</div>
 	</div>
 	
-	<!--=====  End of breadcrumb area  ======-->
+  <!--=====  End of breadcrumb area  ======-->
+  
+  <!--=============================================
+    =            added to cart message         =
+    =============================================-->
+
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}}" role="alert">
+        {{message}}
+      </div>
+      {% endfor %}
+              {% endif %}
+          </div>
+      </div>
+  </div>
+
+  <!--=====  End of message  ======-->
 	
 	<!--=============================================
     =            Cart page content         =
@@ -124,7 +63,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <form action="#">				
+                    			
                         <!--=======  cart table  =======-->
                         
                         <div class="cart-table table-responsive mb-40">
@@ -140,38 +79,39 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                  {% for item in cart %}
+                                    {% with product=item.product %}
                                     <tr>
-                                        <td class="pro-thumbnail"><a href="single-product.html"><img src="assets/images/products/product01.jpg" class="img-fluid" alt="Product"></a></td>
-                                        <td class="pro-title"><a href="single-product.html">Cillum dolore tortor nisl fermentum</a></td>
-                                        <td class="pro-price"><span>$29.00</span></td>
-                                        <td class="pro-quantity"><div class="pro-qty"><input type="text" value="1"></div></td> 
-                                        <td class="pro-subtotal"><span>$29.00</span></td>
-                                        <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                        <td class="pro-thumbnail"><a href="{{ product.get_absolute_url }}"><img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="Product"></a></td>
+                                        <td class="pro-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                                        <td class="pro-price"><span>${{ item.price }}</span></td>
+
+                                        <td class="pro-quantity">
+                                          
+                                            <form id ="update_form" action="{% url 'cart:cart_add' product.id %}" method="post">
+                                              {{ item.update_quantity_form.quantity }}
+                                              {{ item.update_quantity_form.override }}
+                                              <!-- <input id="update_button" type="submit" value="Update" name="update"> -->
+                                              <button id="update_button" type="submit" name="update"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                              {% csrf_token %}
+                                            </form> 
+                                          
+                                        </td> 
+
+                                        <td class="pro-subtotal"><span>${{ item.total_price }}</span></td>
+
+                                        <!-- <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td> -->
+                                        <td class="pro-remove">
+                                          <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                                            <input type="submit" value="x" id="remove">
+                                            {% csrf_token %}
+                                          </form>
+                                        </td>
+
                                     </tr>
-                                    <tr>
-                                        <td class="pro-thumbnail"><a href="single-product.html"><img src="assets/images/products/product02.jpg" class="img-fluid" alt="Product"></a></td>
-                                        <td class="pro-title"><a href="single-product.html">Auctor gravida pellentesque</a></td>
-                                        <td class="pro-price"><span>$30.00</span></td>
-                                        <td class="pro-quantity"><div class="pro-qty"><input type="text" value="2"></div></td>
-                                        <td class="pro-subtotal"><span>$60.00</span></td>
-                                        <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pro-thumbnail"><a href="single-product.html"><img src="assets/images/products/product03.jpg" class="img-fluid" alt="Product"></a></td>
-                                        <td class="pro-title"><a href="single-product.html">Condimentum posuere consectetur</a></td>
-                                        <td class="pro-price"><span>$25.00</span></td>
-                                        <td class="pro-quantity"><div class="pro-qty"><input type="text" value="1"></div></td>
-                                        <td class="pro-subtotal"><span>$25.00</span></td>
-                                        <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pro-thumbnail"><a href="single-product.html"><img src="assets/images/products/product04.jpg" class="img-fluid" alt="Product"></a></td>
-                                        <td class="pro-title"><a href="single-product.html">Habitasse dictumst elementum</a></td>
-                                        <td class="pro-price"><span>$11.00</span></td>
-                                        <td class="pro-quantity"><div class="pro-qty"><input type="text" value="1"></div></td>
-                                        <td class="pro-subtotal"><span>$11.00</span></td>
-                                        <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
+                                    {% endwith %}
+                                  {% endfor %}
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -179,14 +119,14 @@
                         <!--=======  End of cart table  =======-->
                         
                         
-                    </form>	
+                    
                         
                     <div class="row">
 
                         <div class="col-lg-6 col-12">
                             <!--=======  Calculate Shipping  =======-->
                             
-                            <div class="calculate-shipping">
+                            <!-- <div class="calculate-shipping">
                                 <h4>Calculate Shipping</h4>
                                 <form action="#">
                                     <div class="row">
@@ -216,13 +156,13 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </div> -->
                             
                             <!--=======  End of Calculate Shipping  =======-->
                             
                             <!--=======  Discount Coupon  =======-->
                             
-                            <div class="discount-coupon">
+                            <!-- <div class="discount-coupon">
                                 <h4>Discount Coupon Code</h4>
                                 <form action="#">
                                     <div class="row">
@@ -234,7 +174,7 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </div> -->
                             
                             <!--=======  End of Discount Coupon  =======-->
                             
@@ -247,13 +187,18 @@
                             <div class="cart-summary">
                                 <div class="cart-summary-wrap">
                                     <h4>Cart Summary</h4>
-                                    <p>Sub Total <span>$1250.00</span></p>
-                                    <p>Shipping Cost <span>$00.00</span></p>
-                                    <h2>Grand Total <span>$1250.00</span></h2>
+                                    <p>Sub Total <span>${{ cart.get_total_price|floatformat:2 }}</span></p>
+                                    {% if cart.campaign %}<p>%{{ cart.campaign.campaign_discount }} OFF <span>- ${{ cart.get_discount|floatformat:2 }}</span></p>{% endif %}
+                                    <h2>Grand Total <span>${{ cart.get_total_price_after_discount|floatformat:2 }}</span></h2>
                                 </div>
                                 <div class="cart-summary-button">
+                                  <form action="{% url 'orders:order_create' %}">
                                     <button class="checkout-btn">Checkout</button>
-                                    <button class="update-btn">Update Cart</button>
+                                  </form>
+                                    
+                                    <!-- <button class="update-btn"><a href="{% url 'products:product_list_view' %}">Continue Shopping</a></button> -->
+                                    
+                                    
                                 </div>
                             </div>
                         
@@ -269,6 +214,20 @@
     </div>
 
     <!--=====  End of Cart page content  ======-->
+
+<script>
+      $(document).ready(function() {
+          // messages timeout for 10 sec 
+          setTimeout(function() {
+              $('.alert').fadeOut('slow');
+          }, 2500); // <-- time in milliseconds, 1000 =  1 sec
+  
+          // delete message
+          $('.del-msg').live('click',function(){
+              $('.del-msg').parent().attr('style', 'display:none;');
+          })
+      });
+</script>
 
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
@@ -395,3 +354,85 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
 
   -->
 {% endblock %}
+
+<h1>Your shopping cart</h1>
+  <table class="cart">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Remove</th>
+        <th>Unit price</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+        {% with product=item.product %}
+          <tr>
+            <td>
+              <a href="{{ product.get_absolute_url }}">
+                <img src="{% if product.image %}{{ product.image.url }}
+                {% else %}{% static "img/no_image.png" %}{% endif %}">
+              </a>
+            </td>
+            <td>{{ product.name }}</td>
+            <td>
+                <form id ="update_form" action="{% url "cart:cart_add" product.id %}" method="post">
+                  {{ item.update_quantity_form.quantity }}
+                  {{ item.update_quantity_form.override }}
+                  <input id="update_button" type="submit" value="Update" name="update">
+                  {% csrf_token %}
+                </form>
+              </td>
+            <td>
+              <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                <input type="submit" value="Remove" id="remove">
+                {% csrf_token %}
+              </form>
+            </td>
+            <td class="num">${{ item.price }}</td>
+            <td class="num">${{ item.total_price }}</td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+  {% if cart.campaign %}
+  <tr class="subtotal">
+    <td>Subtotal</td>
+    <td colspan="4"></td>
+    <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
+  </tr>
+  <tr>
+    <td>
+      {{ cart.campaign.campaign_name }}
+      ({{ cart.campaign.campaign_discount }}% off)
+    </td>
+    <td colspan="4"></td>
+    <td class="num neg">
+      - ${{ cart.get_discount|floatformat:2 }}
+    </td>
+  </tr>
+{% endif %}
+<tr class="total">
+  <td>Total</td>
+  <td colspan="4"></td>
+  <td id="last_price" class="num">
+    ${{ cart.get_total_price_after_discount|floatformat:2 }}
+  </td>
+</tr>
+
+    </tbody>
+  </table>
+
+
+
+  <p class="text-right">
+    <a href="{% url "products:product_list_view" %}" class="button
+    light">Continue shopping</a>
+    <a href="{% url 'orders:order_create' %}" class="button">
+      Checkout
+    </a>
+    
+  </p>
+  <br>

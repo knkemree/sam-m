@@ -257,8 +257,9 @@
                                                 <form action="{% url "cart:cart_add" product.id %}" method="post">
                                                 {{ cart_product_form.as_p }}
                                                 {% csrf_token %}
-                                                <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart">
-                                            
+                                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
+                                                <button type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                                                
                                                 </form>
                 
                                         </div>
@@ -283,7 +284,7 @@
                                         </div>
                                     {% endif %}
 
-                                    </p>
+                                    
 
                                     <!-- <div class="hover-icons">
                                         
@@ -375,7 +376,19 @@
     
     <!--=====  End of shop page content  ======-->
 
-
+    <script>
+        $(document).ready(function() {
+            // messages timeout for 10 sec 
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 2500); // <-- time in milliseconds, 1000 =  1 sec
+    
+            // delete message
+            $('.del-msg').live('click',function(){
+                $('.del-msg').parent().attr('style', 'display:none;');
+            })
+        });
+    </script>
 
     
 

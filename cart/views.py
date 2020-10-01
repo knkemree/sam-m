@@ -26,15 +26,11 @@ def cart_add(request, product_id):
         cart.add(product=product,
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
-        messages.success(request, "Product added to cart...")
+        messages.success(request, "Cart updated...")
     
     campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
     request.session["campaign_id4"]=campaign.id
     
-
-
-    print("cart add yapinca campaign id print oluyor mu")
-    print(campaign.id)
     
     return HttpResponseRedirect(url)
     #return redirect('cart:cart_detail')
@@ -47,6 +43,7 @@ def cart_remove(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
     campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
+    messages.warning(request, "Product deleted from your cart...")
     
     request.session["campaign_id4"]=campaign.id
     
