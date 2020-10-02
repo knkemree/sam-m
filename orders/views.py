@@ -40,7 +40,6 @@ def order_create(request):
             
             order = form.save(commit=False)
             order.email = request.user
-            
             order.first_name =request.user.first_name
             order.last_name =request.user.last_name
             order.order_profit = cart.get_total_price_after_discount() - cart.get_total_cost()

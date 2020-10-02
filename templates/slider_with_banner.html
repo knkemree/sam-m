@@ -33,16 +33,24 @@
 								<div class="fl-slider banner-slider">
 									<!--=======  single product  =======-->
 									{% for c in area_rugs %}
-									<div class="fl-product">
-										<div class="image">
-											<a href="single-product.html">
-												<img src="{{ c.image.url }}" class="img-fluid" alt="">
+									<div class="fl-product shop-grid-view-product">
+										<div style="width: 200px; 
+										height: 325px;
+										/*background-color: red;*/
+										/*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+										background-repeat: no-repeat;
+										background-size: contain;
+										background-position: center center;
+										margin: 0 auto;
+										">
+											<a href="{{ c.get_absolute_url }}">
+												<!-- <img src="{{ c.image.url }}" class="img-fluid" alt=""> -->
 												<img src="{{ c.image.url }}" class="img-fluid" alt="">
 											</a>
 											<!-- wishlist icon -->
-											<span class="wishlist-icon">
+											<!-- <span class="wishlist-icon">
 													<a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-											</span>
+											</span> -->
 										</div>
 										<div class="content">
 											<h2 class="product-title"> <a href="{{ c.get_absolute_url }}">{{ c.parent }}</a></h2>

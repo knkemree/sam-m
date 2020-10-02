@@ -27,9 +27,17 @@
 									<!--=======  single product  =======-->
 									{% for p in bed_sheets %}
 									<div class="fl-product">
-										<div class="image sale-product">
+										<!-- <div class="image sale-product"> -->
+										<div style="width: 200px; 
+										height: 200px;
+										/*background-color: red;*/
+										/*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+										background-repeat: no-repeat;
+										background-size: contain;
+										background-position: center;
+										margin: 0 auto;">
 											<a href="{{ p.get_absolute_url }}">
-												<img src="{{ p.image.url }}" class="img-fluid" alt="">
+												<!-- <img src="{{ p.image.url }}" class="img-fluid" alt=""> -->
 												<img src="{{ p.image.url }}" class="img-fluid" alt="">
 											</a>
 											<!-- wishlist icon -->
@@ -47,16 +55,16 @@
 												<i class="fa fa-star"></i>
 											</div> -->
 											<p class="product-price">
-												<!-- <span class="main-price discounted">$71</span> -->
+												<span class="main-price starting-from">starting from</span>
 												<span class="discounted-price">${{ p.price }}</span>
 											</p>
 
 											<div class="hover-icons">
 												<ul>
-													<li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-													
-													<!-- <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-													<li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li> -->
+													<!-- <li><a href="#"  data-tooltip="Choose Size"><i class="fa fa-search" aria-hidden="true"></i></a></li> -->
+													<!-- <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li> -->
+													<li><a href="{{ p.get_absolute_url }}"  data-tooltip="Choose Size"><i class="icon ion-md-options"></i></a></li>
+													<!-- <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li> -->
 												</ul>
 											</div>
 										</div>
@@ -77,7 +85,8 @@
 									<!--=======  single product  =======-->
 									{% for p in towels %}
 									<div class="fl-product">
-										<div class="image sale-product">
+										<!-- <div class="image sale-product"> -->
+										<div class="image">
 											<a href="{{ p.get_absolute_url }}">
 												<img src="{{ p.image.url }}" class="img-fluid" alt="">
 												<img src="{{ p.image.url }}" class="img-fluid" alt="">
@@ -92,12 +101,14 @@
 											
 											<p class="product-price">
 												<!-- <span class="main-price discounted">$71</span> -->
+												<span class="main-price starting-from">starting from</span>
 												<span class="discounted-price">${{ p.price }}</span>
 											</p>
 
 											<div class="hover-icons">
 												<ul>
-													<li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
+													<li><a href="{{ p.get_absolute_url }}"  data-tooltip="Choose Size"><i class="icon ion-md-options"></i></a></li>
+													<!-- <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li> -->
 													<!-- <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
 													<li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li> -->
 												</ul>

@@ -1,8 +1,7 @@
 from django.contrib import admin
-
 from .models import Product, Category
 from django.utils.safestring import mark_safe
-from products.models import ProductImage
+from products.models import ProductImage, Variation
 
 
 
@@ -11,9 +10,13 @@ class ImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
 
-# class VariationInline(admin.TabularInline):
-#     model = Variation
+# class ProductAttributeInline(admin.TabularInline):
+#     model = ProductAttribute
 #     extra = 1
+
+class VariationInline(admin.TabularInline):
+    model = Variation
+    extra = 1
 
 @admin.register(Category) 
 class CategoryAdmin(admin.ModelAdmin): 
@@ -29,9 +32,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['price', 'available',] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
-    inlines = [ImageInline, 
+    inlines = [ImageInline, VariationInline
     ]
 
-# admin.site.register(AttributeBase)
-# admin.site.register(Attribute)
-# admin.site.register(ProductAttribute)
+#admin.site.register(AttributeBase)
+#admin.site.register(Attribute)
+#admin.site.register(ProductAttribute)

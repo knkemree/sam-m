@@ -127,20 +127,26 @@
                         <hr>
                         {% if request.user.is_authenticated %}<a><strong>Availability: </strong>{% if product.stock >= 5 %} In Stock{% else %} Out of Stock{% endif %}</a>{% endif %}
                         
-                        <p class="product-description mb-20">{{ product.description|truncatechars:250 }}</p>
-                        {% if request.user.is_authenticated %}
+                        <p class="product-description mb-20">{{ product.description|safe }}</p>
                         
-                    
 
                         {% if product.variation_set.sizes %}
+                        <form id ="variation" action="{% url "cart:cart_add" product.id %}" method="post" >
                         <div class="size mb-20">
-                            <span class="title"> Size:</span> <br>
-                            <select name="size" class="nice-select">
+                            <!-- <span class="title"> Size:</span> <br> -->
+                            <label for="id_size">Size:</label>
+                            <select id="id_size"  onchange='this.form.submit();'>
+                                <option value="-----">-----</option>
                                 {% for item in product.variation_set.sizes %}
                                 <option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
                                 {% endfor %}
                             </select>
+                            <!-- <input id="variation_button" type="submit" value="get" style="display: none;"> -->
+                            <button id="variation_button" type="submit" style="display: none;">get</button>
+                            {% csrf_token %}
                         </div>
+                        </form>
+                        
                         {% endif %}
 
                         {% if product.variation_set.colors %}
@@ -167,14 +173,14 @@
                     
 
 
-
+                        {% if request.user.is_authenticated %}
                         <div class="cart-buttons mb-20">
                           <form action="{% url "cart:cart_add" product.id %}" method="post">
                             
                             {{ cart_product_form.as_p }}
                             {% csrf_token %}
                             <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
-                            <button type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                            <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
                           </form>
                             <!-- <span class="quantity-title mr-10">Quantity: </span>
                             <div class="pro-qty mb-20">
@@ -193,10 +199,12 @@
                         </div>
                         {% endif %}
 
-                        <!-- <p class="wishlist-link mb-20 pb-15">
-                            <a href="#"> <i class="icon ion-md-heart-empty"></i> Browse Wishlist</a>
-                            <a href="#"> <i class="icon ion-md-options"></i> Compare</a>
-                        </p>  -->
+                        {% if user.is_superuser is True %}    
+                        <p class="wishlist-link mb-20 pb-15">
+                            <!-- <a href="#"> <i class="icon ion-md-heart-empty"></i> Browse Wishlist</a> -->
+                            <a href="/admin/products/product/{{product.id}}/change/"> <i class="icon ion-md-options"></i> Edit</a>
+                        </p> 
+                        {% endif %}
 
                         <!-- <div class="category-list-container mb-20">
                             <span>Categories: </span>
@@ -671,6 +679,68 @@
     </div> -->
     
     <!--=====  End of related product slider  ======-->
+
+    <script type="text/javascript">
+        // Adres formunu doldurup place order'i tikladiginda eger delivery method secilmediyse alert vermesi icin
+        // eger empty_label="----Select----" ise bu kod calisacak aksi takdirde bozulacak. empty_label'i degistirirken dikkatli ol
+        $('#addtocart_button').click(function(e){
+           if($("#id_size option:selected").text() == '-----'){
+              alert('Please choose size.');
+              e.preventDefault();
+           }
+        });
+        
+        window.onload = function()
+          {
+            
+              var cookieVal = readCookie('selectBoxValue');
+              console.log(cookieVal);
+              if(cookieVal!=null)
+              {
+                  document.getElementById('id_size').selectedIndex = cookieVal;
+                  eraseCookie('selectBoxValue')
+              }
+              
+          }
+          
+          
+          
+          function changeSelectedvalue()
+          {
+              var mySelectedIndex = document.getElementById('id_size').selectedIndex;
+              createCookie("selectBoxValue",mySelectedIndex,1000);
+              
+          }
+          
+          
+          
+          function createCookie(name,value,days) {
+              if (days) {
+                  var date = new Date();
+                  date.setTime(date.getTime()+(days*24*60*60*1000));
+                  var expires = "; expires="+date.toGMTString();
+              }
+              else var expires = "";
+              document.cookie = name+"="+value+expires+"; path=/";
+          }
+          
+          function readCookie(name) {
+              var nameEQ = name + "=";
+              var ca = document.cookie.split(';');
+              for(var i=0;i < ca.length;i++) {
+                  var c = ca[i];
+                  while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                  if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+              }
+              return null;
+          }
+          
+          function eraseCookie(name) {
+              createCookie(name,"",-1);
+          }
+            
+        
+        </script>
 {% endblock %}
 
 <div class="product-detail">

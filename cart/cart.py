@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from products.models import Product
+from products.models import Product, Variation
 from coupons.models import Coupon, Campaign
 from Delivery.models import Delivery_methods
 
@@ -21,22 +21,30 @@ class Cart(object):
         
         self.campaign_id = self.session.get('campaign_id4')
         self.delivery_id = self.session.get('delivery_id')
+        self.variation_id = self.session.get('variation_id')
         
         
         
 
-    def add(self, product, quantity=1, override_quantity=False):
+    def add(self, variation_id, product, quantity=1, override_quantity=False):
         """
         Add a product to the cart or update its quantity.
+        variation_id daha once yoktu ben ekledim.
+    
 
         """
+
+
+        variation_price = Variation.objects.get(id=variation_id).price
+        variation_cost = Variation.objects.get(id=variation_id).cost
         
-        
-        product_id = str(product.id)
+        #varianttan once urun cost ve price'i product.price ve product.cost yazilarak aliniyordu.
+        #product_id = str(product.id)
+        product_id = str(variation_id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
-                                     'price': str(product.price),
-                                     'cost': str(product.cost),
+                                     'price': str(variation_price),
+                                     'cost': str(variation_cost),
                                      }
 
         
@@ -66,7 +74,7 @@ class Cart(object):
         product_ids = self.cart.keys()
         
         # get the product objects and add them to the cart
-        products = Product.objects.filter(id__in=product_ids)
+        products = Variation.objects.filter(id__in=product_ids)
         
         cart = self.cart.copy()
         

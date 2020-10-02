@@ -3729,7 +3729,7 @@ a#more-btn {
       position: relative; }
       .fl-product .image a img {
         width: 100%;
-        height: 300px; }
+        height: auto; }
         .fl-product .image a img:first-child {
           visibility: visible;
           opacity: 1; }
@@ -3790,6 +3790,10 @@ a#more-btn {
         .fl-product .content p.product-price span.main-price.discounted {
           color: #a4a4a4;
           text-decoration: line-through;
+          font-weight: 400; }
+        .fl-product .content p.product-price span.main-price.starting-from {
+          color: #a4a4a4;
+          font-size: 60%;
           font-weight: 400; }
     .fl-product .content .hover-icons {
       position: absolute;

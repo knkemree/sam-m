@@ -185,8 +185,8 @@
                                 <!--=======  view mode  =======-->
                                 
                                 <div class="view-mode-icons mb-xs-10">
-                                    <a href="#" data-target="grid"><i class="icon ion-md-apps"></i></a>
-                                    <a class="active" href="#" data-target="list"><i class="icon ion-ios-list"></i></a>
+                                    <a class="active" href="#" data-target="grid"><i class="icon ion-md-apps"></i></a>
+                                    <a  href="#" data-target="list"><i class="icon ion-ios-list"></i></a>
                                 </div>
                                 
                                 <!--=======  End of view mode  =======-->
@@ -229,12 +229,22 @@
                             <!--=======  single product  =======-->
                             
                             <div class="fl-product shop-grid-view-product">
-                                <div class="image">
+                                <!-- class="image" -->
+                                <div style="width: 200px; 
+                                            height: 200px;
+                                            /*background-color: red;*/
+                                            /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+                                            background-repeat: no-repeat;
+                                            background-size: contain;
+                                            background-position: center;
+                                            margin: 0 auto;" > 
+                                            <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                     <a href="{{ product.get_absolute_url }}">
                                         
                                         <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        
                                     </a>
+                                    
                                     <!-- wishlist icon -->
                                     <!-- <span class="wishlist-icon">
                                             <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
@@ -245,22 +255,23 @@
                                     
                                     
                                     {% if request.user.is_authenticated %}
+                                    
                                     <p class="product-price">
-                                        <!-- <span class="main-price discounted">$71</span> -->
+                                        <span class="main-price starting-from">starting from</span>
                                         <span class="discounted-price">${{ product.price }}</span>
                                     </p>
                                     <p>
                                         
                                         
                                         <div class="cart-buttons mb-20">
-                                            
-                                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                            <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button>
+                                                <!-- <form action="{% url "cart:cart_add" product.id %}" method="post">
                                                 {{ cart_product_form.as_p }}
-                                                {% csrf_token %}
+                                                {% csrf_token %} -->
                                                 <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
-                                                <button type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                                                <!-- <button type="submit" class="add-to-cart-butonu" >Add to Cart</button> -->
                                                 
-                                                </form>
+                                                <!-- </form> -->
                 
                                         </div>
                                     
@@ -304,7 +315,14 @@
                             <!--=======  list view product  =======-->
                             
                             <div class="fl-product shop-list-view-product">
-                                <div class="image">
+                                <div style="width: 200px; 
+                                height: 200px;
+                                /*background-color: red;*/
+                                /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+                                background-repeat: no-repeat;
+                                background-size: contain;
+                                background-position: center;
+                                margin: 0 auto;">
                                     <a href="{{ product.get_absolute_url }}">
                                         <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                         <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
@@ -321,17 +339,23 @@
                                     </div> -->
                                     <p class="product-price">
                                         <!-- <span class="main-price discounted">$71</span> -->
+                                        <span class="main-price starting-from">starting from</span>
                                         <span class="discounted-price">${{ product.price }}</span>
                                     </p>
 
                                     <p class="product-description">{{ product.description|truncatechars:200 }}</p>
+                                    
+                        
 
                                     <div class="hover-icons">
                                         <ul>
-                                            <li><a href="#"  data-tooltip="Add to Cart">Add to cart</a></li>
-                                            <!-- <li><a href="#" ><i class="icon ion-md-heart-empty"></i></a></li>
-                                            <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li> -->
+                                            <li><a href="{{ product.get_absolute_url }}"  data-tooltip="Choose Size">Choose Size</a></li>
+                                            {% if user.is_superuser is True %}
+                                            <li><a href="/admin/products/product/{{product.id}}/change/"  data-tooltip="Edit"><i class="icon ion-md-options"></i></a></li>
+                                            {% endif %}
                                         </ul>
+                                        
+                            
                                     </div>
                                 </div>
                             </div>
