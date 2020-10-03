@@ -9,14 +9,7 @@ from Delivery.models import Delivery_methods
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
-def variant(request, product_id):
-    if request.method == "POST":
-        print("cart_add views.py")
-        print(request.POST)
-        for item in request.POST:
-            key = item
-            val = request.POST[key]
-            print(key, val)
+
 
 
 @require_POST
@@ -30,13 +23,25 @@ def cart_add(request, product_id):
         for item in request.POST:
             key = item
             val = request.POST[key]
-            try:
-                variation = Variation.objects.get(product=product, category__iexact=key, title__iexact=val)
-                request.session["variation_id"] = variation.id
-            except:
-                pass
+            print("bos oldugunda val nedir")
+            print(val)
+            if val == "-----":
+                try:
+                    pass
+                    del request.session["variation_id"]
+                except:
+                    pass
+            else:
+                try:
+                    variation = Variation.objects.get(product=product, category__iexact=key, title__iexact=val)
+                    print("variation session numarasi bos olugunde nedir")
 
-    print("variation disarida")
+                    request.session["variation_id"] = variation.id
+                    print(request.session.get("variation_id"))
+                except:
+                    pass
+
+    
     
 
     form = CartAddProductForm(request.POST)
@@ -48,6 +53,9 @@ def cart_add(request, product_id):
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
         messages.success(request, "Cart updated...")
+        # del request.session["variation_id"]
+    
+
     
     campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
     request.session["campaign_id4"]=campaign.id
@@ -85,9 +93,11 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     
     cart = Cart(request)
-
+    print("cart_detail")
+    print(cart)
     #update burdan oluyor
     for item in cart:
+        print(item)
         item['update_quantity_form'] = CartAddProductForm(initial={
                             'quantity': item['quantity'],
                             'override': True})

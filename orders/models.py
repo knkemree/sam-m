@@ -1,5 +1,5 @@
 from django.db import models
-from products.models import Product
+from products.models import Product, Variation
 from account.models import Customers
 from decimal import Decimal
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -56,7 +56,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order,
                               related_name='items',
                               on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,
+    product = models.ForeignKey(Variation,
                                 related_name='order_items',
                                 on_delete=models.CASCADE)
     

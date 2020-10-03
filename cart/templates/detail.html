@@ -368,32 +368,34 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
       </tr>
     </thead>
     <tbody>
-      {% for item in cart %}
-        {% with product=item.product %}
+      
+      {% for rs in cart %}
+      
+					{% with variation=rs.product %}
           <tr>
             <td>
-              <a href="{{ product.get_absolute_url }}">
-                <img src="{% if product.image %}{{ product.image.url }}
-                {% else %}{% static "img/no_image.png" %}{% endif %}">
+              <a>{{ rs }}</a>
+              <a href="{{ variation.product.get_absolute_url }}">
+                <img src="{{ variation.image.image.url }}">
               </a>
             </td>
-            <td>{{ product.name }}</td>
+            <td>{{ variation.sku }}</td>
             <td>
-                <form id ="update_form" action="{% url "cart:cart_add" product.id %}" method="post">
-                  {{ item.update_quantity_form.quantity }}
-                  {{ item.update_quantity_form.override }}
+                <form id ="update_form" action="{% url "cart:cart_add" variation.id %}" method="post">
+                  {{ rs.update_quantity_form.quantity }}
+                  {{ rs.update_quantity_form.override }}
                   <input id="update_button" type="submit" value="Update" name="update">
                   {% csrf_token %}
                 </form>
               </td>
             <td>
-              <form action="{% url "cart:cart_remove" product.id %}" method="post">
+              <form action="{% url "cart:cart_remove" variation.id %}" method="post">
                 <input type="submit" value="Remove" id="remove">
                 {% csrf_token %}
               </form>
             </td>
-            <td class="num">${{ item.price }}</td>
-            <td class="num">${{ item.total_price }}</td>
+            <td class="num">${{ variation.price }}</td>
+            <td class="num">${{ rs.total_price }}</td>
           </tr>
         {% endwith %}
       {% endfor %}

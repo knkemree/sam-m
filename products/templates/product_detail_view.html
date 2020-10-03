@@ -121,24 +121,33 @@
                         <p class="d-inline-block ml-10 review-link"><a href="#">(1 customer review)</a></p> -->
 
                         <h2 class="product-price mb-0"> 
-                            <!-- <span class="main-price discounted">$12.90</span>  -->
+                            <!-- <span class="main-price discounted">$12.90</span> -->
+                            
+                            {% if variant %}
+                            
+                            <span class="discounted-price">${{ variant.price }}</span>
+                            {% else %}
+                            <span class="main-price discounted">starting from</span>
                             <span class="discounted-price"> ${{ product.price }}</span>
+                            {% endif %}
                         </h2>
                         <hr>
-                        {% if request.user.is_authenticated %}<a><strong>Availability: </strong>{% if product.stock >= 5 %} In Stock{% else %} Out of Stock{% endif %}</a>{% endif %}
+                        {% if request.user.is_authenticated %}<a><strong>Availability: </strong>{% if product.stock >= 5 %} {{ product.stock }}{% else %} Out of Stock{% endif %}</a>{% endif %}
+                        
                         
                         <p class="product-description mb-20">{{ product.description|safe }}</p>
                         
-
+                        {% if request.user.is_authenticated %}
                         {% if product.variation_set.sizes %}
                         <form id ="variation" action="{% url "cart:cart_add" product.id %}" method="post" >
                         <div class="size mb-20">
                             <!-- <span class="title"> Size:</span> <br> -->
+                            {% if request.user.is_authenticated %}{% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}{% endif %}
                             <label for="id_size">Size:</label>
-                            <select id="id_size"  onchange='this.form.submit();'>
-                                <option value="-----">-----</option>
+                            <select name="size" id="id_size2"  onchange='changeSelectedvalue(); this.form.submit();'>
+                                <option value="-----" >-----</option>
                                 {% for item in product.variation_set.sizes %}
-                                <option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
+                                <option value="{{ item.title|lower }}" >{{ item.title|capfirst }} -->  ${{ item.price }}</option>
                                 {% endfor %}
                             </select>
                             <!-- <input id="variation_button" type="submit" value="get" style="display: none;"> -->
@@ -146,8 +155,9 @@
                             {% csrf_token %}
                         </div>
                         </form>
-                        
                         {% endif %}
+                        {% endif %}
+
 
                         {% if product.variation_set.colors %}
                         <div class="size mb-20">
@@ -684,7 +694,7 @@
         // Adres formunu doldurup place order'i tikladiginda eger delivery method secilmediyse alert vermesi icin
         // eger empty_label="----Select----" ise bu kod calisacak aksi takdirde bozulacak. empty_label'i degistirirken dikkatli ol
         $('#addtocart_button').click(function(e){
-           if($("#id_size option:selected").text() == '-----'){
+           if($("#id_size2 option:selected").text() == '-----'){
               alert('Please choose size.');
               e.preventDefault();
            }
@@ -697,7 +707,7 @@
               console.log(cookieVal);
               if(cookieVal!=null)
               {
-                  document.getElementById('id_size').selectedIndex = cookieVal;
+                  document.getElementById('id_size2').selectedIndex = cookieVal;
                   eraseCookie('selectBoxValue')
               }
               
@@ -707,7 +717,7 @@
           
           function changeSelectedvalue()
           {
-              var mySelectedIndex = document.getElementById('id_size').selectedIndex;
+              var mySelectedIndex = document.getElementById('id_size2').selectedIndex;
               createCookie("selectBoxValue",mySelectedIndex,1000);
               
           }

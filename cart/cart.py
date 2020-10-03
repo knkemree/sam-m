@@ -75,10 +75,12 @@ class Cart(object):
         
         # get the product objects and add them to the cart
         products = Variation.objects.filter(id__in=product_ids)
-        
+        print("iter")
+        print(products)
         cart = self.cart.copy()
         
         for product in products:
+            print(product)
             cart[str(product.id)]['product'] = product
         
         

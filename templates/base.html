@@ -290,16 +290,17 @@
 							<div class="cart-floating-box hidden" id="cart-floating-box">
 								<div class="cart-items">
 									{% for rs in cart %}
-											{% with product=rs.product %}
+									{{ rs }}
+											{% with variation=rs.product %}
 									<div class="cart-float-single-item d-flex">
-										<span onclick="window.location.href = '{% url 'cart:cart_remove' product.id %}';" class="remove-item" id="remove-item"><a><i class="icon ion-md-close"></i></a></span>
+										<span onclick="window.location.href = '{% url 'cart:cart_remove' variation.id %}';" class="remove-item" id="remove-item"><a><i class="icon ion-md-close"></i></a></span>
 										<div class="cart-float-single-item-image">
-											<a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" class="img-fluid" alt=""></a>
+											<a href="{{ variation.product.get_absolute_url }}"><img src="{{ variation.image.image.url }}" class="img-fluid" alt=""></a>
 										</div>
 										<div class="cart-float-single-item-desc">
-											<p class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name }} </a></p>
+											<p class="product-title"> <a href="{{ variation.product.get_absolute_url }}">{{ variation.sku }} </a></p>
 											<p class="quantity"> Qty: {{ rs.quantity }}</p>
-											<p class="price">${{ rs.price }}</p>
+											<p class="price">${{ variation.price }}</p>
 										</div>
 									</div>
 									{% endwith %}
@@ -614,8 +615,11 @@
 						<!--=======  footer copyright text  =======-->
 						
 						<div class="footer-copyright-text">
-							<p>Copyright &copy; 2020 <a href="#">SAM&M Trade</a>, All Rights Reserved.</p>
+							<p>Copyright &copy; <span id="year"></span> <a href="#">SAM&M Trade</a>, All Rights Reserved.</p>
 						</div>
+						<script>
+							document.getElementById("year").innerHTML = new Date().getFullYear();
+						</script>
 						
 						<!--=======  End of footer copyright text  =======-->
 					</div>
