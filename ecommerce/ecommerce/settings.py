@@ -16,9 +16,10 @@ import braintree
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-
-
+BASE_DIR1 =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
+BASE_DIR =  Path(__file__).resolve(strict=True).parent
+print("base_dir", BASE_DIR )
+print("base_dir1", BASE_DIR1 )
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -26,7 +27,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -101,12 +102,12 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -165,7 +166,7 @@ PHONENUMBER_DB_FORMAT = 'NATIONAL'
 PHONENUMBER_DEFAULT_REGION = 'US'
 
 
-ADMINS = (('EMRE','konakziyaemre@gmail.com'),)
+#ADMINS = (('EMRE','konakziyaemre@gmail.com'),)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'emre@samnmtrade.com'
