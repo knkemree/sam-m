@@ -1,11 +1,11 @@
-from celery import task, shared_task
+from celery import shared_task
 from django.core.mail import send_mail, mail_admins
 from django.template import loader
 from django.conf import settings
 from .models import Order, OrderItem
 
 
-@task
+@shared_task
 def order_created(order_id, html_message):
     """
     Task to send an e-mail notification when an order is
@@ -20,7 +20,7 @@ def order_created(order_id, html_message):
                         html_message=html_message)
     return mail_sent
 
-@task
+@shared_task
 def inform_admins(order_id, html_message):
     order = Order.objects.get(id=order_id)
     subject = "New Order - SAM&M Trade"
@@ -34,11 +34,11 @@ def inform_admins(order_id, html_message):
 
 
 
-@task(name="sum_two_numbers")
+@shared_task(name="sum_two_numbers")
 def add(x, y):
     return x + y
 
 
-@task(name="sum_list_numbers")
+@shared_task(name="sum_list_numbers")
 def xsum(numbers):
     return sum(numbers)
