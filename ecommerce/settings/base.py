@@ -120,10 +120,12 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'postgres',
-        'USER': 'postgres',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'samnmDB',
+        'USER': 'emre',
         'PASSWORD': 'Ziy@emre1992',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

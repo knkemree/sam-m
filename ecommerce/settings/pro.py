@@ -33,7 +33,7 @@ SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 SITE_ID = 1
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['msrugs.com', '165.22.33.200']
 
 AUTH_USER_MODEL = 'account.Customers'
 
@@ -120,10 +120,12 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'postgres',
-        'USER': 'postgres',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'samnmDB',
+        'USER': 'emre',
         'PASSWORD': 'Ziy@emre1992',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
