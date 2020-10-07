@@ -33,7 +33,7 @@ SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 SITE_ID = 1
-ALLOWED_HOSTS = ['msrugs.com', '165.22.33.200', 'www.msrugs.com']
+ALLOWED_HOSTS = ['localhost','msrugs.com', '165.22.33.200', 'www.msrugs.com']
 
 AUTH_USER_MODEL = 'account.Customers'
 
