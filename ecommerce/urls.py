@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import home_page, about_page, contact_page, dashboard
+from ecommerce.views import login_form
 
 
 urlpatterns = [
@@ -26,7 +27,8 @@ urlpatterns = [
     path("", home_page),
     path("about/", about_page),
     path("contact/", contact_page, name='contact_page'),
-    path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+    #path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+    path('login/', login_form, name="login"),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('password_change/', auth_views.PasswordChangeView.as_view(),name='password_change'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
