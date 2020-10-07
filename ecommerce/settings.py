@@ -33,7 +33,7 @@ SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 SITE_ID = 1
-ALLOWED_HOSTS = ['www.msrugs.com', '165.22.33.200']
+ALLOWED_HOSTS = ['msrugs.com', '165.22.33.200']
 
 AUTH_USER_MODEL = 'account.Customers'
 
@@ -219,12 +219,12 @@ BRAINTREE_CONF = braintree.Configuration(
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 #SESSION_SAVE_EVERY_REQUEST = False
 
-CORS_REPLACE_HTTPS_REFERER      = True
-HOST_SCHEME                     = "https://"
-SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT             = True
-SESSION_COOKIE_SECURE           = True
-CSRF_COOKIE_SECURE              = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
-SECURE_HSTS_SECONDS             = 1000000
-SECURE_FRAME_DENY               = True
+# CORS_REPLACE_HTTPS_REFERER      = True
+# HOST_SCHEME                     = "https://"
+# SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT             = True
+# SESSION_COOKIE_SECURE           = True
+# CSRF_COOKIE_SECURE              = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
+# SECURE_HSTS_SECONDS             = 1000000
+# SECURE_FRAME_DENY               = True
