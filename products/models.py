@@ -8,6 +8,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     image = models.ImageField(upload_to='categories/%Y/%m/%d', blank=True, default= 'img/no_image.png', help_text="System may give an error if category the image does not exist")
     parent = models.ForeignKey('self',blank=True, null=True ,related_name='children', on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
     #parent_slug = models.SlugField(max_length=200,)
 
     class Meta: 
