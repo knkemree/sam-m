@@ -18,7 +18,7 @@ import braintree
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
-#BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent.parent
+BASE_DIR4 =  Path(__file__).resolve(strict=True).parent.parent.parent
 
 BASE_DIR = BASE_DIR3 / 'settings'
 
@@ -89,7 +89,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR4 / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
