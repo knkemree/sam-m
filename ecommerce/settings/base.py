@@ -31,9 +31,10 @@ SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 #SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
+DEBUG = True
+
 SITE_ID = 1
-ALLOWED_HOSTS = ['localhost','msrugs.com', '165.22.33.200', 'www.msrugs.com', '127.0.0.1']
+ALLOWED_HOSTS = ['165.22.33.200','msrugs.com','www.msrugs.com','127.0.0.1','127.0.0.0']
 
 AUTH_USER_MODEL = 'account.Customers'
 
@@ -169,15 +170,15 @@ USE_TZ = True
 
 
 STATICFILES_DIRS = [
-    BASE_DIR1 / "static_my_proj",
+    BASE_DIR3 / "static_my_proj",
 ]
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR1, 'static_cdn', 'static_root')
+STATIC_ROOT = os.path.join(BASE_DIR3, 'static_cdn', 'static_root')
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR1, 'static_cdn', 'media_root')
+MEDIA_ROOT = os.path.join(BASE_DIR3, 'static_cdn', 'media_root')
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = 'dashboard'
@@ -188,7 +189,7 @@ PHONENUMBER_DB_FORMAT = 'NATIONAL'
 PHONENUMBER_DEFAULT_REGION = 'US'
 
 
-#ADMINS = (('EMRE','konakziyaemre@gmail.com'),)
+ADMINS = (('EMRE','konakziyaemre@gmail.com'),)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'emre@samnmtrade.com'
