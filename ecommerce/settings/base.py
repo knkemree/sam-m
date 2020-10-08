@@ -31,9 +31,9 @@ SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 #SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#DEBUG = False
 SITE_ID = 1
-#ALLOWED_HOSTS = ['localhost','msrugs.com', '165.22.33.200', 'www.msrugs.com', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost','msrugs.com', '165.22.33.200', 'www.msrugs.com', '127.0.0.1']
 
 AUTH_USER_MODEL = 'account.Customers'
 
@@ -224,7 +224,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # CORS_REPLACE_HTTPS_REFERER      = True
 # HOST_SCHEME                     = "https://"
 # SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT             = False
+#SECURE_SSL_REDIRECT             = False
 # SESSION_COOKIE_SECURE           = True
 # CSRF_COOKIE_SECURE              = True
 # SECURE_HSTS_INCLUDE_SUBDOMAINS  = True

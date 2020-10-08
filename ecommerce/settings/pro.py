@@ -6,7 +6,6 @@ ADMINS = (
     ('EMRE','konakziyaemre@gmail.com'),
     )
 
-ALLOWED_HOSTS = ['msrugs.com', '165.22.33.200', 'www.msrugs.com','127.0.0.1','127.0.0.0']
 
 DATABASES = {
     'default': {
