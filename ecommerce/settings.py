@@ -17,10 +17,10 @@ import braintree
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR1 =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
-BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent.parent
+BASE_DIR =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
+#BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent.parent
 
-BASE_DIR = BASE_DIR1 / 'settings'
+#BASE_DIR = BASE_DIR1 / 'settings'
 
 
 # Quick-start development settings - unsuitable for production
@@ -89,7 +89,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR3 / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,16 +120,16 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # }
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'samnmdb',
-#         'USER': 'emre',
-#         'PASSWORD': 'Ziy@emre1992',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'samnmdb',
+        'USER': 'emre',
+        'PASSWORD': 'Ziy@emre1992',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 
 # Password validation
@@ -170,15 +170,15 @@ USE_TZ = True
 
 
 STATICFILES_DIRS = [
-    BASE_DIR3 / "static_my_proj",
+    BASE_DIR / "static_my_proj",
 ]
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR3, 'static_cdn', 'static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'static_root')
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR3, 'static_cdn', 'media_root')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'media_root')
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = 'dashboard'
