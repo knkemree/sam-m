@@ -17,10 +17,10 @@ import braintree
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
+BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
 #BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent.parent
 
-#BASE_DIR = BASE_DIR1 / 'settings'
+BASE_DIR = BASE_DIR3 / 'settings'
 
 
 # Quick-start development settings - unsuitable for production
@@ -34,7 +34,7 @@ SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 DEBUG = True
 
 SITE_ID = 1
-ALLOWED_HOSTS = ['localhost','165.22.33.200','msrugs.com','www.msrugs.com','127.0.0.1:8000']
+ALLOWED_HOSTS = ['165.22.33.200','msrugs.com','www.msrugs.com']
 
 AUTH_USER_MODEL = 'account.Customers'
 
