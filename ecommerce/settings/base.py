@@ -34,7 +34,7 @@ SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
 DEBUG = True
 
 SITE_ID = 1
-ALLOWED_HOSTS = ['165.22.33.200','msrugs.com','www.msrugs.com','127.0.0.1','127.0.0.0']
+ALLOWED_HOSTS = ['localhost','165.22.33.200','msrugs.com','www.msrugs.com']
 
 AUTH_USER_MODEL = 'account.Customers'
 
