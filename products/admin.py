@@ -27,9 +27,9 @@ class CategoryAdmin(admin.ModelAdmin):
     
 @admin.register(Product) 
 class ProductAdmin(admin.ModelAdmin): 
-    list_display = ['name', 'category', 'active', 'created', 'updated'] 
-    list_filter = ['category','active', 'created', 'updated'] 
-    list_editable = [ 'active',] 
+    list_display = ['name', 'category', 'available', 'created', 'updated'] 
+    list_filter = ['category','available', 'created', 'updated'] 
+    list_editable = [ 'available',] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
     inlines = [ImageInline, VariationInline
