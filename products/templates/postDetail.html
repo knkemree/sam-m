@@ -1,0 +1,6 @@
+<ul class="breadcrumbs">
+    <li><a href="/">Home</a></li>
+        {% for slug,name in breadcrumbs %}
+            <li><a href="/category/{{ slug }}">{{ name }}</a></li>
+        {% endfor %}
+  </ul>

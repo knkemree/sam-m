@@ -19,10 +19,13 @@
 					<div class="breadcrumb-container">
 						<nav>
 							<ul>
-								<li class="parent-page"><a href="/">Home</a></li>
-								<li class="parent-page"><a href="#">{{ product.category.parent }}</a></li>
+                                <li class="parent-page"><a href="/">Home</a></li>
+                                {% if product.category.parent %}
+                                <li class="parent-page"><a href="{{ product.category.parent.get_absolute_url }}">{{ product.category.parent }}</a></li>
+                                {% endif %}
 								<li><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
-							</ul>
+                            </ul>
+                            
 						</nav>
 					</div>
 					

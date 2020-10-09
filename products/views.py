@@ -6,25 +6,91 @@ from django.contrib.sessions.models import Session
 from cart.forms import CartAddProductForm
 from products.models import ProductImage, Variation
 
+# def show_category(request, hierarchy= None):
+#     print("hierarchy")
+#     print(hierarchy)
+#     category_slug = hierarchy.split('/')
+#     print("category_slug")
+#     print(category_slug)
+#     category_queryset = list(Category2.objects.filter(active=True))
+#     all_slugs = [ x.slug for x in category_queryset ]
+#     parent = None
 
-def product_list_view(request, category_slug=None):
+#     for slug in category_slug:
+#         if slug in all_slugs:
+#             parent = get_object_or_404(Category2,slug=slug,parent=parent)
+#             #parent = Category2.objects.filter(slug__in=category_slug, parent=None).first()
+#         else:
+#             instance = get_object_or_404(Product, slug=slug)
+#             breadcrumbs_link = instance.get_cat_list()
+#             category_name = [' '.join(i.split('/')[-1].split('-')) for i in breadcrumbs_link]
+#             breadcrumbs = zip(breadcrumbs_link, category_name)
+#             return render(request, "postDetail.html", {'instance':instance,'breadcrumbs':breadcrumbs})
+
+#     return render(request,"categories.html",{'post_set':parent.product_set.all(),'sub_categories':parent.children.all()})
     
+def product_list_view(request, category_slug=None):
+
+    if category_slug:
+        try:
+            all_categories = []
+            child_category = []
+            parent_categories = Category.objects.filter(active=True, parent=None)
+            parent_category = Category.objects.get(slug=category_slug, parent=None)
+            parent_category_product_set = []
+            child_categories = parent_category.children.all()
+            
+            if child_categories:
+                for child_category in child_categories:
+                    
+                    child_category_product_set = Product.objects.filter(available=True, category=child_category)
+                    # try:
+                    #     products_without_Child_category_but_has_parent_category = Product.objects.filter(available=True, category=parent_category)
+                    #     parent_category_product_set = products_without_Child_category_but_has_parent_category
+                    #     print("parentsiz urunler")
+                    #     print(products_without_Child_category_but_has_parent_category)
+                    # except:
+                    #     pass
+                    # parent_category_product_set2 = Product.objects.filter(available=True, category__parent=parent_category)
+                    # print("oldu mu")
+                    # print(parent_category_product_set2)
+                    for single_product in child_category_product_set:
+                        print("single burda mi")
+                        print(single_product)
+                        parent_category_product_set.append(single_product)
+            else:
+                parent_category_product_set = Product.objects.filter(available=True, category=parent_category)
+                child_category_product_set = []
+            
+            print("asagida")
+            print(parent_category_product_set)
+        except:
+            all_categories = Category.objects.filter(active=True)
+
+            parent_category = []
+            parent_categories = Category.objects.filter(active=True, parent=None)
+            parent_category_product_set = []
+            
+            child_category = get_object_or_404(Category, slug=category_slug)
+            child_categories = []
+            child_category_product_set = Product.objects.filter(available=True, category=child_category )
+ 
     category = None
-    categories = Category.objects.all()
+    
+    categories = Category.objects.filter(active=True, parent=None)
     products = Product.objects.filter(available=True)
-    parent_cats = Category.objects.filter(parent__isnull=True)
-    area_rugs = Category.objects.filter(parent_id=18)
-    bed_sheets = Product.objects.filter(category_id=17)
-    towels = Product.objects.filter(category_id=19)
+    
     cart_product_form = CartAddProductForm()
     #gallery = ProductImage.objects.filter(product_id=id)
+
+    # if parent_category_slug:
+    #     parent_category = get_object_or_404(Category, slug=parent_category_slug, parent=parent)
+    #     parent_category.children.all()
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
-        #parent_cats_products =  products.filter(category__contains=category)
-        print("product_list_view")
-       # print(parent_cats_products)
+        
         
         object_list = Product.objects.filter(available=True, category=category)
         paginator = Paginator(object_list, 20) # 3 posts in each page
@@ -57,10 +123,17 @@ def product_list_view(request, category_slug=None):
                   {'category': category,
                    'categories': categories,
                    'products': products,
+                   'parent_category':parent_category,
+                   'parent_categories':parent_categories,
+                   'parent_category_product_set':parent_category_product_set,
+                   'child_category':child_category,
+                   'child_categories':child_categories,
+                   'child_category_product_set':child_category_product_set,
+                   'all_categories':all_categories,
+
+
                    'page': page,
-                   'area_rugs': area_rugs,
-                    'bed_sheets': bed_sheets,
-                    'towels':towels,
+                
                     'cart_product_form':cart_product_form,
                     
                     }

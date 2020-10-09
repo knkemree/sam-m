@@ -2,7 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-# Create your models here.
+# Create your models here.   
+
 class Category(models.Model): 
     name = models.CharField(max_length=200, db_index=True) 
     slug = models.SlugField(max_length=200, unique=True)
@@ -37,7 +38,7 @@ class Category(models.Model):
 
 
 class Product(models.Model): 
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE) 
+    category = models.ForeignKey(Category, on_delete=models.CASCADE) 
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True) 
@@ -64,7 +65,7 @@ class Product(models.Model):
                        args=[self.id, self.slug])
 
     def get_cat_list(self):
-        k = self.category # for now ignore this instance method
+        k = self.category2 # for now ignore this instance method
         
         breadcrumb = ["dummy"]
         while k is not None:
@@ -72,7 +73,7 @@ class Product(models.Model):
             k = k.parent
         for i in range(len(breadcrumb)-1):
             breadcrumb[i] = '/'.join(breadcrumb[-1:i-1:-1])
-        return breadcrumb[-1:0:-1]  
+        return breadcrumb[-1:0:-1]
 
     
 

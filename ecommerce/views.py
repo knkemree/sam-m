@@ -47,7 +47,13 @@ def login_form(request):
 
 def home_page(request):
     top_level_cats = Category.objects.filter(parent__isnull=True)
-    area_rugs = Category.objects.filter(parent_id=18)
+    
+    try:
+        area_rug = Category.objects.get(slug__contains="area-rugs")
+        area_rugs = Category.objects.filter(parent_id=area_rug.id)
+    except:
+        area_rugs = []
+    
     bed_sheets = Product.objects.filter(category_id=17)
     towels = Product.objects.filter(category_id=19)
     cart_product_form = CartAddProductForm()

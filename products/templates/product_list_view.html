@@ -18,10 +18,13 @@
 						<nav>
 							<ul>
                                 <li class="parent-page"><a href="/">Home</a></li>
-                                {% if category.parent %}
-                                <li><a href="#">{{ category.parent }}  ></a></li>
+                                {% if parent_category %}
+                                <li><a href="{{ parent_category.get_absolute_url }}">{{ parent_category.name }}  ></a></li>
+                                {% else %}
+                                <li><a href="{{ child_category.parent.get_absolute_url }}">{{ child_category.parent }}  ></a></li>
+                                <li><a href="{{ child_category.get_absolute_url }}">{{ child_category.name }}  ></a></li>
                                 {% endif %}
-								<li><a href="{{ category.get_absolute_url }}">{% if category %}{{ category.name }}{% else %}Products{% endif %}</a></li>
+								<!-- <li><a href="{{ category.get_absolute_url }}">{% if category %}{{ category.name }}{% else %}Products{% endif %}</a></li> -->
 							</ul>
 						</nav>
 					</div>
@@ -62,7 +65,9 @@
     
     <div class="shop-page-content mb-50">
         <div class="container">
+            
             <div class="row">
+                
                 <div class="col-lg-3 order-2 order-lg-1">
                     <!--=======  page sidebar   =======-->
                     
@@ -71,8 +76,7 @@
                         
                         <div class="single-sidebar">
                             <h3 class="sidebar-title">CATEGORIES</h3>
-
-                            <div class="category">
+                            <!-- <div class="category">
                                 <ul>
                                     {% for c in categories %}
                                     <li {% if category.slug == c.slug %}class="selected"
@@ -82,7 +86,46 @@
                                   {% endfor %}
                                     
                                 </ul>
+                            </div> -->
+
+                            <div class="category">
+                                
+                                <ul>
+                                    {% for p in parent_categories %}
+                                    <li>
+                                        <a href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+                                        
+                                        {% if p.name == parent_category.name %}
+                                            {% for single_child_category in child_categories %}
+                                                <li>      
+                                                    <small><a href="{{ single_child_category.get_absolute_url }}">-> {{ single_child_category.name }}</a></small>
+                                                </li>
+                                            {% endfor %}
+                                        {% else %}
+                                                
+                                                {% if p.slug == child_category.parent.slug %}
+                                                <li>
+
+                                                        {% for category in all_categories %}
+                                                        
+                                                            {% if category.parent_id == child_category.parent_id %}
+                                                            <li>
+                                                                <small><a href="{{ category.get_absolute_url }}"> -> {{ category.name }}</a></small>
+                                                            </li>
+                                                            {% endif %}
+                                                        
+                                                        {% endfor %}
+                                                </li>
+                                                {% endif %}
+    
+                                        {% endif %}
+                                    </li>
+                                    
+                                    {% endfor %}
+                                    
+                                </ul>
                             </div>
+
                         </div>
                         
                         <!--=======  End of single sidebar block  =======-->
@@ -195,25 +238,24 @@
                             <div class="col-lg-8 col-md-8 col-sm-12 d-flex flex-column flex-sm-row justify-content-between align-items-left align-items-sm-center">
                                 <!--=======  Sort by dropdown  =======-->
                                 
-                                <div class="sort-by-dropdown d-flex align-items-center mb-xs-10">
+                                <!-- <div class="sort-by-dropdown d-flex align-items-center mb-xs-10">
                                     <p class="mr-10 mb-0">Sort By: </p>
                                     <select name="sort-by" id="sort-by" class="nice-select">
                                         <option value="0">Sort By Newness</option>
                                         <option value="0">Sort By Price: Low to High</option>
                                         <option value="0">Sort By Price: High to Low</option>
                                     </select>
-                                </div>
+                                </div> -->
                                 
                                 <!--=======  End of Sort by dropdown  =======-->
 
-                                <p class="result-show-message">
+                                <!-- <p class="result-show-message">
                                     {% include "pagination.html" with page=products %}
-                                {% for c in categories %}
-                                  {% if not category.slug == c.slug %}
-                                  
-                                  {% endif %}
-                                {% endfor %}
-                                </p>
+                                        {% for c in categories %}
+                                            {% if not category.slug == c.slug %}
+                                            {% endif %}
+                                        {% endfor %}
+                                </p> -->
                             </div>
                         </div>
                     </div>
@@ -222,7 +264,8 @@
 
                     <!--=======  shop product display area  =======-->
                     <div class="shop-product-wrap grid row mb-30 no-gutters">
-                        {% for product in products %}
+                        {% if parent_category %}
+                        {% for product in parent_category_product_set %}
                         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                             <!--=======  grid view product  =======-->
                             
@@ -365,7 +408,151 @@
                             
                         </div>
                         {% endfor %}
+                        {% else %}
+                        {% for product in child_category_product_set %}
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <!--=======  grid view product  =======-->
+                            
+                            <!--=======  single product  =======-->
+                            
+                            <div class="fl-product shop-grid-view-product">
+                                <!-- class="image" -->
+                                <div style="width: 200px; 
+                                            height: 200px;
+                                            /*background-color: red;*/
+                                            /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+                                            background-repeat: no-repeat;
+                                            background-size: contain;
+                                            background-position: center;
+                                            margin: 0 auto;" > 
+                                            <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
+                                    <a href="{{ product.get_absolute_url }}">
+                                        
+                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        
+                                    </a>
+                                    
+                                    <!-- wishlist icon -->
+                                    <!-- <span class="wishlist-icon">
+                                            <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
+                                    </span> -->
+                                </div>
+                                <div class="content">
+                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
+                                    
+                                    
+                                    {% if request.user.is_authenticated %}
+                                    
+                                    <p class="product-price">
+                                        <span class="main-price starting-from">starting from</span>
+                                        <span class="discounted-price">${{ product.price }}</span>
+                                    </p>
+                                    <p>
+                                        
+                                        
+                                        <div class="cart-buttons mb-20">
+                                            <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button>
+                                                <!-- <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                                {{ cart_product_form.as_p }}
+                                                {% csrf_token %} -->
+                                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
+                                                <!-- <button type="submit" class="add-to-cart-butonu" >Add to Cart</button> -->
+                                                
+                                                <!-- </form> -->
+                
+                                        </div>
+                                    
+                                        {% else%}
+                                        <div class="rating">
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                        </div>
+                                        <div class="product-feature-details">
+                                            <div class="cart-buttons mb-20">
+                                                <div class="add-to-cart-btn d-block">
+                                                    <a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa fa-check-circle"> </i> Become A Dealer</a>
+                                                    
+                                                </div>
+                                            <small><p>Already Delaer? <a href="{% url 'login' %}">Login</a></p></small>
+                                            </div>
+                                            
+                                        </div>
+                                    {% endif %}
+
+                                    
+
+                                    <!-- <div class="hover-icons">
+                                        
+                                        <ul>
+                                            <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
+                                            <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
+                                            <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+                            </div>
+                            
+                            <!--=======  End of single product  =======-->
+
+                            <!--=======  End of grid view product  =======-->
+
+                            <!--=======  list view product  =======-->
+                            
+                            <div class="fl-product shop-list-view-product">
+                                <div style="width: 200px; 
+                                height: 200px;
+                                /*background-color: red;*/
+                                /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+                                background-repeat: no-repeat;
+                                background-size: contain;
+                                background-position: center;
+                                margin: 0 auto;">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
+                                    <!-- <div class="rating">
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div> -->
+                                    <p class="product-price">
+                                        <!-- <span class="main-price discounted">$71</span> -->
+                                        <span class="main-price starting-from">starting from</span>
+                                        <span class="discounted-price">${{ product.price }}</span>
+                                    </p>
+
+                                    <p class="product-description">{{ product.description|truncatechars:200 }}</p>
+                                    
                         
+
+                                    <div class="hover-icons">
+                                        <ul>
+                                            <li><a href="{{ product.get_absolute_url }}"  data-tooltip="Choose Size">Choose Size</a></li>
+                                            {% if user.is_superuser is True %}
+                                            <li><a href="/admin/products/product/{{product.id}}/change/"  data-tooltip="Edit"><i class="icon ion-md-options"></i></a></li>
+                                            {% endif %}
+                                        </ul>
+                                        
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--=======  End of list view product  =======-->
+                            
+                            
+                        </div>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                     
                     
