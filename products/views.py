@@ -43,15 +43,15 @@ def product_list_view(request, category_slug=None):
             if child_categories:
                 for child_category in child_categories:
                     
-                    child_category_product_set = Product.objects.filter(available=True, category=child_category)
+                    child_category_product_set = Product.objects.filter(active=True, category=child_category)
                     # try:
-                    #     products_without_Child_category_but_has_parent_category = Product.objects.filter(available=True, category=parent_category)
+                    #     products_without_Child_category_but_has_parent_category = Product.objects.filter(active=True, category=parent_category)
                     #     parent_category_product_set = products_without_Child_category_but_has_parent_category
                     #     print("parentsiz urunler")
                     #     print(products_without_Child_category_but_has_parent_category)
                     # except:
                     #     pass
-                    # parent_category_product_set2 = Product.objects.filter(available=True, category__parent=parent_category)
+                    # parent_category_product_set2 = Product.objects.filter(active=True, category__parent=parent_category)
                     # print("oldu mu")
                     # print(parent_category_product_set2)
                     for single_product in child_category_product_set:
@@ -59,7 +59,7 @@ def product_list_view(request, category_slug=None):
                         print(single_product)
                         parent_category_product_set.append(single_product)
             else:
-                parent_category_product_set = Product.objects.filter(available=True, category=parent_category)
+                parent_category_product_set = Product.objects.filter(active=True, category=parent_category)
                 child_category_product_set = []
             
             print("asagida")
@@ -73,12 +73,12 @@ def product_list_view(request, category_slug=None):
             
             child_category = get_object_or_404(Category, slug=category_slug)
             child_categories = []
-            child_category_product_set = Product.objects.filter(available=True, category=child_category )
+            child_category_product_set = Product.objects.filter(active=True, category=child_category )
  
     category = None
     
     categories = Category.objects.filter(active=True, parent=None)
-    products = Product.objects.filter(available=True)
+    products = Product.objects.filter(active=True)
     
     cart_product_form = CartAddProductForm()
     #gallery = ProductImage.objects.filter(product_id=id)
@@ -92,7 +92,7 @@ def product_list_view(request, category_slug=None):
         products = products.filter(category=category)
         
         
-        object_list = Product.objects.filter(available=True, category=category)
+        object_list = Product.objects.filter(active=True, category=category)
         paginator = Paginator(object_list, 20) # 3 posts in each page
         page = request.GET.get('page')
         try:
@@ -105,7 +105,7 @@ def product_list_view(request, category_slug=None):
             products = paginator.page(paginator.num_pages)
 
     else:
-        object_list = Product.objects.filter(available=True)
+        object_list = Product.objects.filter(active=True)
         paginator = Paginator(object_list, 20) # 3 posts in each page
         page = request.GET.get('page')
         try:
@@ -146,7 +146,7 @@ def product_detail_view(request, id, slug):
     product = get_object_or_404(Product,
                                 id=id,
                                 slug=slug,
-                                available=True)
+                                active=True)
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
     #sizes = Variation.objects.filter(product_id=id, category="size")

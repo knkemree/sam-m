@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django.db.models import Min
 
 # Create your models here.   
 
@@ -41,13 +42,13 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE) 
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
-    slug = models.SlugField(max_length=200, db_index=True) 
+    slug = models.SlugField(max_length=200, db_index=True, unique=True) 
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, default= 'img/no_image.png')
     description = models.TextField(blank=True) 
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True) 
-    cost = models.DecimalField(max_digits=10, decimal_places=2)
-    available = models.BooleanField(default=True) 
+    #price = models.DecimalField(max_digits=10, decimal_places=2)
+    #sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True) 
+    #cost = models.DecimalField(max_digits=10, decimal_places=2)
+    active = models.BooleanField(default=True) 
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True)
     stock = models.IntegerField(null=True, blank=True, default=0)
@@ -64,22 +65,15 @@ class Product(models.Model):
         return reverse('products:product_detail_view',
                        args=[self.id, self.slug])
 
-    def get_cat_list(self):
-        k = self.category2 # for now ignore this instance method
-        
-        breadcrumb = ["dummy"]
-        while k is not None:
-            breadcrumb.append(k.slug)
-            k = k.parent
-        for i in range(len(breadcrumb)-1):
-            breadcrumb[i] = '/'.join(breadcrumb[-1:i-1:-1])
-        return breadcrumb[-1:0:-1]
-
     
+
+    def get_lowest_price(self):
+        return self.variation_set.all().aggregate(Min('price'))
+        
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products/%Y/%m/%d',default= 'img/no_image.png')
+    image = models.ImageField(upload_to='products/%Y/%m/%d',default= 'img/no_image.png', blank=True, null=True)
     featured = models.BooleanField(default=True)
     thumbnail = models.BooleanField(default=True)
     create_at = models.DateTimeField(auto_now_add=True)
@@ -112,7 +106,7 @@ class Variation(models.Model):
     category = models.CharField(max_length=120, choices= VAR_CATEGORIES, default='size')
     title = models.CharField(max_length=120) 
     sku = models.CharField(max_length=60, blank=False) 
-    image = models.ForeignKey(ProductImage, on_delete=models.CASCADE)
+    image = models.ForeignKey(ProductImage, on_delete=models.CASCADE, blank=True, null=True, default= 'img/no_image.png' )
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
     cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -122,4 +116,6 @@ class Variation(models.Model):
 
     def __str__(self): 
         return self.sku
+
+    
 

@@ -130,8 +130,8 @@
                             
                             <span class="discounted-price">${{ variant.price }}</span>
                             {% else %}
-                            <span class="main-price discounted">starting from</span>
-                            <span class="discounted-price"> ${{ product.price }}</span>
+                            <span class="main-price discounted">starting at</span>
+                            <span class="discounted-price"> ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
                             {% endif %}
                         </h2>
                         <hr>

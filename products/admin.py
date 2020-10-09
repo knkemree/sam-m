@@ -8,7 +8,7 @@ from products.models import ProductImage, Variation
 # Register your models here.
 class ImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 1
+    extra = 0
 
 # class ProductAttributeInline(admin.TabularInline):
 #     model = ProductAttribute
@@ -16,7 +16,7 @@ class ImageInline(admin.TabularInline):
 
 class VariationInline(admin.TabularInline):
     model = Variation
-    extra = 1
+    extra = 0
 
 @admin.register(Category) 
 class CategoryAdmin(admin.ModelAdmin): 
@@ -27,9 +27,9 @@ class CategoryAdmin(admin.ModelAdmin):
     
 @admin.register(Product) 
 class ProductAdmin(admin.ModelAdmin): 
-    list_display = ['name', 'category', 'price', 'available', 'created', 'updated'] 
-    list_filter = ['category','available', 'created', 'updated'] 
-    list_editable = ['price', 'available',] 
+    list_display = ['name', 'category', 'active', 'created', 'updated'] 
+    list_filter = ['category','active', 'created', 'updated'] 
+    list_editable = [ 'active',] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
     inlines = [ImageInline, VariationInline

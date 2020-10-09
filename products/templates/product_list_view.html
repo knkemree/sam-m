@@ -300,8 +300,8 @@
                                     {% if request.user.is_authenticated %}
                                     
                                     <p class="product-price">
-                                        <span class="main-price starting-from">starting from</span>
-                                        <span class="discounted-price">${{ product.price }}</span>
+                                        <span class="main-price starting-from">starting at</span>
+                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
                                     </p>
                                     <p>
                                         
@@ -382,8 +382,8 @@
                                     </div> -->
                                     <p class="product-price">
                                         <!-- <span class="main-price discounted">$71</span> -->
-                                        <span class="main-price starting-from">starting from</span>
-                                        <span class="discounted-price">${{ product.price }}</span>
+                                        <span class="main-price starting-from">starting at</span>
+                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
                                     </p>
 
                                     <p class="product-description">{{ product.description|truncatechars:200 }}</p>
@@ -444,8 +444,8 @@
                                     {% if request.user.is_authenticated %}
                                     
                                     <p class="product-price">
-                                        <span class="main-price starting-from">starting from</span>
-                                        <span class="discounted-price">${{ product.price }}</span>
+                                        <span class="main-price starting-from">starting at</span>
+                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
                                     </p>
                                     <p>
                                         
@@ -526,8 +526,8 @@
                                     </div> -->
                                     <p class="product-price">
                                         <!-- <span class="main-price discounted">$71</span> -->
-                                        <span class="main-price starting-from">starting from</span>
-                                        <span class="discounted-price">${{ product.price }}</span>
+                                        <span class="main-price starting-from">starting at</span>
+                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
                                     </p>
 
                                     <p class="product-description">{{ product.description|truncatechars:200 }}</p>
