@@ -54,8 +54,16 @@ def home_page(request):
     except:
         area_rugs = []
     
-    bed_sheets = Product.objects.filter(category_id=17)
-    towels = Product.objects.filter(category_id=19)
+    try:
+        bed_sheets = Product.objects.filter(category__slug__contains="bed_sheets")
+    except:
+        bed_sheets = []
+
+    try:
+        towels = Product.objects.filter(category__slug__contains="towels")
+    except:
+        towels= []
+
     cart_product_form = CartAddProductForm()
     context ={
         "title": "Hello world",
