@@ -111,8 +111,11 @@
                 <div class="col-lg-7 col-md-6 col-xs-12">
                     <!-- product view description -->
                     <div class="product-feature-details">
+                        {% if variant %}
+                        <h2 class="product-title mb-15">{{ variant.sku }}</h2>
+                        {% else %}
                         <h2 class="product-title mb-15">{{ product.name }}</h2>
-
+                        {% endif %}
                         <!-- <div class="rating d-inline-block mb-15">
                             <i class="fa fa-star active"></i>
                             <i class="fa fa-star active"></i>
@@ -131,7 +134,7 @@
                             <span class="discounted-price">${{ variant.price }}</span>
                             {% else %}
                             <!-- <span class="main-price discounted">$60</span> -->
-                            <span class="main-price starting-at">starting at</span>
+                            <!-- <span class="main-price starting-at">starting at</span> -->
                             <span class="discounted-price"> ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
                             {% endif %}
                         </h2>
