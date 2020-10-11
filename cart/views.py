@@ -27,7 +27,6 @@ def cart_add(request, product_id):
             print(val)
             if val == "-----":
                 try:
-                    pass
                     del request.session["variation_id"]
                 except:
                     pass
@@ -53,7 +52,8 @@ def cart_add(request, product_id):
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
         messages.success(request, "Cart updated...")
-        # del request.session["variation_id"]
+    else:
+        del request.session["variation_id"]
     
 
     
@@ -103,6 +103,6 @@ def cart_detail(request):
                             'override': True})
 
     coupon_apply_form = CouponApplyForm()
-    
+        
           
     return render(request, 'detail.html', {'cart': cart,'coupon_apply_form':coupon_apply_form})

@@ -447,6 +447,11 @@ a.scroll-top {
     padding-right: 5px;
     text-decoration: line-through;
     font-weight: 400; }
+    .product-feature-details h2.product-price span.starting-at {
+      font-size: 24px;
+      color: #999999;
+      padding-right: 5px;
+      font-weight: 400; }
   .product-feature-details h2.product-price span.discounted-price {
     font-size: 28px;
     font-weight: 500;

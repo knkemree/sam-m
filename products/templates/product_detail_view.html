@@ -124,13 +124,14 @@
                         <p class="d-inline-block ml-10 review-link"><a href="#">(1 customer review)</a></p> -->
 
                         <h2 class="product-price mb-0"> 
-                            <!-- <span class="main-price discounted">$12.90</span> -->
+                            <!-- <span class="main-price starting-at">$12.90</span> -->
                             
                             {% if variant %}
                             
                             <span class="discounted-price">${{ variant.price }}</span>
                             {% else %}
-                            <span class="main-price discounted">starting at</span>
+                            <!-- <span class="main-price discounted">$60</span> -->
+                            <span class="main-price starting-at">starting at</span>
                             <span class="discounted-price"> ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
                             {% endif %}
                         </h2>
