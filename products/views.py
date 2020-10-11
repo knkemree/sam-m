@@ -59,7 +59,7 @@ def product_list_view(request, category_slug=None):
                         print(single_product)
                         parent_category_product_set.append(single_product)
             else:
-                parent_category_product_set = Product.objects.filter(active=True, category=parent_category)
+                parent_category_product_set = Product.objects.filter(available=True, category=parent_category)
                 child_category_product_set = []
             
             print("asagida")
