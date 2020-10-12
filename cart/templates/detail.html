@@ -355,6 +355,26 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
   -->
 {% endblock %}
 
+<!--=============================================
+    =            cart updated message         =
+    =============================================-->
+
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}}" role="alert">
+        {{message}}
+      </div>
+      {% endfor %}
+              {% endif %}
+          </div>
+      </div>
+  </div>
+
+  <!--=====  End of message  ======-->
+
 <h1>Your shopping cart</h1>
   <table class="cart">
     <thead>
