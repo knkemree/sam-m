@@ -9,22 +9,18 @@ from Delivery.models import Delivery_methods
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
-
-
-
 @require_POST
-def cart_add(request, product_id):
+def choose_size(request, product_id):
     url = request.META.get('HTTP_REFERER')
-    cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    
-
+    print("product nedir")
+    print(product)
     if request.method == "POST":
         for item in request.POST:
             key = item
             val = request.POST[key]
-            print("bos oldugunda val nedir")
-            print(val)
+            print("variant val and key")
+            print(val, key)
             if val == "-----":
                 try:
                     del request.session["variation_id"]
@@ -33,21 +29,33 @@ def cart_add(request, product_id):
             else:
                 try:
                     variation = Variation.objects.get(product=product, category__iexact=key, title__iexact=val)
-                    print("variation session numarasi bos olugunde nedir")
-
+                    print("selected variation id")
                     request.session["variation_id"] = variation.id
                     print(request.session.get("variation_id"))
                 except:
                     pass
+    # else:
+    #     try:
+    #         del request.session["variation_id"]
+    #     except:
+    #         pass
 
-    
-    
+    return HttpResponseRedirect(url)
+    #return redirect('cart:cart_detail')
 
+@require_POST
+def cart_add(request, product_id):
+    url = request.META.get('HTTP_REFERER')
+    cart = Cart(request)
+    
+    try:
+        product = get_object_or_404(Variation, id=product_id) #bunu cart detail sayfasini guncellerken kullaniyor
+    except:
+        product = get_object_or_404(Variation, id=request.session.get("variation_id")) #bunu product detail sayfasinda kullaniyor
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(
-                 variation_id=request.session.get("variation_id"),
                  product=product,
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
@@ -55,10 +63,11 @@ def cart_add(request, product_id):
     else:
         del request.session["variation_id"]
     
-
-    
-    campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
-    request.session["campaign_id4"]=campaign.id
+    try:
+        campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
+        request.session["campaign_id4"]=campaign.id
+    except: 
+        pass
 
     
     
@@ -103,6 +112,6 @@ def cart_detail(request):
                             'override': True})
 
     coupon_apply_form = CouponApplyForm()
-        
+
           
     return render(request, 'detail.html', {'cart': cart,'coupon_apply_form':coupon_apply_form})

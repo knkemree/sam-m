@@ -26,7 +26,7 @@ class Cart(object):
         
         
 
-    def add(self, variation_id, product, quantity=1, override_quantity=False):
+    def add(self,  product, quantity=1, override_quantity=False):
         """
         Add a product to the cart or update its quantity.
         variation_id daha once yoktu ben ekledim.
@@ -35,16 +35,15 @@ class Cart(object):
         """
 
 
-        variation_price = Variation.objects.get(id=variation_id).price
-        variation_cost = Variation.objects.get(id=variation_id).cost
+        
         
         #varianttan once urun cost ve price'i product.price ve product.cost yazilarak aliniyordu.
-        #product_id = str(product.id)
-        product_id = str(variation_id)
+        product_id = str(product.id)
+        
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
-                                     'price': str(variation_price),
-                                     'cost': str(variation_cost),
+                                     'price': str(product.price),
+                                     'cost': str(product.cost),
                                      }
 
         

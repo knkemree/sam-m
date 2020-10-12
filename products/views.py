@@ -105,6 +105,14 @@ def product_list_view(request, category_slug=None):
             products = paginator.page(paginator.num_pages)
 
     else:
+        #shop sayfasini doldurabilmek icin asagidaki listlerin doldurulmasi veya ilgili listlerin olusturulmasi gerekiyor /products/ sayfasinda suan hicbirsey yok
+        parent_category = []
+        parent_categories = []
+        parent_category_product_set = []
+        child_category = []
+        child_categories = []
+        child_category_product_set = []
+        all_categories = []
         object_list = Product.objects.filter(available=True)
         paginator = Paginator(object_list, 20) # 3 posts in each page
         page = request.GET.get('page')
@@ -142,11 +150,9 @@ def product_list_view(request, category_slug=None):
 
 
 def product_detail_view(request, id, slug):
+
     
-    product = get_object_or_404(Product,
-                                id=id,
-                                slug=slug,
-                                available=True)
+    product = get_object_or_404(Product, id=id)
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
     #sizes = Variation.objects.filter(product_id=id, category="size")
@@ -168,7 +174,8 @@ def product_detail_view(request, id, slug):
                   {'product': product,
                   'cart_product_form': cart_product_form,
                   'gallery':gallery,
-                  'variant':variant
+                  'variant':variant,
+                  
                   #'sizes':sizes,
                   } 
                   )

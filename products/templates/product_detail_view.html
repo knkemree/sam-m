@@ -146,7 +146,9 @@
                         
                         {% if request.user.is_authenticated %}
                         {% if product.variation_set.sizes %}
-                        <form id ="variation" action="{% url "cart:cart_add" product.id %}" method="post" >
+                        
+
+                        <form id ="variation" action="{% url "cart:choose_size" product.id  %}" method="post" >
                         <div class="size mb-20">
                             <!-- <span class="title"> Size:</span> <br> -->
                             {% if request.user.is_authenticated %}{% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}{% endif %}
