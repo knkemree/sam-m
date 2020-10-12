@@ -99,11 +99,12 @@ def cart_remove(request, product_id):
     cart.remove(product)
     try:
         campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
+        request.session["campaign_id4"]=campaign.id
     except:
         pass
     messages.warning(request, "Product deleted from your cart...")
     
-    request.session["campaign_id4"]=campaign.id
+    
 
     for key, value in request.session.items():
                 print('{} => {}'.format(key, value))
