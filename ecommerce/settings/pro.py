@@ -13,8 +13,8 @@ DATABASES = {
     }
 }
 
-CELERY_BROKER_URL = 'redis://msrugs.com:6379'
-CELERY_RESULT_BACKEND = 'redis://msrugs.com:6379'
+CELERY_BROKER_URL=os.environ['REDIS_URL']
+CELERY_RESULT_BACKEND=os.environ['REDIS_URL']
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
