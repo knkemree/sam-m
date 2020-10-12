@@ -447,7 +447,7 @@ a.scroll-top {
     padding-right: 5px;
     text-decoration: line-through;
     font-weight: 400; }
-  .product-feature-details h2.product-price span.starting-at {
+    .product-feature-details h2.product-price span.starting-at {
       font-size: 24px;
       color: #999999;
       padding-right: 5px;
@@ -2221,7 +2221,7 @@ a#more-btn {
 =            Hero            =
 =============================================*/
 .slider-bg-1 {
-  background-image: url("../images/sliders/01.jpg"); }
+  background-image: url("https://lh4.googleusercontent.com/8mWP85kXhrWYvyfCQ2yBw5OrUA2GGNAfcQ82KgxFQglXjWGCgxd6J2jqIxGT7AhBBS-M-m0IUw=w16383"); }
 
 .slider-bg-2 {
   background-image: url("../images/sliders/02.jpg"); }
