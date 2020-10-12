@@ -53,7 +53,7 @@
   </div>
 
   <!--=====  End of message  ======-->
-	
+  
 	<!--=============================================
     =            Cart page content         =
     =============================================-->
@@ -432,44 +432,42 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
           </tr>
         {% endwith %}
       {% endfor %}
-  {% if cart.campaign %}
-  <tr class="subtotal">
-    <td>Subtotal</td>
-    <td colspan="4"></td>
-    <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
-  </tr>
-  <tr>
-    <td>
-      {{ cart.campaign.campaign_name }}
-      ({{ cart.campaign.campaign_discount }}% off)
-    </td>
-    <td colspan="4"></td>
-    <td class="num neg">
-      - ${{ cart.get_discount|floatformat:2 }}
-    </td>
-  </tr>
-{% endif %}
-<tr class="total">
-  <td>Total</td>
-  <td colspan="4"></td>
-  <td id="last_price" class="num">
-    ${{ cart.get_total_price_after_discount|floatformat:2 }}
-  </td>
-</tr>
 
-    </tbody>
-  </table>
+  {% if cart.campaign %}
+    <tr class="subtotal">
+      <td>Subtotal</td>
+      <td colspan="4"></td>
+      <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
+    </tr>
+    <tr>
+      <td>{{ cart.campaign.campaign_name }}({{ cart.campaign.campaign_discount }}% off)</td>
+      <td colspan="4"></td>
+      <td class="num neg">- ${{ cart.get_discount|floatformat:2 }}</td>
+    </tr>
+  {% endif %}
+
+  <tr class="total">
+    <td>Total</td>
+    <td colspan="4"></td>
+    <td id="last_price" class="num">${{ cart.get_total_price_after_discount|floatformat:2 }}</td>
+  </tr>
+
+  </tbody>
+</table>
 
 
 
   <p class="text-right">
-    <a href="{% url "products:product_list_view" %}" class="button
-    light">Continue shopping</a>
-    <a href="{% url 'orders:order_create' %}" class="button">
-      Checkout
-    </a>
-    
+    <a href="{% url "products:product_list_view" %}" class="buttonlight">Continue shopping</a>
+    <a href="{% url 'orders:order_create' %}" class="button">Checkout</a>
   </p>
+  <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+          
+        </div>
+    </div>
+  </div>
   <br>
 {% endif %}
 
