@@ -67,9 +67,14 @@ def order_create(request):
 
             order.save()
             for item in cart:
+                print("order create itemin ici")
+                print(item)
+            
+            for item in cart:
                 OrderItem.objects.create(
                                         order=order,
-                                        product=item['product'],
+                                        product=item['product'].product,
+                                        variant=item['product'].sku,
                                         price=item['price'],
                                         quantity=item['quantity'],
                                         cost=item['cost'],
@@ -182,8 +187,8 @@ def order_create(request):
             
             
             # launch asynchronous task
-            order_created.delay(order.id, html_message_for_customer)
-            inform_admins.delay(order.id, html_message_for_admins)
+            #order_created.delay(order.id, html_message_for_customer)
+            #inform_admins.delay(order.id, html_message_for_admins)
             #mail_admins("subject", "message", fail_silently=False, connection=None, html_message=None)
             #add.delay(4, 5)
             # set the order in the session

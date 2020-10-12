@@ -174,7 +174,7 @@
                                         <ul>
                                           {% for item in cart %}
                                             <li>
-                                              {{ item.quantity }}x {{ item.product.name }}
+                                              {{ item.quantity }} x {{ item.product.sku }}
                                               <span>${{ item.total_price|floatformat:2 }}</span>
                                             </li>
                                           {% endfor %}
