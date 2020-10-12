@@ -48,13 +48,20 @@ def cart_add(request, product_id):
     url = request.META.get('HTTP_REFERER')
     cart = Cart(request)
     
-    try:
-        product = get_object_or_404(Variation, id=product_id) #bunu cart detail sayfasini guncellerken kullaniyor
-    except:
-        product = get_object_or_404(Variation, id=request.session.get("variation_id")) #bunu product detail sayfasinda kullaniyor
+    # try:
+    #     product = get_object_or_404(Variation, id=request.session.get("variation_id")) #bunu cart detail sayfasini guncellerken kullaniyor
+    # except:
+    #     product = get_object_or_404(Variation, id=product_id) #bunu product detail sayfasinda kullaniyor
+    
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
+        if cd['override'] == True :
+           product = get_object_or_404(Variation, id=product_id) 
+        else:
+           product = get_object_or_404(Variation, id=request.session.get("variation_id"))  
+        print("cd de ne var cart add update ve product detail farki")
+        print(cd)
         cart.add(
                  product=product,
                  quantity=cd['quantity'],
@@ -85,7 +92,7 @@ def cart_add(request, product_id):
 def cart_remove(request, product_id):
     url = request.META.get('HTTP_REFERER')
     cart = Cart(request)
-    product = get_object_or_404(Variation, id=request.session.get("variation_id"))
+    product = get_object_or_404(Variation, id=product_id)
     cart.remove(product)
     campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
     messages.warning(request, "Product deleted from your cart...")
