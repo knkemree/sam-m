@@ -97,7 +97,10 @@ def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Variation, id=product_id)
     cart.remove(product)
-    campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
+    try:
+        campaign = Campaign.objects.get(active=1, amount_from__lte=cart.get_total_price(),amount_to__gte=cart.get_total_price())
+    except:
+        pass
     messages.warning(request, "Product deleted from your cart...")
     
     request.session["campaign_id4"]=campaign.id
