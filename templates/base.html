@@ -327,10 +327,10 @@
 							<div class="cart-floating-box hidden" id="cart-floating-box">
 								<div class="cart-items">
 									{% for rs in cart %}
-									{{ rs }}
+									
 											{% with variation=rs.product %}
 									<div class="cart-float-single-item d-flex">
-										<span onclick="window.location.href = '{% url 'cart:cart_remove' variation.id %}';" class="remove-item" id="remove-item"><a><i class="icon ion-md-close"></i></a></span>
+										<!-- <span onclick="window.location.href = '{% url 'cart:cart_remove' variation.id %}';" class="remove-item" id="remove-item"><a><i class="icon ion-md-close"></i></a></span> -->
 										<div class="cart-float-single-item-image">
 											<a href="{{ variation.product.get_absolute_url }}"><img src="{{ variation.image.image.url }}" class="img-fluid" alt=""></a>
 										</div>

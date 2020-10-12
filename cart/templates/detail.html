@@ -82,8 +82,8 @@
                                   {% for item in cart %}
                                     {% with product=item.product %}
                                     <tr>
-                                        <td class="pro-thumbnail"><a href="{{ product.get_absolute_url }}"><img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="Product"></a></td>
-                                        <td class="pro-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                                        <td class="pro-thumbnail"><a href="{{ product.product.get_absolute_url }}"><img src="{% if product.image %}{{ product.image.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="Product"></a></td>
+                                        <td class="pro-title"><a href="{{ product.product.get_absolute_url }}">{{ product.sku }}</a></td>
                                         <td class="pro-price"><span>${{ item.price }}</span></td>
 
                                         <td class="pro-quantity">
@@ -355,6 +355,18 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
   -->
 {% endblock %}
 
+{% if cart|length > 0 %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>Your cart is empty</h1>
+    </div>
+  </div>
+</div>
+  {% else %}
+
+
+
 <!--=============================================
     =            cart updated message         =
     =============================================-->
@@ -376,6 +388,7 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
   <!--=====  End of message  ======-->
 
 <h1>Your shopping cart</h1>
+                  
   <table class="cart">
     <thead>
       <tr>
@@ -458,3 +471,5 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
     
   </p>
   <br>
+{% endif %}
+
