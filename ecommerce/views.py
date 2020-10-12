@@ -46,6 +46,8 @@ def login_form(request):
 
 
 def home_page(request):
+    
+    
     top_level_cats = Category.objects.filter(parent__isnull=True)
     
     try:

@@ -30,6 +30,7 @@ from products.models import ProductImage, Variation
 #     return render(request,"categories.html",{'post_set':parent.product_set.all(),'sub_categories':parent.children.all()})
     
 def product_list_view(request, category_slug=None):
+    
 
     if category_slug:
         try:
@@ -152,6 +153,7 @@ def product_list_view(request, category_slug=None):
 def product_detail_view(request, id, slug):
 
     
+
     product = get_object_or_404(Product, id=id)
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
