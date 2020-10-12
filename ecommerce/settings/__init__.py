@@ -1,7 +1,10 @@
 from .base import *
 
-from .pro import *
-
+try:
+    from .pro import *
+except:
+    pass
+    
 try:
     from .local import *
 except:
