@@ -47,29 +47,27 @@ def choose_size(request, product_id):
 def cart_add(request, product_id):
     url = request.META.get('HTTP_REFERER')
     cart = Cart(request)
-    
-    # try:
-    #     product = get_object_or_404(Variation, id=request.session.get("variation_id")) #bunu cart detail sayfasini guncellerken kullaniyor
-    # except:
-    #     product = get_object_or_404(Variation, id=product_id) #bunu product detail sayfasinda kullaniyor
-    
     form = CartAddProductForm(request.POST)
+
     if form.is_valid():
+        
         cd = form.cleaned_data
+
         if cd['override'] == True :
-           product = get_object_or_404(Variation, id=product_id) 
+           product = get_object_or_404(Variation, id=product_id) #bunu product detail sayfasinda kullaniyor
         else:
-           product = get_object_or_404(Variation, id=request.session.get("variation_id"))  
-        print("cd de ne var cart add update ve product detail farki")
-        print(cd)
+           product = get_object_or_404(Variation, id=request.session.get("variation_id"))  #bunu cart detail sayfasini guncellerken kullaniyor
+        
         cart.add(
                  product=product,
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
+
         if cd['override'] == True:
             messages.success(request, "Cart updated...")
         else:
             messages.success(request, "Added to cart...")
+
     else:
         del request.session["variation_id"]
     
@@ -79,13 +77,8 @@ def cart_add(request, product_id):
     except: 
         pass
 
-    
-    
-
-
-    for key, value in request.session.items():
-                print('{} => {}'.format(key, value))
-
+    # for key, value in request.session.items():
+    #             print('{} => {}'.format(key, value))
 
     return HttpResponseRedirect(url)
     #return redirect('cart:cart_detail')
