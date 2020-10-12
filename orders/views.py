@@ -74,7 +74,7 @@ def order_create(request):
                 OrderItem.objects.create(
                                         order=order,
                                         product=item['product'].product,
-                                        variant=item['product'].sku,
+                                        
                                         price=item['price'],
                                         quantity=item['quantity'],
                                         cost=item['cost'],
