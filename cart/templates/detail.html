@@ -87,15 +87,17 @@
                                         <td class="pro-price"><span>${{ item.price }}</span></td>
 
                                         <td class="pro-quantity">
-                                          
-                                            <form id ="update_form" action="{% url 'cart:cart_add' product.id %}" method="post">
+                                          {% if update %}
+                                            <form id ="update_form" action="{% url 'cart:cart_add' product.id %}" method="post" onchange='this.form.submit();'>
                                               {{ item.update_quantity_form.quantity }}
                                               {{ item.update_quantity_form.override }}
                                               <!-- <input id="update_button" type="submit" value="Update" name="update"> -->
-                                              <button id="update_button" type="submit" name="update"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                              
+                                              <button id="update_button" type="submit" name="update" ><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                              
                                               {% csrf_token %}
                                             </form> 
-                                          
+                                            {% endif %}
                                         </td> 
 
                                         <td class="pro-subtotal"><span>${{ item.total_price }}</span></td>

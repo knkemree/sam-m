@@ -111,8 +111,6 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     
     cart = Cart(request)
-    print("cart_detail")
-    print(cart)
     #update burdan oluyor
     for item in cart:
         print(item)
@@ -123,4 +121,4 @@ def cart_detail(request):
     coupon_apply_form = CouponApplyForm()
 
           
-    return render(request, 'detail.html', {'cart': cart,'coupon_apply_form':coupon_apply_form})
+    return render(request, 'detail.html', {'cart': cart,'coupon_apply_form':coupon_apply_form,"update":'update'})
