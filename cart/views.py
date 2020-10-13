@@ -32,8 +32,10 @@ def choose_size(request, product_id):
                     print("selected variation id")
                     request.session["variation_id"] = variation.id
                     print(request.session.get("variation_id"))
+                    messages.success(request, "Choosed size")
                 except:
                     pass
+
     # else:
     #     try:
     #         del request.session["variation_id"]
@@ -50,7 +52,7 @@ def cart_add(request, product_id):
     form = CartAddProductForm(request.POST)
 
     if form.is_valid():
-        
+
         cd = form.cleaned_data
 
         if cd['override'] == True :

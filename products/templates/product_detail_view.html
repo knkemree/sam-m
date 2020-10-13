@@ -11,7 +11,7 @@
         // messages timeout for 10 sec 
         setTimeout(function() {
             $('.alert').fadeOut('slow');
-        }, 2500); // <-- time in milliseconds, 1000 =  1 sec
+        }, 2000); // <-- time in milliseconds, 1000 =  1 sec
 
         // delete message
         $('.del-msg').live('click',function(){
@@ -62,7 +62,7 @@
                 {% if messages %}
 				{% for message in messages %}
 				<div class="alert alert-{{message.tags}}" role="alert">
-					{{message}}
+					{{message}}: {{ variant.title }}
 				</div>
 				{% endfor %}
                 {% endif %}
@@ -127,7 +127,7 @@
                     <!-- product view description -->
                     <div class="product-feature-details">
                         {% if variant %}
-                        <h2 class="product-title mb-15">{{ variant.sku }}</h2>
+                        <h2 class="product-title mb-15">{{ variant.sku }}</h2> 
                         {% else %}
                         <h2 class="product-title mb-15">{{ product.name }}</h2>
                         {% endif %}
@@ -146,11 +146,12 @@
                             
                             {% if variant %}
                             
-                            <span class="discounted-price">${{ variant.price }}</span>
+                            <span class="discounted-price">${{ variant.price }}</span> <small><small> {{ variant.title }}</small></small>
                             {% else %}
                             <!-- <span class="main-price discounted">$60</span> -->
                             <!-- <span class="main-price starting-at">starting at</span> -->
                             <span class="discounted-price"> ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
+                            
                             {% endif %}
                         </h2>
                         <hr>
