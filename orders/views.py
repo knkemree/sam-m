@@ -189,6 +189,8 @@ def order_create(request):
             # launch asynchronous task
             #order_created.delay(order.id, html_message_for_customer)
             #inform_admins.delay(order.id, html_message_for_admins)
+            order_created(order.id, html_message_for_customer)
+            inform_admins(order.id, html_message_for_admins)
             #mail_admins("subject", "message", fail_silently=False, connection=None, html_message=None)
             #add.delay(4, 5)
             # set the order in the session
