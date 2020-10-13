@@ -6,6 +6,16 @@ from django.contrib.sessions.models import Session
 from cart.forms import CartAddProductForm
 from products.models import ProductImage, Variation
 
+from django import template
+from django.utils.safestring import mark_safe
+
+register = template.Library()
+
+@register.filter
+def custom_filter(text, color):
+    safe_text = '<span style="color:{color}">{text}</span>'.format(color=color, text=text)
+    return mark_safe(safe_text)
+
 # def show_category(request, hierarchy= None):
 #     print("hierarchy")
 #     print(hierarchy)

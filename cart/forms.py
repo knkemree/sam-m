@@ -3,7 +3,7 @@ from cart.cart import Cart
 from coupons.models import Campaign
 
 
-PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(5, 31)]
+PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 31)]
 class CartAddProductForm(forms.Form):
     
     quantity = forms.TypedChoiceField(

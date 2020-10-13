@@ -155,7 +155,7 @@
                             {% endif %}
                         </h2>
                         <hr>
-                        {% if request.user.is_authenticated %}<a><strong>Availability: </strong>{% if product.stock >= 5 %} {{ product.stock }}{% else %} Out of Stock{% endif %}</a>{% endif %}
+                        {% if request.user.is_authenticated %}<a><strong>Availability: </strong>{% if product.stock >= 1 %} {{ product.stock }}{% else %} Out of Stock{% endif %}</a>{% endif %}
                         
                         
                         <p class="product-description mb-20">{{ product.description|safe }}</p>
@@ -209,22 +209,24 @@
 
 
                         {% if request.user.is_authenticated %}
-                        <div class="cart-buttons mb-20">
-                          <form action="{% url "cart:cart_add" product.id %}" method="post">
-                            
-                            {{ cart_product_form.as_p }}
-                            {% csrf_token %}
-                            <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
-                            <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
-                          </form>
-                            <!-- <span class="quantity-title mr-10">Quantity: </span>
-                            <div class="pro-qty mb-20">
-                                <input type="text" value="1">
+                            {% if product.stock >= 1 %}
+                            <div class="cart-buttons mb-20">
+                            <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                
+                                {{ cart_product_form.as_p }}
+                                {% csrf_token %}
+                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
+                                <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                            </form>
+                                <!-- <span class="quantity-title mr-10">Quantity: </span>
+                                <div class="pro-qty mb-20">
+                                    <input type="text" value="1">
+                                </div>
+                                <div class="add-to-cart-btn d-block">
+                                    <a href="#" class="fl-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
+                                </div> -->
                             </div>
-                            <div class="add-to-cart-btn d-block">
-                                <a href="#" class="fl-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
-                            </div> -->
-                        </div>
+                            {% endif %}
                         {% else%}
                         <div class="add-to-cart-btn d-block">
                             <p><a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa"></i> Become a Dealer</a></p>
