@@ -45,16 +45,16 @@
 
 								<a href="#orders" data-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Orders</a>
 
-								<a href="#download" data-toggle="tab"><i class="fa fa-cloud-download"></i> Download</a>
+								<!-- <a href="#download" data-toggle="tab"><i class="fa fa-cloud-download"></i> Download</a> -->
 
-								<a href="#payment-method" data-toggle="tab"><i class="fa fa-credit-card"></i> Payment
-									Method</a>
+								<!-- <a href="#payment-method" data-toggle="tab"><i class="fa fa-credit-card"></i> Payment
+									Method</a> -->
 
 								<a href="#address-edit" data-toggle="tab"><i class="fa fa-map-marker"></i> address</a>
 
 								<a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> Account Details</a>
 
-								<a href="login-register.html"><i class="fa fa-sign-out"></i> Logout</a>
+								<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
 							</div>
 						</div>
 						<!-- My Account Tab Menu End -->
@@ -89,24 +89,26 @@
 											<table class="table table-bordered">
 												<thead class="thead-light">
 												<tr>
-													<th>No</th>
-													<th>Name</th>
-													<th>Date</th>
-													<th>Status</th>
-													<th>Total</th>
+													<th>Order No</th>
+													<th>Order Date</th>
+													<th>Order Total</th>
+													<th>Delivery Status</th>
+													<th>Payment Status</th>
 													<th>Action</th>
 												</tr>
 												</thead>
 
 												<tbody>
+												{% for order in user_orders %}
 												<tr>
-													<td>1</td>
-													<td>Mostarizing Oil</td>
-													<td>Aug 22, 2018</td>
-													<td>Pending</td>
-													<td>$45</td>
+													<td>{{ order.id }}</td>
+													<td>{{ order.created }}</td>
+													<td>${{ order.order_total }}</td>
+													<td>{% if order.fulfillment == False %} <i class="fa fa-remove" style="color:red"></i>{% else %}<i class="fa fa-check" style="color:green"></i>{% endif %}</td>
+													<td>{% if order.payment == False %} <i class="fa fa-remove" style="color:red"></i>{% else %}<i class="fa fa-check" style="color:green"></i>{% endif %}</td>
 													<td><a href="cart.html" class="btn">View</a></td>
 												</tr>
+												{% endfor %}
 												<tr>
 													<td>2</td>
 													<td>Katopeno Altuni</td>

@@ -121,7 +121,12 @@ def contact_page(request):
 
 @login_required
 def dashboard(request):
+    print("user kim")
+    user_orders = Order.objects.filter(email=request.user)
+    print(user_orders)
+    print(request.user)
     return render(request,
                   'dashboard.html',
-                  {'section': 'dashboard'})
+                  {'section': 'dashboard',
+                  'user_orders':user_orders})
 
