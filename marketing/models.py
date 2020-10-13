@@ -6,7 +6,7 @@ def slider_upload(instance, filename):
     return "slider/%s" %(filename)
 
 class Slider(models.Model):
-    image = models.ImageField(upload_to=slider_upload, default= 'img/no_image.png')
+    image = models.ImageField(upload_to=slider_upload)
     header_text = models.CharField(max_length=120, null=True, blank=True)
     text = models.CharField(max_length=120, null=True, blank=True)
     active = models.BooleanField(default=False)
