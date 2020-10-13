@@ -11,6 +11,7 @@ from cart.forms import CartAddProductForm
 
 from django.contrib.auth.views import LoginView as DefaultLoginView
 from django.views.generic import CreateView
+from marketing.models import Slider
 
 def login_form(request):
        #buranin ismini login koyma
@@ -48,7 +49,7 @@ def login_form(request):
 
 
 def home_page(request):
-    
+    sliders = Slider.objects.filter(active=1)
     
     top_level_cats = Category.objects.filter(parent__isnull=True)
     
@@ -78,7 +79,8 @@ def home_page(request):
         'bed_sheets': bed_sheets,
         'towels':towels,
         'top_level_cats': top_level_cats,
-        'cart_product_form':cart_product_form
+        'cart_product_form':cart_product_form,
+        'sliders':sliders,
     }
     
     return render(request, "home_page.html", context)

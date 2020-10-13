@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'orders',
     'coupons.apps.CouponsConfig',
     'Delivery',
+    'marketing',
 
     'django.contrib.sites',
     'django.contrib.sitemaps',
