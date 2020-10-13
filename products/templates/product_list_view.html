@@ -236,6 +236,14 @@
                                 
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-12 d-flex flex-column flex-sm-row justify-content-between align-items-left align-items-sm-center">
+                                {% if user.is_superuser is True %}   
+                                <div class="sort-by-dropdown d-flex align-items-center mb-xs-10">
+                                    
+                                        <!-- <a href="#"> <i class="icon ion-md-heart-empty"></i> Browse Wishlist</a> -->
+                                        <span><a href="/admin/products/category/{{category.id}}/change/"> <i class="icon ion-md-options"></i> Edit</a></span>
+                                    </p> 
+                                </div> 
+                                {% endif %}
                                 <!--=======  Sort by dropdown  =======-->
                                 
                                 <!-- <div class="sort-by-dropdown d-flex align-items-center mb-xs-10">
