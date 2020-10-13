@@ -204,9 +204,9 @@
 								<a href="#" id="changeAccount"><span id="accountMenuName">My Account <i class="fa fa-angle-down"></i></span></a>
 								<div class="language-currency-list hidden" id="accountList">
 									<ul>
-                                        <li><a {% if section == "dashboard" %}class="selected"{% endif %} href="{% url 'dashboard' %}"> My dashboard</a></li>
-										<li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a {% if section == "dashboard" %}class="selected"{% endif %} href="{% url 'dashboard' %}"> Dashboard</a></li>
+										<li><a href="{% url 'cart:cart_detail' %}">Cart</a></li>
+                                        <li><a href="{% url 'orders:order_create' %}">Checkout</a></li>
                                         <li><a href="{% url 'logout' %}">Logout</a></li>
 									</ul>
 								</div>
