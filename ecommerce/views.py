@@ -63,8 +63,6 @@ def home_page(request):
         bed_sheets = Product.objects.filter(category_id=bed_sheet.id)
     except:
         bed_sheets = []
-    print("bed_sheets")
-    print(bed_sheets)
 
     try:
         towel = Category.objects.filter(slug__contains="towels")
@@ -112,12 +110,6 @@ def contact_page(request):
         #print(request.POST)
     
     return render(request, "contact/view.html", context)
-
-
-
-
-
-
 
 @login_required
 def dashboard(request):
