@@ -389,18 +389,23 @@
 							<!-- Category Menu -->
 							<nav class="category-menu">
 								<ul>
-									<li class="menu-item-has-children"><a href="#">Area Rugs</a>
-										<!-- category submenu -->
-										
-										<ul class="category-mega-menu">
-											{% for c in area_rugs %}
-											<li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
-											{% endfor %}
-											
-										</ul>
-									</li>
-									<li><a href="/">Bed Sheets</a></li>
-									<li><a href="/">Towels</a></li>
+									{% for rs in parent_categories %}
+										{% if rs.children.all %}
+											<li class="menu-item-has-children"><a href="{{ rs.get_absolute_url }}">{{ rs }}</a>
+												<ul class="category-mega-menu">
+													{% for child in child_categories1 %}
+														{% if rs == child.parent %}
+														<li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
+														{% endif%}
+													{% endfor %}
+												</ul>
+											</li>
+										{% else%}
+											<li><a href="{{ rs.get_absolute_url }}">{{ rs }}</a></li>
+										{% endif %}
+									{% endfor %}
+									
+								
 									<!-- <li class="hidden"><a href="shop-left-sidebar.html">New Sofas</a></li>
 									<li class="hidden"><a href="shop-left-sidebar.html">Sleight Sofas</a></li>
 									<li><a href="#" id="more-btn">... More</a></li> -->
@@ -439,23 +444,65 @@
 									<li class="menu-item-has-children"><a href="#">Shop</a>
 										<ul class="sub-menu">
 											
-											<li class="menu-item-has-children"><a href="#">Area Rugs</a>
+											
+											<!-- <li class="menu-item-has-children"><a href="#">Area Rugs</a>
 												<ul class="sub-menu">
 													{% for c in area_rugs %}
 													<li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
 													{% endfor %}
 													
 												</ul>
-											</li>
-											<li><a href="#">Bed Sheets</a>
+											</li> -->
+											
+											{% for rs in parent_categories %}
+												{% if rs.children.all %}
+													
+													<li class="menu-item-has-children"><a href="{{ rs.get_absolute_url }}">{{ rs }}</a>
+														<ul class="sub-menu">
+															
+																	
+																		
+																		{% for child in child_categories1 %}
+																			{% if rs == child.parent %}
+																			<li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
+																			{% endif%}
+																		{% endfor %}
+																	
+																	
+																
+														</ul>
+													</li>
+													
+													
+												{% else %} 
+													<li><a href="{{ rs.get_absolute_url }}">{{ rs }}</a></li>
+												{% endif %}
+												
+											{% endfor %}
+											
+											<!-- {% for rs in parent_categories %} -->
+											<!-- {% for child_category in rs.children.all %} -->
+											<!-- <li class="menu-item-has-children"><a href="#">{{ rs }}</a></li> -->
 												<!-- <ul class="sub-menu">
+												
+													{% for child_category in child_categories %}
+														{% if rs == child_category.parent %}
+														<li><a>{{ child_category }}</a></li>
+														{% endif %}
+													{% endfor %}
+												
+												</ul> -->
+											<!-- {% endfor %} -->
+											<!-- {% endfor %} -->
+											<!-- <li><a href="products/bed-sheets/">Bed Sheets</a>
+												<ul class="sub-menu">
 													<li><a href="shop-list.html">shop List</a></li>
 													<li><a href="shop-list-left-sidebar.html">shop List Left Sidebar</a></li>
 													<li><a href="shop-list-right-sidebar.html">shop List Right Sidebar</a></li>
-												</ul> -->
-											</li>
-											<li><a href="#">Towels</a>
-												<!-- <ul class="sub-menu">
+												</ul>
+											</li> -->
+											<!-- <li><a href="products/towels/">Towels</a>
+												<ul class="sub-menu">
 													<li><a href="single-product.html">Single Product</a></li>
 													<li><a href="single-product-variable.html">Single Product variable</a></li>
 													<li><a href="single-product-affiliate.html">Single Product affiliate</a></li>
@@ -467,8 +514,8 @@
 													<li><a href="single-product-sticky-left.html">Sticky Left</a></li>
 													<li><a href="single-product-sticky-right.html">Sticky Right</a></li>
 													<li><a href="single-product-slider-box.html">Slider Box</a></li>
-												</ul> -->
-											</li>
+												</ul>
+											</li> -->
 										</ul>
 									</li>
 									<!-- <li><a href="/">BLOG</a></li> -->
