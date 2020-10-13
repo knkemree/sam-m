@@ -97,7 +97,7 @@ def cart_remove(request, product_id):
         request.session["campaign_id4"]=campaign.id
     except:
         pass
-    messages.warning(request, "Product deleted from your cart...")
+    messages.warning(request, "Product removed from your cart...")
     
     
 
