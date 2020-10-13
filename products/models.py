@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.db.models import Min
+import os
 
 # Create your models here.   
 
@@ -80,7 +81,10 @@ class ProductImage(models.Model):
     update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self): 
-        return self.product.name
+        return os.path.basename(self.image.name)
+        #return self.product.name
+    
+    
 
 class VariationManager(models.Manager):
     def all(self):
