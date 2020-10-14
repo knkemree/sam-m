@@ -18,7 +18,7 @@ class Slider(models.Model):
     end_date = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.image)
 
     class Meta:
         ordering = ['order','-start_date', '-end_date']
