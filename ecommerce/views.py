@@ -52,6 +52,8 @@ def home_page(request):
     sliders = Slider.objects.filter(active=1)
     
     top_level_cats = Category.objects.filter(parent__isnull=True)
+
+    
     
     try:
         area_rug = Category.objects.get(slug__contains="area-rugs")

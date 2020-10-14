@@ -9,41 +9,7 @@ from Delivery.models import Delivery_methods
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
-@require_POST
-def choose_size(request, product_id):
-    url = request.META.get('HTTP_REFERER')
-    product = get_object_or_404(Product, id=product_id)
-    print("product nedir")
-    print(product)
-    if request.method == "POST":
-        for item in request.POST:
-            key = item
-            val = request.POST[key]
-            print("variant val and key")
-            print(val, key)
-            if val == "-----":
-                try:
-                    del request.session["variation_id"]
-                except:
-                    pass
-            else:
-                try:
-                    variation = Variation.objects.get(product=product, category__iexact=key, title__iexact=val)
-                    print("selected variation id")
-                    request.session["variation_id"] = variation.id
-                    print(request.session.get("variation_id"))
-                    messages.success(request, "Choosed size")
-                except:
-                    pass
 
-    # else:
-    #     try:
-    #         del request.session["variation_id"]
-    #     except:
-    #         pass
-
-    return HttpResponseRedirect(url)
-    #return redirect('cart:cart_detail')
 
 @require_POST
 def cart_add(request, product_id):
@@ -58,7 +24,7 @@ def cart_add(request, product_id):
         if cd['override'] == True :
            product = get_object_or_404(Variation, id=product_id) #bunu product detail sayfasinda kullaniyor
         else:
-           product = get_object_or_404(Variation, id=request.session.get("variation_id"))  #bunu cart detail sayfasini guncellerken kullaniyor
+           product = get_object_or_404(Variation, id=product_id)  #bunu cart detail sayfasini guncellerken kullaniyor
         
         cart.add(
                  product=product,

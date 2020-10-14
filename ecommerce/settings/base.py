@@ -234,3 +234,6 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
 # SECURE_HSTS_SECONDS             = 1000000
 # SECURE_FRAME_DENY               = True
+
+STRIPE_PUBLIC_KEY = "pk_test_c6fSv46teTU4tycT1Aiv7ezy"
+STRIPE_PRIVATE_KEY = 'sk_test_LGKgGvfpnOtCepkfRQxOpFub'

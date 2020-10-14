@@ -53,6 +53,7 @@ class Cart(object):
             self.cart[product_id]['quantity'] += quantity
         self.save()
     def save(self):
+        
         # mark the session as "modified" to make sure it gets saved
         self.session.modified = True
 

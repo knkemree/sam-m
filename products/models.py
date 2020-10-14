@@ -113,6 +113,7 @@ class Variation(models.Model):
     image = models.ForeignKey(ProductImage, on_delete=models.CASCADE, blank=True, null=True, default= 'img/no_image.png' )
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
     cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
+    stock = models.IntegerField(null=True, blank=True, default=0)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     active = models.BooleanField(default=True)
 
@@ -120,6 +121,10 @@ class Variation(models.Model):
 
     def __str__(self): 
         return self.sku
+
+    def get_absolute_url(self):
+        return reverse('products:product_detail_view_by_variant',
+                       args=[self.product.id, self.product.slug, self.id])
 
     
 

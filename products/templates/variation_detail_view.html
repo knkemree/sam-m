@@ -62,7 +62,7 @@
                 {% if messages %}
 				{% for message in messages %}
 				<div class="alert alert-{{message.tags}}" role="alert">
-					{{message}}... {{ variant.title }}
+					{{message}}... {{ var.title }}
 				</div>
 				{% endfor %}
                 {% endif %}
@@ -163,28 +163,23 @@
                         {% if request.user.is_authenticated %}
                             {% if product.variation_set.sizes %}
                             
-                            <!-- <form id ="variation" action="{% url "products:choose_size" product.id  %}" method="post" > -->
-                            
+
+                            <form id ="variation" action="{% url "products:choose_size" product.id  %}" method="post" >
+                            <div class="size mb-20">
                                 <!-- <span class="title"> Size:</span> <br> -->
                                 {% if request.user.is_authenticated %}{% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}{% endif %}
-                                <p><a><strong>Choose size: </strong>
-                                {% for item in product.variation_set.sizes %}
-                                    <li><a href="{{ item.get_absolute_url }}">{{ item.title|capfirst }} -->  ${{ item.price }}</a></li>
-                                    
-                                    {% endfor %}
-                                <br>
-                                <!-- <label for="id_size">Size:</label>
+                                <label for="id_size">Size:</label>
                                 <select name="size" id="id_size2"  onchange='changeSelectedvalue(); this.form.submit();'>
                                     <option value="-----" >-----</option>
                                     {% for item in product.variation_set.sizes %}
-                                    <option value="{{ item.title|lower }}" >{{ item.title|capfirst }} >  ${{ item.price }}</option>
+                                    <option value="{{ item.title|lower }}" >{{ item.title|capfirst }} -->  ${{ item.price }}</option>
                                     {% endfor %}
-                                </select> -->
+                                </select>
                                 <!-- <input id="variation_button" type="submit" value="get" style="display: none;"> -->
-                                <!-- <button id="variation_button" type="submit" style="display: none;">get</button> -->
-                                <!-- {% csrf_token %} -->
-                            
-                            <!-- </form> -->
+                                <button id="variation_button" type="submit" style="display: none;">get</button>
+                                {% csrf_token %}
+                            </div>
+                            </form>
                             
                             {% endif %}
                         {% endif %}
@@ -216,9 +211,8 @@
 
                         {% if request.user.is_authenticated %}
                             {% if product.stock >= 1 %}
-                            {% if variant %}
                             <div class="cart-buttons mb-20">
-                            <form action="{% url "cart:cart_add" variant.id %}" method="post">
+                            <form action="{% url "cart:cart_add" product.id %}" method="post">
                                 
                                 {{ cart_product_form.as_p }}
                                 {% csrf_token %}
@@ -233,7 +227,6 @@
                                     <a href="#" class="fl-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
                                 </div> -->
                             </div>
-                            {% endif %}
                             {% endif %}
                         {% else%}
                         <div class="add-to-cart-btn d-block">
