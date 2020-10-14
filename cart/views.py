@@ -34,7 +34,7 @@ def cart_add(request, product_id):
         if cd['override'] == True:
             messages.success(request, "Cart updated...")
         else:
-            messages.success(request, "Added to cart...")
+            messages.success(request, "Added to cart !")
 
     else:
         del request.session["variation_id"]

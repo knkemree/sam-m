@@ -214,6 +214,7 @@ def product_detail_view(request, id, slug, variantid=None):
     if variantid:
         try:
             variant = Variation.objects.get(id=variantid)
+            messages.success(request, "Choosed size...")
         except:
             pass
 

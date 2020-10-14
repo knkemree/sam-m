@@ -155,7 +155,7 @@
                             {% endif %}
                         </h2>
                         <hr>
-                        {% if request.user.is_authenticated %}<a><strong>Availability: </strong>{% if product.stock >= 1 %} {{ product.stock }}{% else %} Out of Stock{% endif %}</a>{% endif %}
+                        
                         
                         
                         <p class="product-description mb-20">{{ product.description|safe }}</p>
@@ -166,13 +166,36 @@
                             <!-- <form id ="variation" action="{% url "products:choose_size" product.id  %}" method="post" > -->
                             
                                 <!-- <span class="title"> Size:</span> <br> -->
-                                {% if request.user.is_authenticated %}{% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}{% endif %}
-                                <p><a><strong>Choose size: </strong>
-                                {% for item in product.variation_set.sizes %}
-                                    <li><a href="{{ item.get_absolute_url }}">{{ item.title|capfirst }} -->  ${{ item.price }}</a></li>
+                                {% if request.user.is_authenticated %}<p><a><strong>Availability: </strong>{% if product.stock >= 1 %} {{ product.stock }}{% else %} Out of Stock{% endif %}</a></p>{% endif %}
+                                {% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}
+                                <p><a><strong>Size: </strong>{% if variant.title is not  null %} {{ variant.title }}{% endif %}</a></p>
+                                
+                                <!-- <p><a><strong>Choose size: </strong> -->
                                     
-                                    {% endfor %}
-                                <br>
+                                    <!-- <li><a href="{{ item.get_absolute_url }}">{{ item.title|capfirst }} >  ${{ item.price }}</a></li> -->
+                                    
+                                    <select name="size" id="id_size2" onchange='changeSelectedvalue()'>
+                                        <option value="" selected>Pick a Size</option>
+                                        {% for item in product.variation_set.sizes %}
+                                            <option value="{{ item.get_absolute_url }}" ><a>{{ item.title|capfirst }} > ${{ item.price }}</a></option>
+                                        {% endfor %}
+                                    </select>
+
+                                      <script>
+                                          $(function(){
+                                            // bind change event to select
+                                            $('#id_size2').on('change', function () {
+                                                var url = $(this).val(); // get selected value
+                                                if (url) { // require a URL
+                                                    window.location = url; // redirect
+                                                }
+                                                return false;
+                                            });
+                                          });
+                                      </script>
+                                    
+                                
+
                                 <!-- <label for="id_size">Size:</label>
                                 <select name="size" id="id_size2"  onchange='changeSelectedvalue(); this.form.submit();'>
                                     <option value="-----" >-----</option>
@@ -217,7 +240,9 @@
                         {% if request.user.is_authenticated %}
                             {% if product.stock >= 1 %}
                             {% if variant %}
+                            
                             <div class="cart-buttons mb-20">
+                                <br>
                             <form action="{% url "cart:cart_add" variant.id %}" method="post">
                                 
                                 {{ cart_product_form.as_p }}
@@ -246,6 +271,7 @@
 
                         {% if user.is_superuser is True %}    
                         <p class="wishlist-link mb-20 pb-15">
+                            <br>
                             <!-- <a href="#"> <i class="icon ion-md-heart-empty"></i> Browse Wishlist</a> -->
                             <a href="/admin/products/product/{{product.id}}/change/"> <i class="icon ion-md-options"></i> Edit</a>
                         </p> 
