@@ -54,19 +54,18 @@
 												<i class="fa fa-star"></i>
 												<i class="fa fa-star"></i>
 											</div> -->
+											{% if request.user.is_authenticated %}
 											<p class="product-price">
 												<span class="main-price starting-from">starting at</span>
-												
-												
 												<span class="discounted-price">${{ p.get_lowest_price.price__min|floatformat:-2 }}</span>
-												
 											</p>
+											{% endif %}
 
-											<div class="hover-icons">
+											<div class="hover-icons ">
 												<ul>
 													<!-- <li><a href="#"  data-tooltip="Choose Size"><i class="fa fa-search" aria-hidden="true"></i></a></li> -->
 													<!-- <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li> -->
-													<li><a href="{{ p.get_absolute_url }}"  data-tooltip="Choose Size"><i class="icon ion-md-options"></i></a></li>
+													<li><a class="my-1" href="{{ p.get_absolute_url }}"  data-tooltip="Choose Size"><i class="icon ion-md-options"></i></a></li>
 													<!-- <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li> -->
 												</ul>
 											</div>

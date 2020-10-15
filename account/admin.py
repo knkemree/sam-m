@@ -11,6 +11,7 @@ class CustomersAdmin(UserAdmin):
     list_display = ('email', 'company_name', 'first_name', 'last_name','ein', 'ein_verified','is_active','phone','last_login', 'date_joined' )
     search_fields = ('email', 'company_name', 'first_name', 'last_name','ein','phone')
     ordering = ['-date_joined']
+    readonly_fields = ('ein','stripe_customer')
     
     # def get_readonly_fields(self, request, obj=None):
     #     try:

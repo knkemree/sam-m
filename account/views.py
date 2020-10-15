@@ -6,6 +6,9 @@ from .forms import RegistrationForm
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 from products.models import Category, Product
+from account.models import Customers
+import stripe
+stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
 
 
 def registration_view(request):
@@ -27,6 +30,15 @@ def registration_view(request):
             form.save()
             email = form.cleaned_data.get("email")
             raw_password = form.cleaned_data.get("password1")
+
+            customer = Customers.objects.get(email=email)
+            created_customer = stripe.Customer.create(
+                description=email,
+                email=email
+            )
+            customer.stripe_customer = created_customer.id
+            customer.save()
+            
             account = authenticate(email=email, password=raw_password)
             login(request, account)
             return redirect('dashboard')

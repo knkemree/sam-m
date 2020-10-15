@@ -29,7 +29,7 @@ def payment_process(request):
             #amount=int(total_cost*100),
             currency="usd",
             source=token,
-            #customer=request.user,
+            #customer=stripe.Customer.retrieve(order.email.stripe_customer),
             description="Payment for Sam&M Trade",
         )
         print("result burda")

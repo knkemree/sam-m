@@ -146,12 +146,13 @@
                             
                             {% if variant %}
                             
-                            <span class="discounted-price">${{ variant.price }}</span> <small><small> {{ variant.title }}</small></small>
+                                <span class="discounted-price">${{ variant.price }}</span> <small><small> {{ variant.title }}</small></small>
                             {% else %}
-                            <!-- <span class="main-price discounted">$60</span> -->
-                            <span class="main-price starting-at"><small><small>starting at</small></small></span>
-                            <span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
-                            
+                                {% if request.user.is_authenticated %}
+                                    <!-- <span class="main-price discounted">$60</span> -->
+                                    <span class="main-price starting-at"><small><small>starting at</small></small></span>
+                                    <span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
+                                {% endif %}
                             {% endif %}
                         </h2>
                         <hr>

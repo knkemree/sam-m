@@ -46,6 +46,8 @@ class Customers(AbstractBaseUser):
     first_name = models.CharField("Company Owner's First Name", max_length=30)
     last_name = models.CharField("Company Owner's Last Name", max_length=30)
 
+    stripe_customer = models.CharField(max_length=150) 
+
     ein = models.CharField(verbose_name="Tax Payer Number", max_length=15, blank=True, null=True, unique=True)
     ein_verified = models.BooleanField(verbose_name="TPN Verified?", default=False)
 
