@@ -6,10 +6,9 @@ from django.conf import settings
 from orders.models import Order
 
 #from orders.tasks import order_created, inform_admins
-# stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
-# STRIPE_PUB_KEY = 'pk_test_c6fSv46teTU4tycT1Aiv7ezy'
-STRIPE_PUB_KEY = 'pk_live_QKktUAk7MeqfhyL8dg329EH2'
-stripe.api_key = "sk_live_6ZynINf9gvWZXLo7Nv7Ijb2r"
+stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
+STRIPE_PUB_KEY = 'pk_test_c6fSv46teTU4tycT1Aiv7ezy'
+
 
 def payment_process(request):
     order_id = request.session.get('order_id')
