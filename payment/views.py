@@ -4,6 +4,7 @@ import stripe
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from orders.models import Order
+from django.template import loader
 
 #from orders.tasks import order_created, inform_admins
 stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
@@ -29,7 +30,7 @@ def payment_process(request):
             #amount=int(total_cost*100),
             currency="usd",
             source=token,
-            #customer=stripe.Customer.retrieve(order.email.stripe_customer),
+            
             description="Payment for Sam&M Trade",
         )
         print("result burda")
@@ -43,6 +44,96 @@ def payment_process(request):
             # store the unique transaction id
             order.braintree_id = result.id
             order.save()
+
+            total_price = []
+            for i in request.session["cart"].keys():
+                for z in request.session["cart"][i]:
+                    if z =="total_price":
+                        total_price.append(request.session["cart"][i][z])
+            
+
+            product = []
+            for i in request.session["cart"].keys():
+                for z in request.session["cart"][i]:
+                    if z =="product":
+                        product.append(request.session["cart"][i][z])
+            
+
+            quantity = []
+            for i in request.session["cart"].keys():
+                for z in request.session["cart"][i]:
+                    if z =="quantity":
+                        quantity.append(request.session["cart"][i][z])
+            
+            #cart'in icindekileri yularidaki for loop'lar sayaesinde zip yaptim. sonrada bu zipi template'de kullandim
+            #super_list'in icine cartta ne varsa koyabilirsin ve goresellestirebilirsin
+            super_list = zip(product,quantity,total_price)
+
+            html_message_for_customer = loader.render_to_string(
+            'order_confirmation_email_template.html',
+            {
+                'user_name': request.user.company_name,
+                'subject':  "Order Confirmation #"+str(order.id),
+                'content': "Thank you for your order! Your order number is #"+str(order.id)+".",
+                "order_no": order.id,
+                "order_total": order.order_total,
+                'super_list':super_list,
+                "address":order.address,
+                "postal_code":order.postal_code,
+                "city":order.city,
+                "delivery_fee":order.delivery_fees,
+                'delivery_method':order.delivery_method,
+                'time':order.created,
+                'discounted_amount':order.discounted_amount,
+                'off':order.campaign.campaign_discount
+            }
+            )
+
+            total_price = []
+            for i in request.session["cart"].keys():
+                for z in request.session["cart"][i]:
+                    if z =="total_price":
+                        total_price.append(request.session["cart"][i][z])
+            
+
+            product = []
+            for i in request.session["cart"].keys():
+                for z in request.session["cart"][i]:
+                    if z =="product":
+                        product.append(request.session["cart"][i][z])
+            
+
+            quantity = []
+            for i in request.session["cart"].keys():
+                for z in request.session["cart"][i]:
+                    if z =="quantity":
+                        quantity.append(request.session["cart"][i][z])
+            
+            #cart'in icindekileri yularidaki for loop'lar sayaesinde zip yaptim. sonrada bu zipi template'de kullandim
+            #super_list'in icine cartta ne varsa koyabilirsin ve goresellestirebilirsin
+            super_list = zip(product,quantity,total_price)
+
+            html_message_for_admins = loader.render_to_string(
+            'new_order.html',
+            {
+                'user_name': order.company_name,
+                'subject':  "New Order by #"+str(order.company_name),
+                'content': "New Order",
+                "order_no": order.id,
+                "order_total": order.order_total,
+                'time':order.created,
+                'super_list':super_list,
+                "address":order.address,
+                "postal_code":order.postal_code,
+                "city":order.city,
+                'delivery_method':order.delivery_method,
+                "delivery_fee":order.delivery_fees,
+                'discounted_amount':order.discounted_amount,
+                'off':order.campaign.campaign_discount
+                })
+
+            
+            
             # launch asynchronous task
             #order_created.delay(order.id, html_message_for_customer)
             #inform_admins.delay(order.id, html_message_for_admins)
