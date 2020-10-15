@@ -41,7 +41,7 @@ class CustomersManager(BaseUserManager):
 
 class Customers(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=70, unique=True)
-    #username = models.CharField(max_length=30)
+    username = models.CharField(max_length=30)
     company_name=models.CharField("Business Legal Name", max_length=30)
     first_name = models.CharField("Company Owner's First Name", max_length=30)
     last_name = models.CharField("Company Owner's Last Name", max_length=30)

@@ -15,7 +15,7 @@ class CustomersAdmin(UserAdmin):
     # def get_readonly_fields(self, request, obj=None):
     #     try:
     #         if obj.ein_verified == True:  # editing an existing object
-    #             print (obj.ein_verified)
+                
     #             self.readonly_fields = ('ein',)
     #         else:
     #             self.readonly_fields = ()
