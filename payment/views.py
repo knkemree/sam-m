@@ -2,6 +2,7 @@ import braintree
 import stripe
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.debug import sensitive_post_parameters, sensitive_variables
 from django.conf import settings
 from orders.models import Order
 from django.template import loader
@@ -10,7 +11,7 @@ from django.template import loader
 stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
 STRIPE_PUB_KEY = 'pk_test_c6fSv46teTU4tycT1Aiv7ezy'
 
-
+@ensitive_variables('token')
 def payment_process(request):
     order_id = request.session.get('order_id')
     order = get_object_or_404(Order, id=order_id)

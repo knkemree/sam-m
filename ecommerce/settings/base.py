@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import braintree
+from decouple import config
 
 
 
@@ -27,7 +28,8 @@ BASE_DIR = BASE_DIR3 / 'settings'
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
+SECRET_KEY = config('SECRET_KEY')
+
 #SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
