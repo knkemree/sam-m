@@ -30,7 +30,7 @@ def payment_process(request):
             currency="usd",
             source=token,
             #customer=request.user,
-            description="My First Test Charge (created for API docs)",
+            description="Payment for Sam&M Trade",
         )
         print("result burda")
         print(result)
