@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'localflavor',
     
 
-    #'payment.apps.PaymentConfig',
+    'payment.apps.PaymentConfig',
     "products",
     "account",
     "blog",
