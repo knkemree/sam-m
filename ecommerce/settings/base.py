@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 
     'phonenumber_field',
     'localflavor',
+    'corsheaders',
     
 
     'payment.apps.PaymentConfig',
