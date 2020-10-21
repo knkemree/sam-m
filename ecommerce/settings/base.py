@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import braintree
 import mimetypes
+from decouple import config
 mimetypes.add_type("text/css", ".css", True)
 
 
@@ -29,7 +30,7 @@ BASE_DIR = BASE_DIR3 / 'settings'
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'o01q47z3t$m*+3sc-3k#qs2&)jsy2sfxgzo%75zmm+)8@*6fry'
+SECRET_KEY = config('SECRET_KEY')
 
 #SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
@@ -128,17 +129,6 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'samnmdb',
-        'USER': 'emre',
-        'PASSWORD': 'Ziy@emre1992',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -184,8 +174,7 @@ STATICFILES_DIRS = [
 #STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR4, 'static_cdn', 'static_root')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR4, 'static_cdn', 'media_root')
+
 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
@@ -198,8 +187,8 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 ADMINS = (('EMRE','konakziyaemre@gmail.com'),)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'emre@samnmtrade.com'
-EMAIL_HOST_PASSWORD = 'yjkcoprubrjigbxc'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SAM&M Trade Team <noreply@samnmtrade.com>'
@@ -213,9 +202,9 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Braintree settings
-BRAINTREE_MERCHANT_ID = '8yxhqvgxn8bz7gk2'  # Merchant ID
-BRAINTREE_PUBLIC_KEY = 'ftf6wvzx6gkscp8j'   # Public Key
-BRAINTREE_PRIVATE_KEY = '2332b51d7959facc134c102285cf031a'  # Private key
+BRAINTREE_MERCHANT_ID = config('BRAINTREE_MERCHANT_ID')  # Merchant ID
+BRAINTREE_PUBLIC_KEY = config('BRAINTREE_PUBLIC_KEY')   # Public Key
+BRAINTREE_PRIVATE_KEY = config('BRAINTREE_PRIVATE_KEY')  # Private key
 
 BRAINTREE_CONF = braintree.Configuration(
     braintree.Environment.Sandbox,
@@ -237,5 +226,5 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # SECURE_HSTS_SECONDS             = 1000000
 # SECURE_FRAME_DENY               = True
 
-STRIPE_PUBLIC_KEY = "pk_test_c6fSv46teTU4tycT1Aiv7ezy"
-STRIPE_PRIVATE_KEY = 'sk_test_LGKgGvfpnOtCepkfRQxOpFub'
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_PRIVATE_KEY = config('STRIPE_PRIVATE_KEY')
