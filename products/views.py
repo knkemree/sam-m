@@ -11,6 +11,7 @@ from products.models import ProductImage, Variation
 
 from django import template
 from django.utils.safestring import mark_safe
+from cart.cart import Cart
 
 register = template.Library()
 
@@ -209,25 +210,23 @@ def product_detail_view(request, id, slug, variantid=None):
     variant = None
     #var = None
     #sizes = Variation.objects.filter(product_id=id, category="size")
-    print("product_detail_view")
-    print(variantid)
+    cart = Cart(request)
+    
+        
     if variantid:
         try:
             variant = Variation.objects.get(id=variantid)
-            messages.success(request, "Choosed size...")
+            messages.success(request, "Size...")
         except:
             pass
 
     #alttakini calistirinca sag ustte cartin icinde neler oldugunu gosteren acilir sekme product detail sayfasinda calismiyor. 
     #request.session["page"] = product.slug
     
-    
     return render(request,
                   'product_detail_view.html',
                   {'product': product,
                   'cart_product_form': cart_product_form,
                   'gallery':gallery,
-                  'variant':variant,
-                  
-                  } 
+                  'variant':variant,} 
                   )
