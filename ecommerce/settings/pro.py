@@ -34,23 +34,3 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 CELERY_BROKER_URL='redis://127.0.0.1:6379'
 CELERY_RESULT_BACKEND='redis://127.0.0.1:6379'
 
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'x-csrf-token',
-]
-
-CORS_ORIGIN_ALLOW_ALL=True
-
-CORS_ORIGIN_WHITELIST = [
-    "https://msrugs.com",
-]
