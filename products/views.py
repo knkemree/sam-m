@@ -221,24 +221,51 @@ def product_detail_view(request, id, slug, variantid=None):
     if variantid:
         try:
             variant = Variation.objects.get(id=variantid)
+            print(variant.ecomdashid)
             try:
+                #eger ecomdashid'si sisteme dogru kayitli ve type:product ise
+                
                 conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
                 payload = ''
                 headers = {
                 'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
                 'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
                 }
-                conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(variant.sku), payload, headers)
+                conn.request("GET", "/api/Inventory?Type=Product&Id="+str(variant.ecomdashid), payload, headers)
+                res = conn.getresponse()
+                data = res.read()
+                veri1 = json.loads(data.decode("utf-8"))
+                sku = veri1["Sku"]
+
+                
+                conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(sku), payload, headers)
                 res = conn.getresponse()
                 data = res.read()
                 veri = json.loads(data.decode("utf-8"))
                 #print(veri["data"])
                 for i in veri["data"]:
                     quantity_on_hand = int(i["QuantityOnHand"])
+                    
             except:
-                pass
+                #eger ecomdash id'si dogru degilse sisteme kayitli sku uzerinden quantity on hand'i bul
+                try:
+                    conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+                    payload = ''
+                    headers = {
+                    'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+                    'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
+                    }
+                    conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(variant.sku), payload, headers)
+                    res = conn.getresponse()
+                    data = res.read()
+                    veri = json.loads(data.decode("utf-8"))
+                    #print(veri["data"])
+                    for i in veri["data"]:
+                        quantity_on_hand = int(i["QuantityOnHand"])
+                except:
+                    pass
 
-            messages.success(request, "Size...")
+            messages.success(request, "Size..")
         except:
             pass
     
