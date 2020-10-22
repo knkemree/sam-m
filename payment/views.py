@@ -8,8 +8,8 @@ from orders.models import Order
 from django.template import loader
 
 #from orders.tasks import order_created, inform_admins
-stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
-STRIPE_PUB_KEY = 'pk_test_c6fSv46teTU4tycT1Aiv7ezy'
+#stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
+#STRIPE_PUB_KEY = 'pk_test_c6fSv46teTU4tycT1Aiv7ezy'
 
 @sensitive_variables('token')
 def payment_process(request):
@@ -147,7 +147,7 @@ def payment_process(request):
         return render(request,
                       'process.html',
                       {'order': order,
-                       'publish_key':STRIPE_PUB_KEY})
+                       'publish_key':settings.STRIPE_PUBLIC_KEY})
 
 # instantiate Braintree payment gateway
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)

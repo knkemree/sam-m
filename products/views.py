@@ -13,6 +13,10 @@ from django import template
 from django.utils.safestring import mark_safe
 from cart.cart import Cart
 
+import http.client
+import mimetypes
+import json
+
 register = template.Library()
 
 @register.filter
@@ -208,6 +212,7 @@ def product_detail_view(request, id, slug, variantid=None):
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
     variant = None
+    quantity_on_hand = None
     #var = None
     #sizes = Variation.objects.filter(product_id=id, category="size")
     cart = Cart(request)
@@ -216,9 +221,27 @@ def product_detail_view(request, id, slug, variantid=None):
     if variantid:
         try:
             variant = Variation.objects.get(id=variantid)
+            try:
+                conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+                payload = ''
+                headers = {
+                'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+                'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
+                }
+                conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(variant.sku), payload, headers)
+                res = conn.getresponse()
+                data = res.read()
+                veri = json.loads(data.decode("utf-8"))
+                #print(veri["data"])
+                for i in veri["data"]:
+                    quantity_on_hand = int(i["QuantityOnHand"])
+            except:
+                pass
+
             messages.success(request, "Size...")
         except:
             pass
+    
 
     #alttakini calistirinca sag ustte cartin icinde neler oldugunu gosteren acilir sekme product detail sayfasinda calismiyor. 
     #request.session["page"] = product.slug
@@ -228,5 +251,6 @@ def product_detail_view(request, id, slug, variantid=None):
                   {'product': product,
                   'cart_product_form': cart_product_form,
                   'gallery':gallery,
-                  'variant':variant,} 
+                  'variant':variant,
+                  'quantity_on_hand':quantity_on_hand} 
                   )

@@ -167,7 +167,7 @@
                             <!-- <form id ="variation" action="{% url "products:choose_size" product.id  %}" method="post" > -->
                             
                                 <!-- <span class="title"> Size:</span> <br> -->
-                                {% if request.user.is_authenticated %}<p><a><strong>Availability: </strong>{% if product.stock >= 1 %} {{ product.stock }}{% else %} Out of Stock{% endif %}</a></p>{% endif %}
+                                {% if request.user.is_authenticated %}<p><a><strong>Availability: </strong>{% if product.stock >= 1 %} {{ quantity_on_hand }}{% else %} Out of Stock{% endif %}</a></p>{% endif %}
                                 {% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}
                                 <p><a><strong>Size: </strong>{% if variant.title is not  null %} {{ variant.title }}{% endif %}</a></p>
                                 

@@ -251,7 +251,7 @@ CORS_ORIGIN_ALLOW_ALL=True
 
 CORS_ORIGIN_WHITELIST = [
     "https://msrugs.com",
-    "https://nyc3.digitaloceanspaces.com/samnm/samnm-static/",
+    "https://nyc3.digitaloceanspaces.com",
 ]
 
 CORS_ALLOW_METHODS = (
