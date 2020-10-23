@@ -132,26 +132,6 @@ class Variation(models.Model):
 
     def save(self, **kwargs):
 
-        # conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
-        # payload = ''
-        # headers = {
-        #     'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
-        #     'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
-        #     }
-        # conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(self.sku), payload, headers)
-        # res = conn.getresponse()
-        # data = res.read()
-        # veri = json.loads(data.decode("utf-8"))
-
-        # if self.ecomdashid is None:
-        #     for i in veri["data"]:
-        #         #print(i["QuantityOnHand"])
-        #         #self.ecomdashid = i["Id"]
-        #         var = Variation.objects.get(id=self.id)
-        #         var.ecomdashid = i["Id"]
-        #         var.save()
-         
-
         return super(Variation, self).save(**kwargs)
 
     def clean(self):
