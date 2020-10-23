@@ -32,8 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = [ 'available'] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
-    inlines = [ImageInline, VariationInline
-    ]
+    inlines = [ImageInline, VariationInline]
 
 #admin.site.register(AttributeBase)
 #admin.site.register(Attribute)

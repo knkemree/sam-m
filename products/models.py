@@ -3,6 +3,10 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.db.models import Min
 import os
+from django.core.exceptions import ValidationError
+import http.client
+import mimetypes
+import json
 
 # Create your models here.   
 
@@ -125,6 +129,41 @@ class Variation(models.Model):
     def get_absolute_url(self):
         return reverse('products:product_detail_view_by_variant',
                        args=[self.product.id, self.product.slug, self.id])
+
+    # def save(self, **kwargs):
+    #     self.clean()
+
+    #     return super(Variation, self).save(**kwargs)
+
+    def clean(self):
+        super().clean()
+        
+
+        conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+        payload = ''
+        headers = {
+            'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+            'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
+            }
+        conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(self.sku), payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        veri = json.loads(data.decode("utf-8"))
+
+        print("ecomdash idsi burda")
+        print(self.ecomdashid)
+        
+        if len(veri["data"]) == 0:
+            raise ValidationError("Sku didn't match with Ecomdash records "+str(self.sku))
+        else:
+            for i in veri["data"]:
+                #print(i["QuantityOnHand"])
+                #self.ecomdashid = i["Id"]
+                var = Variation.objects.get(id=self.id)
+                var.ecomdashid = i["Id"]
+                var.save()
+                
+            
 
     
 
