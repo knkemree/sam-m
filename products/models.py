@@ -114,7 +114,7 @@ class Variation(models.Model):
     category = models.CharField(max_length=120, choices= VAR_CATEGORIES, default='size')
     title = models.CharField(max_length=120) 
     sku = models.CharField(max_length=60, blank=False) 
-    image = models.ForeignKey(ProductImage, on_delete=models.CASCADE, blank=True, null=True, default= 'img/no_image.png' )
+    image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, default= 'img/no_image.png' )
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
     cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
     ecomdashid = models.CharField(max_length=20, blank=True, null=True,) 
