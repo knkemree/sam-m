@@ -21,6 +21,10 @@ from Delivery.forms import ShippingForm
 from Delivery.models import Delivery_methods
 #import weasyprint
 
+import http.client
+import mimetypes
+import json
+
 @staff_member_required
 def admin_order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -56,8 +60,6 @@ def order_create(request):
             
             order.order_total = cart.get_total_price_after_discount()+order.delivery_fees
 
-            
-             
             pm = ((cart.get_total_price_after_discount() - cart.get_total_cost()) / cart.get_total_price_after_discount())*100
             decimal_pm = "%"+str(round(pm,2))
             order.profit_margin = decimal_pm
@@ -80,7 +82,35 @@ def order_create(request):
                                         cost=item['cost'],
                                         )
             
-            
+                conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+                payload = ''
+                headers = {
+                'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+                'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
+                }
+                conn.request("GET", "/api/Inventory?Type=Product&Id="+str(int(float(item['product'].ecomdashid))), payload, headers)
+                res = conn.getresponse()
+                data = res.read()
+                veri = json.loads(data.decode("utf-8"))
+                quantity_on_hand = veri["QuantityOnHand"]
+                new_stock = int(quantity_on_hand) - int(item["quantity"])
+
+                try:
+                    conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+                    payload1 = [{'Sku': str(item['product'].sku), 'Quantity': new_stock, 'WarehouseId': 2019007911.0}]
+                    payload = str(payload1)
+                    headers = {
+                    'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+                    'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39',
+                    'Content-Type': 'application/json'
+                    }
+                    conn.request("POST", "/api/inventory/updateQuantityOnHand", payload, headers)
+                    res = conn.getresponse()
+                    data = res.read()
+                    print(data.decode("utf-8"))
+                except:
+                    pass
+
 
             # try:
             #     for i in Campaign.objects.filter(active=1):
