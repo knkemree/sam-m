@@ -158,6 +158,11 @@ class Variation(models.Model):
                 self.ecomdashid = i["Id"]
                 self.save()
 
+        for i in veri["data"]:
+            if self.ecomdashid != i["Id"]:
+                self.ecomdashid = i["Id"]
+                self.save()
+
         
                 
             
