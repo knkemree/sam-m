@@ -42,21 +42,33 @@
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
 	
 	<style>
-		.add-to-cart-butonu {
-    margin-top: 0px;
-    width: 140px;
-    border-radius: 3px;
-    height: 76;
-    border: none;
-    line-height: 24px;
-    padding: 6px 20px;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: #ffffff;
-	background-color: #363f4d;}
-	.banner-bg-1 {
-    background-image: url(https://images.biglots.com/Shore+Ashton+Abstract+Area+Rug+5+feet+by+7+feet+corner+view+to+show+thickeness+on+a+white+background?set=imageURL%5B%2Fimages%2Fproduct%2F74%2F810461438-1.jpg%5D,env%5Bprod%5D,nocache%5Btrue%5D,ver%5B1%5D,profile%5Bpdp_main_med%5D&call=url%5Bfile:biglots/product.chain%5D);
-}
+
+	.blinking{
+		animation:blinkingText 1.2s infinite;
+	}
+	@keyframes blinkingText{
+		0%{     color:red;    }
+		49%{    color: red; }
+		60%{    color: transparent; }
+		99%{    color:transparent;  }
+		100%{   color: red;    }
+	}
+
+	.add-to-cart-butonu {
+		margin-top: 0px;
+		width: 140px;
+		border-radius: 3px;
+		height: 76;
+		border: none;
+		line-height: 24px;
+		padding: 6px 20px;
+		font-weight: 400;
+		text-transform: uppercase;
+		color: #ffffff;
+		background-color: #363f4d;}
+		.banner-bg-1 {
+		background-image: url(https://images.biglots.com/Shore+Ashton+Abstract+Area+Rug+5+feet+by+7+feet+corner+view+to+show+thickeness+on+a+white+background?set=imageURL%5B%2Fimages%2Fproduct%2F74%2F810461438-1.jpg%5D,env%5Bprod%5D,nocache%5Btrue%5D,ver%5B1%5D,profile%5Bpdp_main_med%5D&call=url%5Bfile:biglots/product.chain%5D);
+	}
 
 /* Modify the backgorund color */ 
 .navbar-white { 
@@ -566,6 +578,7 @@
 											<li><a href="https://contextusa.com/">CONTEXT USA</a></li>
 										</ul>
 									</li>
+									<li><a class="blinking" href="{% url 'contact_page' %}">CLEARANCE</a></li>
 								</ul>
 							</nav>
 						</div>
