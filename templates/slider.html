@@ -41,11 +41,11 @@
 										
 										
 
-										
+										{% if slider.blinking_text %}
 										<div class="text-center blinking">
 											<h6>{{ slider.blinking_text }}</h6>
 										</div>
-
+										{% endif %}
 										
 										{% if slider.header_text %}
 										<h1 class="text-center" style="background-color:white; opacity: 0.7;">{{ slider.header_text|safe }}</h1>
