@@ -1,51 +1,26 @@
+import http.client
+import mimetypes
+import json
+import pandas as pd
+
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
-from .models import Category, Product
 from django.contrib.sessions.models import Session
-from cart.forms import CartAddProductForm
-from products.models import ProductImage, Variation
-
 from django import template
 from django.utils.safestring import mark_safe
-from cart.cart import Cart
 
-import http.client
-import mimetypes
-import json
+from .models import Category, Product, ProductImage, Variation
+from .forms import updateQtyForm
+
+from cart.forms import CartAddProductForm
+from cart.cart import Cart
+from django.core.exceptions import ValidationError
 
 register = template.Library()
-
-@register.filter
-def custom_filter(text, color):
-    safe_text = '<span style="color:{color}">{text}</span>'.format(color=color, text=text)
-    return mark_safe(safe_text)
-
-# def show_category(request, hierarchy= None):
-#     print("hierarchy")
-#     print(hierarchy)
-#     category_slug = hierarchy.split('/')
-#     print("category_slug")
-#     print(category_slug)
-#     category_queryset = list(Category2.objects.filter(active=True))
-#     all_slugs = [ x.slug for x in category_queryset ]
-#     parent = None
-
-#     for slug in category_slug:
-#         if slug in all_slugs:
-#             parent = get_object_or_404(Category2,slug=slug,parent=parent)
-#             #parent = Category2.objects.filter(slug__in=category_slug, parent=None).first()
-#         else:
-#             instance = get_object_or_404(Product, slug=slug)
-#             breadcrumbs_link = instance.get_cat_list()
-#             category_name = [' '.join(i.split('/')[-1].split('-')) for i in breadcrumbs_link]
-#             breadcrumbs = zip(breadcrumbs_link, category_name)
-#             return render(request, "postDetail.html", {'instance':instance,'breadcrumbs':breadcrumbs})
-
-#     return render(request,"categories.html",{'post_set':parent.product_set.all(),'sub_categories':parent.children.all()})
 
 @require_POST
 def choose_size(request, product_id):
@@ -101,26 +76,12 @@ def product_list_view(request, category_slug=None):
                 for child_category in child_categories:
                     
                     child_category_product_set = Product.objects.filter(active=True, category=child_category)
-                    # try:
-                    #     products_without_Child_category_but_has_parent_category = Product.objects.filter(active=True, category=parent_category)
-                    #     parent_category_product_set = products_without_Child_category_but_has_parent_category
-                    #     print("parentsiz urunler")
-                    #     print(products_without_Child_category_but_has_parent_category)
-                    # except:
-                    #     pass
-                    # parent_category_product_set2 = Product.objects.filter(active=True, category__parent=parent_category)
-                    # print("oldu mu")
-                    # print(parent_category_product_set2)
                     for single_product in child_category_product_set:
-                        print("single burda mi")
-                        print(single_product)
                         parent_category_product_set.append(single_product)
             else:
                 parent_category_product_set = Product.objects.filter(available=True, category=parent_category)
                 child_category_product_set = []
             
-            print("asagida")
-            print(parent_category_product_set)
         except:
             all_categories = Category.objects.filter(active=True)
 
@@ -138,11 +99,6 @@ def product_list_view(request, category_slug=None):
     products = Product.objects.filter(available=True)
     
     cart_product_form = CartAddProductForm()
-    #gallery = ProductImage.objects.filter(product_id=id)
-
-    # if parent_category_slug:
-    #     parent_category = get_object_or_404(Category, slug=parent_category_slug, parent=parent)
-    #     parent_category.children.all()
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
@@ -265,7 +221,7 @@ def product_detail_view(request, id, slug, variantid=None):
                 except:
                     pass
 
-            messages.success(request, "Size..")
+            messages.success(request, "Size")
         except:
             pass
     
@@ -281,3 +237,74 @@ def product_detail_view(request, id, slug, variantid=None):
                   'variant':variant,
                   'quantity_on_hand':quantity_on_hand} 
                   )
+
+def updateQtyView(request):
+
+    if request.POST:
+        form = updateQtyForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                df_file = pd.read_csv(request.FILES["file"])
+            except:
+                df_file = pd.read_excel(request.FILES["file"])
+
+      
+      
+            sku_list = df_file[df_file.columns[0]].tolist()
+            new_stock_list = df_file[df_file.columns[1]].tolist()
+
+            conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+            payload = ''
+            headers = {
+                'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+                'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
+            }
+            invalid_skus = []
+            for sku, qty  in zip(sku_list, new_stock_list):
+                
+                try:
+                    conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(sku), payload, headers)
+                    res = conn.getresponse()
+                    data = res.read()
+                    veri = json.loads(data.decode("utf-8"))
+                    if len(veri["data"]) == 0:
+                        invalid_skus.append(str(sku))
+                    else:
+                        for i in veri["data"]:
+                            
+                            updated_stock = int(i["QuantityOnHand"]) + int(qty) 
+
+                        print("yeni stock")
+                        print(updated_stock)
+
+                        payload1 = [{'Sku': str(sku), 'Quantity': updated_stock, 'WarehouseId': 2019007911.0}]
+                        payload = str(payload1)
+                        headers = {
+                            'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+                            'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39',
+                            'Content-Type': 'application/json'
+                        }
+                        conn.request("POST", "/api/inventory/updateQuantityOnHand", payload, headers)
+                        res = conn.getresponse()
+                        data = res.read()
+                        print(data.decode("utf-8"))
+                except:
+                    pass
+            
+            if len(invalid_skus) == 0:
+                messages.success(request,"Succesfully updated!")
+            else:
+                for i in invalid_skus:
+                    messages.warning(request, "Invalid sku! Following sku couldn't update: "+str(i))
+                    
+        
+            #csv = ecomdash_filterer(df_filter, filter_list)
+            #csv = df_all_ecomdash[df_all_ecomdash["SKU Number"].isin(filter_list)].to_csv(index=False)
+            #response = HttpResponse(csv, content_type='text/csv')
+            #response['Content-Disposition'] = 'attachment; filename= "{}"'.format(request.FILES["upload"].name+".csv")
+            #return response
+            print(sku_list)
+            print(new_stock_list)
+    else:
+        form = updateQtyForm()
+    return render(request, "updateQty.html", {'form': form })
