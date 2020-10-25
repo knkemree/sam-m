@@ -163,12 +163,12 @@ def product_list_view(request, category_slug=None):
 
 
 def product_detail_view(request, id, slug, variantid=None):
-
+    
     product = get_object_or_404(Product, id=id)
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
     variant = None
-    quantity_on_hand = None
+    quantity_on_hand = 0
     #var = None
     #sizes = Variation.objects.filter(product_id=id, category="size")
     cart = Cart(request)
@@ -221,21 +221,23 @@ def product_detail_view(request, id, slug, variantid=None):
                 except:
                     pass
 
-            messages.success(request, "Size")
+            #messages.success(request, "Size")
         except:
             pass
     
 
     #alttakini calistirinca sag ustte cartin icinde neler oldugunu gosteren acilir sekme product detail sayfasinda calismiyor. 
     #request.session["page"] = product.slug
-    
+    print(type(quantity_on_hand))
     return render(request,
                   'product_detail_view.html',
                   {'product': product,
                   'cart_product_form': cart_product_form,
                   'gallery':gallery,
                   'variant':variant,
-                  'quantity_on_hand':quantity_on_hand} 
+                  'quantity_on_hand':quantity_on_hand, 
+                  'loop_times':range(1, int(quantity_on_hand)+1)
+                  }
                   )
 
 def updateQtyView(request):

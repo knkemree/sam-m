@@ -82,8 +82,8 @@
                                   {% for item in cart %}
                                     {% with product=item.product %}
                                     <tr>
-                                        <td class="pro-thumbnail"><a href="{{ product.product.get_absolute_url }}"><img src="{% if product.image %}{{ product.image.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="Product"></a></td>
-                                        <td class="pro-title"><a href="{{ product.product.get_absolute_url }}">{{ product.sku }}</a></td>
+                                        <td class="pro-thumbnail"><a href="{{ product.get_absolute_url }}"><img src="{% if product.image %}{{ product.image.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="Product"></a></td>
+                                        <td class="pro-title"><a href="{{ product.get_absolute_url }}">{{ product.sku }}</a></td>
                                         <td class="pro-price"><span>${{ item.price }}</span></td>
 
                                         <td class="pro-quantity">
@@ -416,9 +416,13 @@ document.getElementsByTagName("head")[0].appendChild(scriptTag);
             </td>
             <td>{{ variation.sku }}</td>
             <td>
+              
+              
                 <form id ="update_form" action="{% url "cart:cart_add" variation.id %}" method="post">
+                  <div class="col-xs-2">
                   {{ rs.update_quantity_form.quantity }}
                   {{ rs.update_quantity_form.override }}
+                </div>
                   <input id="update_button" type="submit" value="Update" name="update">
                   {% csrf_token %}
                 </form>

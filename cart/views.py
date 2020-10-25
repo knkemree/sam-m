@@ -9,6 +9,11 @@ from Delivery.models import Delivery_methods
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
+import requests
+import http.client
+import mimetypes
+import json
+
 
 
 @require_POST
@@ -26,15 +31,29 @@ def cart_add(request, product_id):
         else:
            product = get_object_or_404(Variation, id=product_id)  #bunu cart detail sayfasini guncellerken kullaniyor
         
+        conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+        payload = ''
+        headers = {
+            'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+            'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
+        }
+        conn.request("GET", "/api/Inventory?Type=Product&Id="+str(int(float(product.ecomdashid))), payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        veri1 = json.loads(data.decode("utf-8"))
+        #print(veri1)
+        #print(veri1["data"])
+        on_hand = int(veri1["QuantityOnHand"])
+        print("on hand burda")
+        print(type(on_hand), on_hand)
+        
         cart.add(
                  product=product,
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
+        
 
-        if cd['override'] == True:
-            messages.success(request, "Cart updated...")
-        else:
-            messages.success(request, "Added to cart !")
+        
 
     else:
         del request.session["variation_id"]
@@ -45,8 +64,22 @@ def cart_add(request, product_id):
     except: 
         pass
 
-    # for key, value in request.session.items():
-    #             print('{} => {}'.format(key, value))
+    for key, value in request.session.items():
+        if key == "cart":
+
+            print('{} => {}'.format(key, value))
+            for k, v in value.items():
+                if str(product.id) == str(k):
+
+                    if v["quantity"] > int(on_hand):
+                        
+                        v["quantity"] = int(on_hand)
+                        messages.warning(request, "Max. quantity added to cart!")
+                    elif cd['override'] == True:
+                        messages.success(request, "Cart updated...")
+                    else:
+                        messages.success(request, "Added to cart !")
+
 
     return HttpResponseRedirect(url)
     #return redirect('cart:cart_detail')

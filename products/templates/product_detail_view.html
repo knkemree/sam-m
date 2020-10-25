@@ -146,7 +146,7 @@
                             
                             {% if variant %}
                             
-                                <span class="discounted-price">${{ variant.price }}</span> <small><small> {{ variant.title }}</small></small>
+                                <span class="discounted-price">${{ variant.price }}</span s> <small><small style="background-color: #FFFF00"> {{ variant.title }}</small></small>
                             {% else %}
                                 {% if request.user.is_authenticated %}
                                     <!-- <span class="main-price discounted">$60</span> -->
@@ -244,9 +244,21 @@
                             
                             <div class="cart-buttons mb-20">
                                 <br>
-                            <form action="{% url "cart:cart_add" variant.id %}" method="post">
+        
                                 
-                                {{ cart_product_form.as_p }}
+                            <form action="{% url "cart:cart_add" variant.id %}" method="post">
+                                <p>
+                                <label for="id_quantity">Quantity:</label>
+                                
+                                    <select name="quantity" id="id_quantity">
+                                        {% for i in loop_times %}
+                                            <option value={{ i }}>{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                
+                                    <input type="hidden" name="override" value="False" id="id_override">
+                                </p>
+                                <!-- {{ cart_product_form.as_p }} -->
                                 {% csrf_token %}
                                 <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
                                 <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
