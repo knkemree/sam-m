@@ -74,7 +74,7 @@ def cart_add(request, product_id):
                     if v["quantity"] > int(on_hand):
                         
                         v["quantity"] = int(on_hand)
-                        messages.warning(request, "Max. quantity added to cart!")
+                        messages.warning(request, "Reached max. quantity")
                     elif cd['override'] == True:
                         messages.success(request, "Cart updated...")
                     else:

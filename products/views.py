@@ -43,10 +43,9 @@ def choose_size(request, product_id):
             else:
                 try:
                     variation = Variation.objects.get(product=product, category__iexact=key, title__iexact=val)
-                    print("selected variation id")
+                    
                     request.session["variation_id"] = variation.id
-                    print(request.session.get("variation_id"))
-                    messages.success(request, "Choosed size")
+                    
                 except:
                     pass
 
