@@ -1,5 +1,6 @@
 import braintree
 import stripe
+from decouple import config
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.debug import sensitive_post_parameters, sensitive_variables
@@ -10,6 +11,8 @@ from django.template import loader
 #from orders.tasks import order_created, inform_admins
 #stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
 #STRIPE_PUB_KEY = 'pk_test_c6fSv46teTU4tycT1Aiv7ezy'
+
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 
 @sensitive_variables('token')
 def payment_process(request):
@@ -147,7 +150,7 @@ def payment_process(request):
         return render(request,
                       'process.html',
                       {'order': order,
-                       'publish_key':settings.STRIPE_PUBLIC_KEY})
+                       'publish_key':STRIPE_PUBLIC_KEY})
 
 # instantiate Braintree payment gateway
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
