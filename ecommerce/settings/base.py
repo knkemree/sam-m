@@ -47,24 +47,23 @@ AUTH_USER_MODEL = 'account.Customers'
 INSTALLED_APPS = [
     
     'django.contrib.admin',
-    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'django_celery_beat',
     'django_celery_results',
+
+
     'storages',
-
-    
-
     'phonenumber_field',
     'localflavor',
     'corsheaders',
-    
+    'ckeditor',
 
     'payment.apps.PaymentConfig',
     "products",
@@ -76,8 +75,7 @@ INSTALLED_APPS = [
     'Delivery',
     'marketing',
 
-    'django.contrib.sites',
-    'django.contrib.sitemaps',
+    
 
     
     

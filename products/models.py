@@ -2,8 +2,11 @@ from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.db.models import Min
-import os
 from django.core.exceptions import ValidationError
+
+from ckeditor.fields import RichTextField
+
+import os
 import http.client
 import mimetypes
 import json
@@ -47,9 +50,11 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE) 
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
-    slug = models.SlugField(max_length=200, db_index=True, unique=True) 
+    slug = models.SlugField(max_length=200, db_index=True) 
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, default= 'img/no_image.png')
-    description = models.TextField(blank=True) 
+    description = RichTextField(blank=True, null=True) 
+
+    #description = models.TextField(blank=True) 
     #price = models.DecimalField(max_digits=10, decimal_places=2)
     #sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True) 
     #cost = models.DecimalField(max_digits=10, decimal_places=2)
@@ -113,7 +118,7 @@ class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     category = models.CharField(max_length=120, choices= VAR_CATEGORIES, default='size')
     title = models.CharField(max_length=120) 
-    sku = models.CharField(max_length=60, blank=False) 
+    sku = models.CharField(max_length=60, blank=False, unique=True, help_text="SKU must be unique") 
     image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, default= 'img/no_image.png' )
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
     cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False )
