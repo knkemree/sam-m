@@ -260,3 +260,5 @@ CORS_ALLOW_METHODS = (
     'POST',
     'PUT',
 )
+
+CKEDITOR_UPLOAD_PATH = "uploads"
