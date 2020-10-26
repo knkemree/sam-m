@@ -34,6 +34,7 @@ class ProductAdmin(admin.ModelAdmin):
     save_as = True
     inlines = [ImageInline, VariationInline]
 
+
 #admin.site.register(AttributeBase)
 #admin.site.register(Attribute)
 #admin.site.register(ProductAttribute)

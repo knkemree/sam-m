@@ -2,13 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, get_user_model
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 from products.models import Category, Product
 from account.models import Customers
 import stripe
-stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
+
+
 
 
 def registration_view(request):
@@ -50,3 +54,4 @@ def registration_view(request):
         context['registration_form'] = form
 
     return render(request, 'register2.html', context)
+

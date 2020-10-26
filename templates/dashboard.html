@@ -26,7 +26,27 @@
 		</div>
 	</div>
 	
-    <!--=====  End of breadcrumb area  ======-->
+	<!--=====  End of breadcrumb area  ======-->
+	
+	<!--=============================================
+    =            beginning of message         =
+    =============================================-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-{{message.tags}}" role="alert">
+					{{message}}
+				</div>
+				{% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!--=====  End of message  ======-->
     
     <!--=============================================
     =            My Account page content         =
@@ -50,7 +70,7 @@
 								<!-- <a href="#payment-method" data-toggle="tab"><i class="fa fa-credit-card"></i> Payment
 									Method</a> -->
 
-								<a href="#address-edit" data-toggle="tab"><i class="fa fa-map-marker"></i> address</a>
+								<!-- <a href="#address-edit" data-toggle="tab"><i class="fa fa-map-marker"></i> address</a> -->
 
 								<a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> Account Details</a>
 
@@ -74,8 +94,8 @@
                     </div>
 
 										<p class="mb-0">From your account dashboard. you can easily check &amp; view your
-											recent orders, manage your shipping and billing addresses and edit your
-											password and account details.</p>
+											recent orders, manage your address and edit your
+											password.</p>
 									</div>
 								</div>
 								<!-- Single Tab Content End -->
@@ -106,7 +126,7 @@
 													<td>${{ order.order_total }}</td>
 													<td>{% if order.fulfillment == False %} <i class="fa fa-remove" style="color:red"></i>{% else %}<i class="fa fa-check" style="color:green"></i>{% endif %}</td>
 													<td>{% if order.payment == False %} <i class="fa fa-remove" style="color:red"></i>{% else %}<i class="fa fa-check" style="color:green"></i>{% endif %}</td>
-													<td><a href="cart.html" class="btn">View</a></td>
+													<td><a href="{{ order.get_absolute_url }}" class="btn">View</a></td>
 												</tr>
 												{% endfor %}
 												
@@ -170,7 +190,7 @@
 										<h3>Billing Address</h3>
 
 										<address>
-											<p><strong>Alex Tuntuni</strong></p>
+											<p><strong>{{ user.first_name}} {{ user.last_name}}</strong></p>
 											<p>1355 Market St, Suite 900 <br>
 												San Francisco, CA 94103</p>
 											<p>Mobile: (123) 456-7890</p>
@@ -190,24 +210,40 @@
 											<form action="#">
 												<div class="row">
 													<div class="col-lg-6 col-12 mb-30">
-														<input id="first-name" placeholder="First Name" type="text">
+														<li>Company: {{ user.company_name }}</li>
+														
+														<li>First Name: {{ user.first_name }}</li>
+														<li>Last Name: {{ user.last_name }}</li>
+														<li>Email: {{ user }}</li>
+														<li>Tax Payer No: {{ user.ein }} {% if user.ein_verified == False %} <i class="fa fa-remove" style="color:red"></i>{% else %}<i class="fa fa-check" style="color:green"></i>{% endif %}</li>
+														
+														
+														
+														<!-- <input id="first-name" placeholder="{{ user.first_name }}" type="text"> -->
 													</div>
 
-													<div class="col-lg-6 col-12 mb-30">
-														<input id="last-name" placeholder="Last Name" type="text">
-													</div>
+													<!-- <div class="col-lg-6 col-12 mb-30">
+														<input id="last-name" placeholder="{{ user.last_name}}" type="text">
+													</div> -->
 
-													<div class="col-12 mb-30">
+													<!-- <div class="col-12 mb-30">
 														<input id="display-name" placeholder="Display Name" type="text">
-													</div>
+													</div> -->
 
-													<div class="col-12 mb-30">
-														<input id="email" placeholder="Email Address" type="email">
-													</div>
+													<!-- <div class="col-12 mb-30">
+														<input id="email" placeholder="{{ user }}" type="email">
+													</div> -->
 
 													<div class="col-12 mb-30"><h4>Password change</h4></div>
-
 													<div class="col-12 mb-30">
+														<form action="{% url 'dashboard' %}" method="post">
+															{% csrf_token %}
+															{{ form.as_p }}
+															<button type="submit">Save Changes</button>
+														</form>
+													</div>
+
+													<!-- <div class="col-12 mb-30">
 														<input id="current-pwd" placeholder="Current Password" type="password">
 													</div>
 
@@ -220,7 +256,7 @@
 													</div>
 
 													<div class="col-12">
-														<button class="save-change-btn">Save Changes</button>
+														<button class="save-change-btn">Save Changes</button> -->
 													</div>
 
 												</div>

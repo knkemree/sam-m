@@ -3,6 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from .forms import ContactForm, LoginForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from orders.models import Order
@@ -116,13 +119,28 @@ def contact_page(request):
     return render(request, "contact/view.html", context)
 
 @login_required
-def dashboard(request):
-    print("user kim")
+def dashboard(request, order_id=None):
+
     user_orders = Order.objects.filter(email=request.user)
-    print(user_orders)
-    print(request.user)
+
+    user = request.user
+
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+
     return render(request,
                   'dashboard.html',
                   {'section': 'dashboard',
-                  'user_orders':user_orders})
+                  'user_orders':user_orders,
+                  'user':user,
+                  'form':form})
 

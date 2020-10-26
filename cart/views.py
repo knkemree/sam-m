@@ -51,9 +51,6 @@ def cart_add(request, product_id):
                  product=product,
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
-        
-
-        
 
     else:
         del request.session["variation_id"]
@@ -66,13 +63,9 @@ def cart_add(request, product_id):
 
     for key, value in request.session.items():
         if key == "cart":
-
-            print('{} => {}'.format(key, value))
             for k, v in value.items():
                 if str(product.id) == str(k):
-
                     if v["quantity"] > int(on_hand):
-                        
                         v["quantity"] = int(on_hand)
                         messages.warning(request, "Reached max quantity")
                     elif cd['override'] == True:

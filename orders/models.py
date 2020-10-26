@@ -5,6 +5,7 @@ from decimal import Decimal
 from django.core.validators import MinValueValidator, MaxValueValidator
 from coupons.models import Coupon, Campaign
 from Delivery.models import Delivery_methods
+from django.urls import reverse
 #from localflavor.us.forms import USStateSelect
 
 class Order(models.Model):
@@ -51,6 +52,10 @@ class Order(models.Model):
         total_cost = sum(item.get_customer_cost() for item in self.items.all())
         return total_cost - total_cost * \
             (self.campaign_discount / Decimal(100))+self.delivery_fees 
+
+    def get_absolute_url(self):
+        return reverse('order_details',
+                       args=[self.id])
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,
@@ -129,6 +134,5 @@ class OrderItem(models.Model):
     def get_seller_cost(self):
         return self.cost * self.quantity
 
-    def current_item_stock(self):
-        pass
-
+    
+    
