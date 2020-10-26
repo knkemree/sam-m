@@ -124,7 +124,7 @@ class Variation(models.Model):
     image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, default= 'img/no_image.png' )
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0 )
     cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0 )
-    sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0 )
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True )
     ecomdashid = models.CharField(max_length=20, blank=True, null=True,) 
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     clearance = models.BooleanField(default=False)
