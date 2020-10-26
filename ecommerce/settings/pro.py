@@ -34,3 +34,4 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 CELERY_BROKER_URL='redis://127.0.0.1:6379'
 CELERY_RESULT_BACKEND='redis://127.0.0.1:6379'
 
+CKEDITOR_BASEPATH = "https://nyc3.digitaloceanspaces.com/samnm/samnm-static/ckeditor/ckeditor/"
