@@ -60,8 +60,8 @@ class Product(models.Model):
     available = models.BooleanField(default=True) 
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True)
-    stock = models.IntegerField(null=True, blank=True, default=0)
-    stock_managed = models.BooleanField(default=True)
+    #stock = models.IntegerField(null=True, blank=True, default=0)
+    #stock_managed = models.BooleanField(default=True)
 
     class Meta: 
         ordering = ('name',) 
@@ -78,6 +78,9 @@ class Product(models.Model):
 
     def get_lowest_price(self):
         return self.variation_set.all().aggregate(Min('price'))
+
+    class Meta:
+        ordering = ['name','-created']
         
 
 class ProductImage(models.Model):
