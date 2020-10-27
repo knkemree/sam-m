@@ -10,6 +10,7 @@ from django.template import loader
 
 #from orders.tasks import order_created, inform_admins
 stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
+#stripe.api_key = config('stripe.api_key')
 #STRIPE_PUB_KEY = 'pk_test_c6fSv46teTU4tycT1Aiv7ezy'
 
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
