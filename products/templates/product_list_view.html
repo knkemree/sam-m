@@ -449,7 +449,7 @@
                                 </div>
 
                                 <div class="content">
-                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
+                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.productimage_set.all }}{{ product.name}}</a></h2>
                                     
                                     
                                     {% if request.user.is_authenticated %}
