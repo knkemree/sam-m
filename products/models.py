@@ -84,7 +84,7 @@ class Product(models.Model):
         
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='products/%Y/%m/%d',default= 'img/no_image.png', blank=True, null=True)
     featured = models.BooleanField(default=True)
     thumbnail = models.BooleanField(default=True)
