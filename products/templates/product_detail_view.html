@@ -19,6 +19,8 @@
         })
     });
 </script>
+
+
   
 
 <!--=============================================
@@ -88,12 +90,16 @@
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img img-full">
                                     
-                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                    <a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="big-image-popup"><i class="fa fa-search-plus"></i></a>
+                                    <img src="{% if gallery.0.image.url %}{{ gallery.0.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                    <a href="{% if gallery.0.image.url %}{{ pgallery.0.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="big-image-popup"><i class="fa fa-search-plus"></i></a>
                                 </div>
                                 <!--Single Product Image End-->
                             </div>
+                            {{ gallery.0.image.url}}
+                                
                             {% for rs in gallery %}
+                            
+
                             <div class="tab-pane fade" id="{{ rs.image.id}}" role="tabpanel" aria-labelledby="single-slide-tab-2">
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img img-full">
@@ -102,6 +108,7 @@
                                 </div>
                                 <!--Single Product Image End-->
                             </div>
+                            
                             {% endfor %}
                             
                         </div>
@@ -111,8 +118,9 @@
                         <div class="product-small-image-list fl-product-small-image-list fl3-product-small-image-list"> 
                             <div class="nav small-image-slider fl3-small-image-slider" role="tablist">
                                 {% for rs in gallery %}
+                                
                                 <div class="single-small-image img-full">
-                                    <a data-toggle="tab" id="single-slide-tab-1" href="{{ rs.image.url }}"><img src="{{ rs.image.url }}"
+                                    <a data-toggle="tab" id="{{ rs.image.id }}" href="{{ rs.image.url }}"><img src="{{ rs.image.url }}"
                                         class="img-fluid" alt=""></a>
                                 </div>
                                 {% endfor %}
