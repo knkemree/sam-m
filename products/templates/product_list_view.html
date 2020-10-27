@@ -438,7 +438,7 @@
                                             <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                     <a href="{{ product.get_absolute_url }}">
                                         
-                                        <img src="{% if product.productimage_set.all %}{{ product.productimage_set.all.0.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                         
                                     </a>
                                     
@@ -448,7 +448,7 @@
                                     </span> -->
                                 </div>
                                 <div class="content">
-                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.productimage_set.all }}{{ product.name}}</a></h2>
+                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.productimage_set }}{{ product.name}}</a></h2>
                                     
                                     
                                     {% if request.user.is_authenticated %}
