@@ -118,11 +118,43 @@
                         <div class="product-small-image-list fl-product-small-image-list fl3-product-small-image-list"> 
                             <div class="nav small-image-slider fl3-small-image-slider" role="tablist">
                                 {% for rs in gallery %}
+                                <div style="width: 100px; 
+                                            height: 100px;
+                                            background-color: white;
+                                            background-image: url('{{ MEDIA_URL }}{{ rs.image.url }}') ;
+                                            background-repeat: no-repeat;
+                                            background-size: contain;
+                                            background-position: center;
+                                            margin: 0 auto;" > 
+                                            <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
+                                    <a href="">
+                                        
+                                        <img src="" class="img-fluid" alt="">
+                                        
+                                    </a>
+                                    
+                                    <!-- wishlist icon -->
+                                    <!-- <span class="wishlist-icon">
+                                            <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
+                                    </span> -->
+                                </div>
                                 
-                                <div class="single-small-image img-full">
+                                <!-- <div style="width: 100px; 
+                                            height: 100px;
+                                            background-color: white;
+                                            background-image: url('{{ MEDIA_URL }}{{ rs.image.url }}') ;
+                                            background-repeat: no-repeat;
+                                            background-size: contain;
+                                            background-position: center;
+                                            margin: 0 auto;">
                                     <a data-toggle="tab" id="{{ rs.image.id }}" href="{{ rs.image.url }}"><img src="{{ rs.image.url }}"
                                         class="img-fluid" alt=""></a>
-                                </div>
+                                </div> -->
+
+                                <!-- <div class="single-small-image img-full">
+                                    <a data-toggle="tab" id="{{ rs.image.id }}" href="{{ rs.image.url }}"><img src="{{ rs.image.url }}"
+                                        class="img-fluid" alt=""></a>
+                                </div> -->
                                 {% endfor %}
                             
                             </div>
