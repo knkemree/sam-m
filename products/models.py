@@ -85,7 +85,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
-    image = models.ImageField(upload_to='products/%Y/%m/%d',default= 'img/no_image.png', blank=True, null=True)
+    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True)
     featured = models.BooleanField(default=True)
     thumbnail = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
@@ -124,7 +124,7 @@ class Variation(models.Model):
     category = models.CharField(max_length=120, choices= VAR_CATEGORIES, default='size')
     title = models.CharField(max_length=120) 
     sku = models.CharField(max_length=60, blank=False, unique=True, help_text="SKU must be unique") 
-    image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, default= 'img/no_image.png' )
+    image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True )
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0 )
     cost = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0 )
     sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True )
