@@ -142,9 +142,9 @@ class Variation(models.Model):
         return reverse('products:product_detail_view_by_variant',
                        args=[self.product.id, self.product.slug, self.id])
 
-    def save(self, **kwargs):
+    # def save(self, **kwargs):
 
-        return super(Variation, self).save(**kwargs)
+    #     return super(Variation, self).save(**kwargs)
 
     def clean(self):
         super().clean()
@@ -163,17 +163,22 @@ class Variation(models.Model):
         
         if len(veri["data"]) == 0:
             raise ValidationError("Sku didn't match with Ecomdash records "+str(self.sku))
+        try:
+            if self.ecomdashid is None:
+                
+                for i in veri["data"]:
+                    self.ecomdashid = i["Id"]
+                    self.save()
+        except:
+            pass
 
-        if self.ecomdashid is None:
-            
+        try:
             for i in veri["data"]:
-                self.ecomdashid = i["Id"]
-                self.save()
-
-        for i in veri["data"]:
-            if self.ecomdashid != i["Id"]:
-                self.ecomdashid = i["Id"]
-                self.save()
+                if self.ecomdashid != i["Id"]:
+                    self.ecomdashid = i["Id"]
+                    self.save()
+        except:
+            pass
 
         
                 
