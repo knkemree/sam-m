@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Order Details{% endblock %}
+
+{% block blank %}
+<!--=============================================
+	=            breadcrumb area         =
+	=============================================-->
+	
+	<div class="breadcrumb-area pt-15 pb-15">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<!--=======  breadcrumb container  =======-->
+					
+					<div class="breadcrumb-container">
+						<nav>
+							<ul>
+								<li class="parent-page"><a href="index.html">Home</a></li>
+								<li><a href="{% url 'dashboard' %}">Orders</a></li>
+							</ul>
+						</nav>
+					</div>
+					
+					<!--=======  End of breadcrumb container  =======-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--=====  End of breadcrumb area  ======-->
+	
+	<!--=============================================
+    =            beginning of message         =
+    =============================================-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% if messages %}
+				{% for message in messages %}
+				<div class="alert alert-{{message.tags}}" role="alert">
+					{{message}}
+				</div>
+				{% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!--=====  End of message  ======-->
+    
+    <!--=============================================
+    =            My Account page content         =
+    =============================================-->
+
+    <div class="page-section mb-50">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="row">
+						
+                    
+                
+                
+                        <div class="col-lg-12 col-12">
+                            <div class="tab-content" id="myaccountContent">
+                                <!-- Single Tab Content Start -->
+                                <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
+                                    <div class="myaccount-content">
+                                        <h3>Order #{{ order.id }}</h3>
+                                    </div>
+                                </div>
+                                <div>
+                                    <table class="table table-bordered">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product</th>
+                                            <th>Qty</th>
+                                            <th>Unit Price</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                
+                                        <tbody>
+                                        {% for item in order.items.all %}
+                                        <tr>
+                                            <td><img style="width: auto; height: 100px;" src="{{ item.product.image.url }}"></td>
+                                            <td><a href="{{ item.product.get_absolute_url }}">{{ item.variant }}</a></td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td><a href="#" class="btn">{{ item.price }}</a></td>
+                                            <td>{{ item.get_customer_cost }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <p>Cart Total: ${{order.cart_total }}</p>
+                            
+                            <p>{{order.delivery_method}}: ${{ order.delivery_fees}}</p>
+                            <p>{% if order.discounted_amount %}Discount: -${{ order.discounted_amount|floatformat }}{% endif %}</p>
+                            <p>Grand Total: ${{ order.order_total }}</p>
+                            
+                            
+                        </div>
+                        <div class="col">
+                            
+                        </div>
+                        <div class="col">
+                            
+                            
+                        </div>
+
+						
+					</div>
+						<!-- My Account Tab Content End -->
+                </div>
+            </div>
+        </div>
+    </div>  
+  
+
+{% endblock %}

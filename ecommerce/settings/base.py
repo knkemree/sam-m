@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'localflavor',
     'corsheaders',
     'ckeditor',
+    
+    'editorjs_field',
 
     'payment.apps.PaymentConfig',
     "products",
@@ -262,3 +264,4 @@ CORS_ALLOW_METHODS = (
 )
 
 CKEDITOR_UPLOAD_PATH = "uploads"
+

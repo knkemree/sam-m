@@ -5,6 +5,9 @@ from products.models import ProductImage, Variation
 
 
 
+
+
+
 # Register your models here.
 class ImageInline(admin.TabularInline):
     model = ProductImage

@@ -12,7 +12,7 @@ class Order(models.Model):
     company_name =models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.ForeignKey(Customers, on_delete=models.CASCADE, blank=True)
+    email = models.ForeignKey(Customers, on_delete=models.CASCADE, blank=True, related_name="orders")
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
@@ -33,7 +33,8 @@ class Order(models.Model):
     campaign_discount = models.IntegerField(default=0, help_text="Discount by percentage. Maximum 100.",
                                   validators=[MinValueValidator(0),
                                       MaxValueValidator(100)])
-    discounted_amount = models.IntegerField(default=0)
+    #discounted_amount = models.IntegerField(default=0)
+    discounted_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     delivery_method = models.ForeignKey(Delivery_methods, on_delete=models.CASCADE, blank=True, null=True)
     delivery_fees = models.IntegerField(default=0)
@@ -53,6 +54,10 @@ class Order(models.Model):
         return total_cost - total_cost * \
             (self.campaign_discount / Decimal(100))+self.delivery_fees 
 
+    def cart_total(self):
+        total_cost = sum(item.get_customer_cost() for item in self.items.all())
+        return total_cost
+
     def get_absolute_url(self):
         return reverse('order_details',
                        args=[self.id])
@@ -60,7 +65,8 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,
                               related_name='items',
-                              on_delete=models.CASCADE)
+                              on_delete=models.CASCADE,
+                              )
     product = models.ForeignKey(Product,
                                 related_name='order_items',
                                 on_delete=models.CASCADE)

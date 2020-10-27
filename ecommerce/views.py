@@ -124,6 +124,8 @@ def dashboard(request, order_id=None):
     user_orders = Order.objects.filter(email=request.user)
 
     user = request.user
+    
+    
 
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -142,5 +144,13 @@ def dashboard(request, order_id=None):
                   {'section': 'dashboard',
                   'user_orders':user_orders,
                   'user':user,
-                  'form':form})
+                  'form':form,
+                  })
 
+@login_required
+def order_details(request, order_id):
+    order = Order.objects.get(id=order_id)
+    context = {
+        'order': order,
+    }
+    return render(request, 'order_details.html', context)

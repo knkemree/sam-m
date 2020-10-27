@@ -200,6 +200,12 @@ def payment_process1(request):
 
 
 def payment_done(request):
+    user = request.user
+    print("kullanici burada")
+    context = {
+        'user':user
+    }
+    #print(user.order_set.all)
     return render(request, 'done.html')
 def payment_canceled(request):
     return render(request, 'canceled.html')

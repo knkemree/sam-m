@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import home_page, about_page, contact_page, dashboard
-from ecommerce.views import login_form
+from ecommerce.views import login_form, order_details
 
 
 urlpatterns = [
@@ -34,7 +34,7 @@ urlpatterns = [
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
     #path("register/", register_page, name="register"),
     path('dashboard/', dashboard, name='dashboard'),
-    path('dashboard/<int:order_id>/', dashboard, name='order_details'),
+    path('dashboard/order/<int:order_id>/', order_details, name='order_details'),
     #path('dashboard/allow_change_password/', change_password, name='allow_change_password'),
     # reset password urls
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),
