@@ -90,8 +90,8 @@
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img img-full">
                                     
-                                    <img src="{% if gallery.0.image.url %}{{ gallery.0.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                    <a href="{% if gallery.0.image.url %}{{ pgallery.0.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="big-image-popup"><i class="fa fa-search-plus"></i></a>
+                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                    <a href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="big-image-popup"><i class="fa fa-search-plus"></i></a>
                                 </div>
                                 <!--Single Product Image End-->
                             </div>
@@ -202,13 +202,14 @@
                         <p class="product-description mb-20">{{ product.description|safe }}</p>
                         
                         {% if request.user.is_authenticated %}
+                        {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>{% if quantity_on_hand >= 1 %} {{ quantity_on_hand }}{% else %} Out of Stock{% endif %}</a></p>{% endif %}{% endif %}
+                        {% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}
                             {% if product.variation_set.sizes %}
                             
                             <!-- <form id ="variation" action="{% url "products:choose_size" product.id  %}" method="post" > -->
                             
                                 <!-- <span class="title"> Size:</span> <br> -->
-                                {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>{% if quantity_on_hand >= 1 %} {{ quantity_on_hand }}{% else %} Out of Stock{% endif %}</a></p>{% endif %}{% endif %}
-                                {% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}
+                                
                                 <p><a><strong>Size: </strong>{% if variant.title is not  null %} {{ variant.title }}{% endif %}</a></p>
                                 
                                 <!-- <p><a><strong>Choose size: </strong> -->
@@ -266,14 +267,26 @@
                         {% endif %}
 
                         {% if product.variation_set.packages %}
-                        <div class="size mb-20">
-                            <span class="title"> Package:</span> <br>
-                            <select name="size" class="nice-select">
-                                {% for item in product.variation_set.packages %}
-                                <option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                        <p><a><strong>Package: </strong>{% if variant.title is not  null %} {{ variant.title }}{% endif %}</a></p>
+                        <select name="size" id="id_size2" onchange='changeSelectedvalue()'>
+                            <option value="" selected>Pick a Package</option>
+                            {% for item in product.variation_set.packages %}
+                                <option value="{{ item.get_absolute_url }}" ><a>{{ item.title|capfirst }} > ${{ item.price }}</a></option>
+                            {% endfor %}
+                        </select>
+
+                          <script>
+                              $(function(){
+                                // bind change event to select
+                                $('#id_size2').on('change', function () {
+                                    var url = $(this).val(); // get selected value
+                                    if (url) { // require a URL
+                                        window.location = url; // redirect
+                                    }
+                                    return false;
+                                });
+                              });
+                          </script>
                         {% endif %}
                     
 
