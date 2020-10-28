@@ -176,13 +176,24 @@
                                         
                                         <div class="cart-buttons mb-20">
                                             <!-- <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button> -->
-                                                <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                                {{ cart_product_form.as_p }}
-                                                {% csrf_token %} 
-                                                <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart">
-                                                <button type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                                               
+                                            <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                                <p>
+                                                <label for="id_quantity">Quantity:</label>
                                                 
-                                                </form>
+                                                    <select name="quantity" id="id_quantity">
+                                                        {% for i in loop_times %}
+                                                            <option value={{ i }}>{{ i }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                
+                                                    <input type="hidden" name="override" value="False" id="id_override">
+                                                </p>
+                                                <!-- {{ cart_product_form.as_p }} -->
+                                                {% csrf_token %}
+                                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
+                                                <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                                            </form>
                 
                                         </div>
                                     

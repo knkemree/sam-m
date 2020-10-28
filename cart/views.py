@@ -37,7 +37,8 @@ def cart_add(request, product_id):
             'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
             'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
         }
-        conn.request("GET", "/api/Inventory?Type=Product&Id="+str(int(float(product.ecomdashid))), payload, headers)
+        #conn.request("GET", "/api/Inventory?Type=Product&Id="+str(int(float(product.ecomdashid))), payload, headers)
+        conn.request("GET", "/api/Inventory?Id="+str(int(float(product.ecomdashid))), payload, headers)
         res = conn.getresponse()
         data = res.read()
         veri1 = json.loads(data.decode("utf-8"))

@@ -312,7 +312,10 @@ def updateQtyView(request):
 
 def clearance(request):
     clearance_products = Variation.objects.filter(clearance=True, active=True)
+    cart_product_form = CartAddProductForm()
     context = {
-        "clearance_products":clearance_products
+        "clearance_products":clearance_products,
+        'cart_product_form':cart_product_form,
+        'loop_times':range(1, 15)
     }
     return render(request, "clearance.html", context)
