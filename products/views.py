@@ -315,4 +315,4 @@ def clearance(request):
     context = {
         "clearance_products":clearance_products
     }
-    render(request, "clearance.html", context)
+    return render(request, "clearance.html", context)

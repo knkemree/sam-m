@@ -15,6 +15,6 @@ urlpatterns = [
     path('<int:id>/<slug:slug>/', product_detail_view, name='product_detail_view'),
     path('<int:id>/<slug:slug>/<int:variantid>/', product_detail_view, name='product_detail_view_by_variant'),
     path('ecomdash/updateQty/', updateQtyView, name='updateQty'),
-    path('all_products/clearance', clearance, name='clearance'),
+    path('all_products/clearance/', clearance, name='clearance'),
     
 ]
