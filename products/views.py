@@ -309,3 +309,10 @@ def updateQtyView(request):
     else:
         form = updateQtyForm()
     return render(request, "updateQty.html", {'form': form })
+
+def clearance(request):
+    clearance_products = Variation.objects.filter(clearance=True, active=True)
+    context = {
+        "clearance_products":clearance_products
+    }
+    render(request, "clearance.html", context)

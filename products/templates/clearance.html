@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-  {% if category %}{{ category.name }}{% else %}Products{% endif %}
+  Clearance
 {% endblock %}
 {% block blank %}
 <!--=============================================
@@ -18,12 +18,9 @@
 						<nav>
 							<ul>
                                 <li class="parent-page"><a href="/">Home</a></li>
-                                {% if parent_category %}
-                                <li><a href="{{ parent_category.get_absolute_url }}">{{ parent_category.name }}  ></a></li>
-                                {% else %}
-                                {% if child_category.parent is not None %}<li><a href="{{ child_category.parent.get_absolute_url }}">{{ child_category.parent }}  ></a></li>{% endif %}
-                                <li><a href="{{ child_category.get_absolute_url }}">{{ child_category.name }}  ></a></li>
-                                {% endif %}
+                                
+                                <li><a href="{% url 'products:clearance' %}">Clearance></a></li>
+                                
 								<!-- <li><a href="{{ category.get_absolute_url }}">{% if category %}{{ category.name }}{% else %}Products{% endif %}</a></li> -->
 							</ul>
 						</nav>
