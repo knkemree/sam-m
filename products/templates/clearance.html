@@ -171,7 +171,7 @@
                                     </span> -->
                                 </div>
                                 <div class="content">
-                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.sku}}{{ product.get_quantity_on_hand }}</a></h2>
+                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.sku}}</a></h2>
                                     <span>In Stock: {{ product.get_quantity_on_hand }}</span>
                                     
                                     {% if request.user.is_authenticated %}
@@ -186,17 +186,17 @@
                                         
                                         
                                         <div class="cart-buttons mb-20">
-                                            <script type="text/javascript">
+                                            <!-- <script type="text/javascript">
                                                 var row_data = "{{ product.get_quantity_on_hand }}";
                                                 console.log(row_data)
                                                 document.getElementById("{{product.id}}").setAttribute("max", row_data);
-                                            </script>
+                                            </script> -->
                                             <!-- <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button> -->
                                                
                                             <form action="{% url "cart:cart_add" product.id %}" method="post">
                                                 <p>
                                                     <label for="id_quantity">Quantity:</label> 
-                                                    <input type="number" value="1" min="1" name="quantity" class="col-xs-2" required="" id="{{product.id}}">
+                                                    <input type="number" value="1" min="1" max="{{ product.get_quantity_on_hand }}" name="quantity" class="col-xs-2" required="" id="{{product.id}}">
                                                     <input type="hidden" name="override" value="False" id="id_override">
                                                 </p>
                                                 
