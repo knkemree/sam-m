@@ -312,9 +312,19 @@ def updateQtyView(request):
 
 def clearance(request):
     clearance_products = Variation.objects.filter(sale_price__isnull=False, active=True)
+    none_ids=[]
+    for i in clearance_products:
+        
+        if i.get_quantity_on_hand() is None:
+            print("none olanlar buradaaaaaaaaa")
+            none_ids.append(i.id)
+            #clearance_products_none_excluded = clearance_products.exclude(id=i.id)
+            print(i)
+    clearance_products_none_excluded = clearance_products.exclude(id__in=none_ids)
     cart_product_form = CartAddProductForm()
     context = {
         "clearance_products":clearance_products,
+        'clearance_products_none_excluded':clearance_products_none_excluded,
         'cart_product_form':cart_product_form,
         'loop_times':range(1, 15)
     }
