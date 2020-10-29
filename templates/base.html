@@ -357,7 +357,11 @@
 										<div class="cart-float-single-item-desc">
 											<p class="product-title"> <a href="{{ variation.product.get_absolute_url }}">{{ variation.sku }} </a></p>
 											<p class="quantity"> Qty: {{ rs.quantity }}</p>
-											<p class="price">${{ variation.price }}</p>
+											{% if variation.sale_price %}
+												<p class="price">${{ variation.sale_price }}</p>
+											{% else%}
+												<p class="price">${{ variation.price }}</p>
+											{% endif %}
 										</div>
 									</div>
 									{% endwith %}

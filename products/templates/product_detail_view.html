@@ -182,11 +182,17 @@
                         <p class="d-inline-block ml-10 review-link"><a href="#">(1 customer review)</a></p> -->
 
                         <h2 class="product-price mb-0"> 
+                            
                             <!-- <span class="main-price starting-at">$12.90</span> -->
                             
                             {% if variant %}
+                                {% if variant.sale_price %}
+                                    <span class="main-price discounted">${{ variant.price }}</span>
+                                    <span class="discounted-price">${{ variant.sale_price }}</span>
+                                {% else %}
                             
                                 <span class="discounted-price">${{ variant.price }}</span s> <small><small style="background-color: #FFFF00"> {{ variant.title }}</small></small>
+                                {% endif %}
                             {% else %}
                                 {% if request.user.is_authenticated %}
                                     <!-- <span class="main-price discounted">$60</span> -->
