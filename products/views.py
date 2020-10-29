@@ -312,24 +312,31 @@ def updateQtyView(request):
 
 def clearance(request):
     clearance_products = Variation.objects.filter(sale_price__isnull=False, active=True)
-    none_ids=[]
-    stock = 0
-    for i in clearance_products:
-        
-        if i.get_quantity_on_hand() is None:
-            print("none olanlar buradaaaaaaaaa")
-            none_ids.append(i.id)
-            
-            #clearance_products_none_excluded = clearance_products.exclude(id=i.id)
-            print(i)
-    clearance_products_none_excluded = clearance_products.exclude(id__in=none_ids)
-
-    for i in clearance_products_none_excluded:
-        stock = i.get_quantity_on_hand()
+    # try:
+    #         conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+    #         payload = ''
+    #         headers = {
+    #             'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+    #             'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
+    #         }
+    #         conn.request("GET", "/api/Inventory?Id="+str(int(float(self.ecomdashid))), payload, headers)
+    #         res = conn.getresponse()
+    #         data = res.read()
+    #         veri = json.loads(data.decode("utf-8"))
+    #         qty_on_hand = veri["QuantityOnHand"]
+    #         if qty_on_hand > 0:
+                
+    #             print(qty_on_hand)
+    #             return int(qty_on_hand)
+    #         # for i in veri["data"]:
+    #         #     qty_on_hand = int(i["QuantityOnHand"])
+    #         #     print(qty_on_hand)
+    #     except:
+    #         return None
     cart_product_form = CartAddProductForm()
     context = {
         "clearance_products":clearance_products,
-        'clearance_products_none_excluded':clearance_products_none_excluded,
+        
         'cart_product_form':cart_product_form,
         #'loop_times':range(1, stock+1)
     }

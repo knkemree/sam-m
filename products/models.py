@@ -183,28 +183,7 @@ class Variation(models.Model):
             pass
 
     
-    def get_quantity_on_hand(self):
-        try:
-            conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
-            payload = ''
-            headers = {
-                'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
-                'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
-            }
-            conn.request("GET", "/api/Inventory?Id="+str(int(float(self.ecomdashid))), payload, headers)
-            res = conn.getresponse()
-            data = res.read()
-            veri = json.loads(data.decode("utf-8"))
-            qty_on_hand = veri["QuantityOnHand"]
-            if qty_on_hand > 0:
-                
-                print(qty_on_hand)
-                return int(qty_on_hand)
-            # for i in veri["data"]:
-            #     qty_on_hand = int(i["QuantityOnHand"])
-            #     print(qty_on_hand)
-        except:
-            return None
+    
         
              
             
