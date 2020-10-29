@@ -312,31 +312,51 @@ def updateQtyView(request):
 
 def clearance(request):
     clearance_products = Variation.objects.filter(sale_price__isnull=False, active=True)
-    # try:
-    #         conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
-    #         payload = ''
-    #         headers = {
-    #             'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
-    #             'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
-    #         }
-    #         conn.request("GET", "/api/Inventory?Id="+str(int(float(self.ecomdashid))), payload, headers)
-    #         res = conn.getresponse()
-    #         data = res.read()
-    #         veri = json.loads(data.decode("utf-8"))
-    #         qty_on_hand = veri["QuantityOnHand"]
-    #         if qty_on_hand > 0:
-                
-    #             print(qty_on_hand)
-    #             return int(qty_on_hand)
-    #         # for i in veri["data"]:
-    #         #     qty_on_hand = int(i["QuantityOnHand"])
-    #         #     print(qty_on_hand)
-    #     except:
-    #         return None
+    list_ids_or_sku = []
+
+    try:
+        for variant in clearance_products:
+            api_id = variant.sku
+            list_ids_or_sku.append(api_id)
+
+        payload1 = {"idType":"sku","idList":list_ids_or_sku}
+        payload = str(payload1)
+    except:
+        for variant in clearance_products:
+            api_id = variant.ecomdashid
+            list_ids_or_sku.append(api_id)
+
+        payload1 = {"idType":"id","idList":list_ids_or_sku}
+        payload = str(payload1)
+    
+
+
+    conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+    headers = {
+    'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+    'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39',
+    'Content-Type': 'application/json',
+    'Authorization': 'Token 201105f43f33e2b5b287c55cd73823e0d050f537'
+    }
+    conn.request("POST", "/api/inventory/getProducts", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    
+    veri = json.loads(data.decode("utf-8"))
+    veri2 = veri["data"]
+    print("veri2 nin type ne")
+    print(type(veri2))
+    stocks = []
+    for i in veri["data"]:
+        
+        stocks.append(i['QuantityOnHand'])
+
+
     cart_product_form = CartAddProductForm()
     context = {
         "clearance_products":clearance_products,
-        
+        'stocks':stocks,
+        'veri2':veri2,
         'cart_product_form':cart_product_form,
         #'loop_times':range(1, stock+1)
     }
