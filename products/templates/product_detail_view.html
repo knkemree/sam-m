@@ -167,7 +167,17 @@
                     <!-- product view description -->
                     <div class="product-feature-details">
                         {% if variant %}
-                        <h2 class="product-title mb-15">{{ variant.sku }}</h2> 
+                        <h2 class="product-title mb-15">{{ variant.sku }}
+                            {% if variant.sale_price %}
+                            <span style="border-radius: 30px 30px 30px 30px; font-size:15px; display: inline-block;
+                                padding-left: 8px;
+                                padding-right: 8px;
+                                text-align: center; color: #fff!important;
+                                background-color: #4CAF50!important;">
+                                ON SALE
+                            </span> 
+                            {% endif %}
+                        </h2>
                         {% else %}
                         <h2 class="product-title mb-15">{{ product.name }}</h2>
                         {% endif %}
@@ -204,8 +214,9 @@
                         <hr>
                         
                         
-                        
+                        {% if product.description is not None %}
                         <p class="product-description mb-20">{{ product.description|safe }}</p>
+                        {% endif %}
                         
                         {% if request.user.is_authenticated %}
                         {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>{% if quantity_on_hand >= 1 %} {{ quantity_on_hand }}{% else %} Out of Stock{% endif %}</a></p>{% endif %}{% endif %}
@@ -225,7 +236,7 @@
                                     <select name="size" id="id_size2" onchange='changeSelectedvalue()'>
                                         <option value="" selected>Pick a Size</option>
                                         {% for item in product.variation_set.sizes %}
-                                            <option value="{{ item.get_absolute_url }}" ><a>{{ item.title|capfirst }} > ${{ item.price }}</a></option>
+                                            <option value="{{ item.get_absolute_url }}" ><a>{{ item.title|capfirst }} > {% if item.sale_price %} ${{item.sale_price}}{% else %} ${{ item.price }}{% endif %}</a></option>
                                         {% endfor %}
                                     </select>
 
