@@ -317,19 +317,19 @@
         
                                 
                             <form action="{% url "cart:cart_add" variant.id %}" method="post">
-                                <span class="quantity-title mr-10">Quantity: </span>
+                                <!-- <span class="quantity-title mr-10">Quantity: </span>
                                 <div class="pro-qty mb-20">
                                     <input type="text" name="quantity" required="" id="id_quantity" value="1" min="1">
                                     <a href="#" class="inc qty-btn">+</a>
                                     <a href="#" class="dec qty-btn">-</a>
-                                    <input type="hidden" name="override" value="1" id="id_override">
+                                    <input type="hidden" name="override" value="False" id="id_override">
                                 </div>
                                 <div class="add-to-cart-btn d-block">
                                     <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
-                                </div>
+                                </div> -->
 
                         
-                                <!-- <p>
+                                <p>
                                 <label for="id_quantity">Quantity:</label>
                                 
                                     <select name="quantity" id="id_quantity">
@@ -339,10 +339,12 @@
                                     </select>
                                 
                                     <input type="hidden" name="override" value="False" id="id_override">
-                                </p> -->
-                                <!-- {{ cart_product_form.as_p }} -->
+                                </p>
+                                <!-- {{ cart_product_form.as_p }}-->
                                 {% csrf_token %}
-                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
+                                <div class="add-to-cart-btn d-block">
+                                    <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                                </div> 
                                 
                             </form>
                                 <!-- <span class="quantity-title mr-10">Quantity: </span>

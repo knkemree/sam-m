@@ -194,15 +194,33 @@
                                             <!-- <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button> -->
                                                
                                             <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                                <p>
+                                                <div class="pro-qty mb-20">
+                                                    
+                                                        <input type="text" value="1" min="1" name="quantity" required="" id="{{product.id}}">
+                                                        <input type="hidden" name="override" value="False" id="id_override">
+                                                        <a href="#" class="inc qty-btn">+</a>
+                                                        <a href="#" class="dec qty-btn">-</a>
+                                                        
+                                                    
+                                                    <!-- <input type="text" name="quantity" value="1" min="1" max="{{ product.get_quantity_on_hand }}" required="" id="{{product.id}}" value="1" min="1">
+                                                    <a href="#" class="inc qty-btn">+</a>
+                                                    <a href="#" class="dec qty-btn">-</a>   
+                                                    <input type="hidden" name="override" value="True" id="id_override">
+                                                    <a href="#" class="inc qty-btn">+</a>
+                                                    <a href="#" class="dec qty-btn">-</a> -->
+                                                </div>
+                                                <div>
+                                                    <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                                                </div>
+                                                <!-- <p>
                                                     <label for="id_quantity">Quantity:</label> 
                                                     <input type="number" value="1" min="1" max="{{ product.get_quantity_on_hand }}" name="quantity" class="col-xs-2" required="" id="{{product.id}}">
                                                     <input type="hidden" name="override" value="False" id="id_override">
-                                                </p>
+                                                </p> -->
                                                 
                                                 {% csrf_token %}
                                                 <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
-                                                <button id="addtocart_button" type="submit" class="add-to-cart-butonu" >Add to Cart</button>
+                                                
                                             </form>
                 
                                         </div>
