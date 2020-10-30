@@ -3,7 +3,7 @@ from .base import *
 DEBUG = True
 
 #ALLOWED_HOSTS = ['165.22.33.200','msrugs.com','www.msrugs.com', 'www.samnmtrade.com', 'samnmtrade.com']
-ALLOWED_HOSTS = ['www.samnmtrade.com', 'samnmtrade.com']
+ALLOWED_HOSTS = ['msrugs.com','www.msrugs.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
