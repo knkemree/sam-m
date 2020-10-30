@@ -352,7 +352,7 @@ def clearance(request):
         stocks.append(i['QuantityOnHand'])
 
 
-    cart_product_form = CartAddProductForm()
+    cart_product_form = CartAddProductForm(auto_id=False)
     context = {
         "clearance_products":clearance_products,
         'stocks':stocks,
