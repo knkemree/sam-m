@@ -102,8 +102,6 @@ def product_list_view(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
-        
-        
         object_list = Product.objects.filter(available=True, category=category)
         print("burada mi??????")
         print(object_list)
@@ -131,7 +129,7 @@ def product_list_view(request, category_slug=None):
 
         object_list = Product.objects.filter(available=True)
 
-    paginator = Paginator(object_list, 1) # 3 posts in each page
+    paginator = Paginator(object_list, 50) # 3 posts in each page
     page = request.GET.get('page')
     print("page buradaaaaaaaaaaaaaa!")
     print(page)
@@ -320,6 +318,7 @@ def updateQtyView(request):
 
 def clearance(request):
     clearance_products = Variation.objects.filter(sale_price__isnull=False, active=True)
+    object_list = Variation.objects.filter(sale_price__isnull=False, active=True)
     list_ids_or_sku = []
 
     try:
@@ -362,18 +361,18 @@ def clearance(request):
 
     cart_product_form = CartAddProductForm(auto_id=False)
 
-    paginator = Paginator(clearance_products, 1) # 3 posts in each page
+    paginator = Paginator(object_list, 3) # 3 posts in each page
     page = request.GET.get('page')
     print("page buradaaaaaaaaaaaaaa!")
     print(page)
     try:
-        products = paginator.page(page)
+        clearance_products = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer deliver the first page
-        products = paginator.page(1)
+        clearance_products = paginator.page(1)
     except EmptyPage:
         # If page is out of range deliver last page of results
-        products = paginator.page(paginator.num_pages)
+        clearance_products = paginator.page(paginator.num_pages)
     context = {
         "clearance_products":clearance_products,
         'stocks':stocks,
