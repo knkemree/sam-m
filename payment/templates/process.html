@@ -1,208 +1,232 @@
 {% extends "base.html" %}
 {% block title %}Pay by credit card{% endblock %}
 {% block blank %}
-<div class="container">
-  <div class="row">
+<!--=============================================
+	=            breadcrumb area         =
+	=============================================-->
+	
+	<div class="breadcrumb-area pt-15 pb-15">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<!--=======  breadcrumb container  =======-->
+					
+					<div class="breadcrumb-container">
+						<nav>
+							<ul>
+								<li class="parent-page"><a href="/">Home</a></li>
+								<li>Payment</li>
+							</ul>
+						</nav>
+					</div>
+					
+					<!--=======  End of breadcrumb container  =======-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <!--=====  End of breadcrumb area  ======-->
+    <div class="page-section mb-50">
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  
+                  <!-- Checkout Form s-->
+                  
+                    <div class="row row-40">
+                      <div class="col-lg-5 mb-20">
+                              
+                        <!-- Billing Address -->
+                        <div id="billing-form" class="mb-40">
+                            <h4 class="checkout-title">Pay Order</h4>
+                            <div class="row">
+                              <div class="col-12 mb-20">
+                                <style>
+                                  /**
+                                  * The CSS shown here will not be introduced in the Quickstart guide, but shows
+                                  * how you can use CSS to style your Element's container.
+                                  */
+                                  .StripeElement {
+                                    box-sizing: border-box;
+                                
+                                    height: 40px;
+                                
+                                    padding: 10px 12px;
+                                
+                                    border: 1px solid transparent;
+                                    border-radius: 4px;
+                                    background-color: white;
+                                
+                                    box-shadow: 0 1px 3px 0 #e6ebf1;
+                                    -webkit-transition: box-shadow 150ms ease;
+                                    transition: box-shadow 150ms ease;
+                                  }
+                                
+                                  .StripeElement--focus {
+                                    box-shadow: 0 1px 3px 0 #cfd7df;
+                                  }
+                                
+                                  .StripeElement--invalid {
+                                    border-color: #fa755a;
+                                  }
+                                
+                                  .StripeElement--webkit-autofill {
+                                    background-color: #fefde5 !important;
+                                  }
+                                </style>
+                                <script src="https://js.stripe.com/v3/"></script>
+                                
+                                <form method="post" id="payment-form" data-token="{{ publish_key }}">
+                                  {% csrf_token %}
+                                  <div class="form-row">
+                                    <p>
+                                      <label for="card-element">
+                                        You'll be charged <strong>${{ order.order_total }}</strong>
+                                      </label>
+                                    </p>
+                                    <!-- <p>
+                                      <label for="card-element">
+                                        Credit or debit card
+                                      </label>
+                                    </p> -->
+                                    <div id="card-element" class="form-control">
+                                      <!-- A Stripe Element will be inserted here. -->
+                                    </div>
+                                
+                                    <!-- Used to display form errors. -->
+                                    <div id="card-errors" role="alert"></div>
+                                  </div>
+                                
+                                  <button class="btn btn-info my-4">Submit Payment</button>
+                                  
+                                </form>
+                                
+                                <script>
+                                  // Create a Stripe client.
+                                  var stripe = Stripe('{{ publish_key}}');
+                                
+                                  // Create an instance of Elements.
+                                  var elements = stripe.elements();
+                                
+                                  // Custom styling can be passed to options when creating an Element.
+                                  // (Note that this demo uses a wider set of styles than the guide below.)
+                                  var style = {
+                                    base: {
+                                      color: '#32325d',
+                                      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                                      fontSmoothing: 'antialiased',
+                                      fontSize: '16px',
+                                      '::placeholder': {
+                                        color: '#aab7c4'
+                                      }
+                                    },
+                                    invalid: {
+                                      color: '#fa755a',
+                                      iconColor: '#fa755a'
+                                    }
+                                  };
+                                
+                                  // Create an instance of the card Element.
+                                  var card = elements.create('card', {style: style});
+                                
+                                  // Add an instance of the card Element into the `card-element` <div>.
+                                  card.mount('#card-element');
+                                  // Handle real-time validation errors from the card Element.
+                                  card.on('change', function(event) {
+                                    var displayError = document.getElementById('card-errors');
+                                    if (event.error) {
+                                      displayError.textContent = event.error.message;
+                                    } else {
+                                      displayError.textContent = '';
+                                    }
+                                  });
+                                
+                                  // Handle form submission.
+                                  var form = document.getElementById('payment-form');
+                                  form.addEventListener('submit', function(event) {
+                                    event.preventDefault();
+                                
+                                    stripe.createToken(card).then(function(result) {
+                                      if (result.error) {
+                                        // Inform the user if there was an error.
+                                        var errorElement = document.getElementById('card-errors');
+                                        errorElement.textContent = result.error.message;
+                                      } else {
+                                        // Send the token to your server.
+                                        stripeTokenHandler(result.token);
+                                      }
+                                    });
+                                  });
+                                  function stripeTokenHandler(token){
+                                    console.log(token)
+                                  }
+                                  // Submit the form with the token ID.
+                                  function stripeTokenHandler(token) {
+                                    // Insert the token ID into the form so it gets submitted to the server
+                                    var form = document.getElementById('payment-form');
+                                    var hiddenInput = document.createElement('input');
+                                    hiddenInput.setAttribute('type', 'hidden');
+                                    hiddenInput.setAttribute('name', 'stripeToken');
+                                    hiddenInput.setAttribute('value', token.id);
+                                    form.appendChild(hiddenInput);
+                                
+                                    // Submit the form
+                                    form.submit();
+                                  }
+                                </script>
 
-      <div class="col-lg-4 my-5">
+                              </div>
+                            </div>
+                        </div>
+                        
 
-        <h1>Pay Your Order</h1>
-        <br>
-        <style>
-          /**
-          * The CSS shown here will not be introduced in the Quickstart guide, but shows
-          * how you can use CSS to style your Element's container.
-          */
-          .StripeElement {
-            box-sizing: border-box;
+                        
+                      </div>
+                      <div class="col-lg-2 mb-20">
 
-            height: 40px;
+                      </div>
 
-            padding: 10px 12px;
+                      <div class="col-lg-5">
+                        <div class="row">
+                            <!-- Cart Total -->
+                            <div class="col-12 mb-60">
+                                <h4 class="checkout-title">Cart Total</h4>
+                                <div class="checkout-cart-total">
+                                    <h4>Product <span>Total</span></h4>
+                                    <ul>
+                                      {% for item in order.items.all %}
+                                        <li>
+                                          {{ item.quantity }} x {{ item.variant }}
+                                          <span>${{ item.get_customer_cost|floatformat:2 }}</span>
+                                        </li>
+                                      {% endfor %}
+                                    </ul>
+                                    <p>Sub Total <span>${{ order.cart_total|floatformat:2 }}</span></p>
+                                    
+                                    <p>{{ order.delivery_method }} <span>+ ${{ order.delivery_fees }}</span></p>
+                                    
+                                    
+                                    <p>%{{ order.campaign_discount }} OFF<span>- ${{ order.discounted_amount|floatformat:2 }}</span></p>
+                                    
+                                   
+                                    <h4>Grand Total <span>${{ order.order_total|floatformat:2 }}</span></h4>
+                                    
+                                </div>
+                                
+                            </div>
+                          </div>  
+                        </div>
+                    
+                    </div>
 
-            border: 1px solid transparent;
-            border-radius: 4px;
-            background-color: white;
-
-            box-shadow: 0 1px 3px 0 #e6ebf1;
-            -webkit-transition: box-shadow 150ms ease;
-            transition: box-shadow 150ms ease;
-          }
-
-          .StripeElement--focus {
-            box-shadow: 0 1px 3px 0 #cfd7df;
-          }
-
-          .StripeElement--invalid {
-            border-color: #fa755a;
-          }
-
-          .StripeElement--webkit-autofill {
-            background-color: #fefde5 !important;
-          }
-        </style>
-        <script src="https://js.stripe.com/v3/"></script>
-
-        <form method="post" id="payment-form" data-token="{{ publish_key }}">
-          {% csrf_token %}
-          <div class="form-row">
-            <label for="card-element">
-              Credit or debit card
-            </label>
-            <div id="card-element" class="form-control">
-              <!-- A Stripe Element will be inserted here. -->
-            </div>
-
-            <!-- Used to display form errors. -->
-            <div id="card-errors" role="alert"></div>
-          </div>
-
-          <button class="btn btn-info my-4">Submit Payment</button>
-          
-        </form>
-
-        <script>
-          // Create a Stripe client.
-          var stripe = Stripe('{{ publish_key}}');
-
-          // Create an instance of Elements.
-          var elements = stripe.elements();
-
-          // Custom styling can be passed to options when creating an Element.
-          // (Note that this demo uses a wider set of styles than the guide below.)
-          var style = {
-            base: {
-              color: '#32325d',
-              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-              fontSmoothing: 'antialiased',
-              fontSize: '16px',
-              '::placeholder': {
-                color: '#aab7c4'
-              }
-            },
-            invalid: {
-              color: '#fa755a',
-              iconColor: '#fa755a'
-            }
-          };
-
-          // Create an instance of the card Element.
-          var card = elements.create('card', {style: style});
-
-          // Add an instance of the card Element into the `card-element` <div>.
-          card.mount('#card-element');
-          // Handle real-time validation errors from the card Element.
-          card.on('change', function(event) {
-            var displayError = document.getElementById('card-errors');
-            if (event.error) {
-              displayError.textContent = event.error.message;
-            } else {
-              displayError.textContent = '';
-            }
-          });
-
-          // Handle form submission.
-          var form = document.getElementById('payment-form');
-          form.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            stripe.createToken(card).then(function(result) {
-              if (result.error) {
-                // Inform the user if there was an error.
-                var errorElement = document.getElementById('card-errors');
-                errorElement.textContent = result.error.message;
-              } else {
-                // Send the token to your server.
-                stripeTokenHandler(result.token);
-              }
-            });
-          });
-          function stripeTokenHandler(token){
-            console.log(token)
-          }
-          // Submit the form with the token ID.
-          function stripeTokenHandler(token) {
-            // Insert the token ID into the form so it gets submitted to the server
-            var form = document.getElementById('payment-form');
-            var hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'stripeToken');
-            hiddenInput.setAttribute('value', token.id);
-            form.appendChild(hiddenInput);
-
-            // Submit the form
-            form.submit();
-          }
-        </script>
-      </div>
+     </div>
+     </div>
+      
+      
   </div>
 </div>
 {% endblock %}
 
-<div class="col-lg-12">
-  <form>
-    Please choose a payment method<br>
-    <input type="radio" name="check" id="check">Check on Delivery<br>
-    <input type="radio" name="card" id="card">Credit Card
-  </form>
-
-    <h1>Pay by credit card</h1>
-      <form id="payment" method="post">
-        <label for="card-number">Card Number</label>
-        <div id="card-number" class="field"></div>
-        <label for="cvv">CVV</label>
-        <div id="cvv" class="field"></div>
-        <label for="expiration-date">Expiration Date</label>
-        <div id="expiration-date" class="field"></div>
-        <input type="hidden" id="nonce" name="payment_method_nonce" value="">
-        {% csrf_token %}
-        <input type="submit" value="Pay">
-      </form>
-    <!-- includes the Braintree JS client SDK -->
-    <script src="https://js.braintreegateway.com/web/3.44.2/js/client.min.js"></script>
-    <script src="https://js.braintreegateway.com/web/3.44.2/js/hosted-fields.min.js"></script>
-    <script>
-      var form = document.querySelector('#payment');
-      var submit = document.querySelector('input[type="submit"]');
-      braintree.client.create({
-        authorization: '{{ client_token }}'
-      }, function (clientErr, clientInstance) {
-        if (clientErr) {
-          console.error(clientErr);
-          return;
-        }
-        braintree.hostedFields.create({
-          client: clientInstance,
-          styles: {
-            'input': {'font-size': '13px'},
-            'input.invalid': {'color': 'red'},
-            'input.valid': {'color': 'green'}
-          },
-          fields: {
-            number: {selector: '#card-number'},
-            cvv: {selector: '#cvv'},
-            expirationDate: {selector: '#expiration-date'}
-          }
-        }, function (hostedFieldsErr, hostedFieldsInstance) {
-          if (hostedFieldsErr) {
-            console.error(hostedFieldsErr);
-            return;
-          }
-          submit.removeAttribute('disabled');
-          form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
-              if (tokenizeErr) {
-                console.error(tokenizeErr);
-                return;
-              }
-              // set nonce to send to the server
-              document.getElementById('nonce').value = payload.nonce;
-              // submit form
-              document.getElementById('payment').submit();
-            });
-          }, false);
-        });
-      });
-    </script>
-</div>
+<h1>Pay Your Order</h1>
+<br>
