@@ -126,7 +126,8 @@ def product_list_view(request, category_slug=None):
         child_category_product_set = []
         all_categories = []
         object_list = Product.objects.filter(available=True)
-        paginator = Paginator(object_list, 20) # 3 posts in each page
+
+        paginator = Paginator(object_list, 19) # 3 posts in each page
         page = request.GET.get('page')
         try:
             products = paginator.page(page)
@@ -140,6 +141,7 @@ def product_list_view(request, category_slug=None):
 
     return render(request,
                   'product_list_view.html',
+
                   {'category': category,
                    'categories': categories,
                    'products': products,
