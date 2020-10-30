@@ -88,7 +88,7 @@
                                 
                                 <div class="view-mode-icons mb-xs-10">
                                     <a class="active" href="#" data-target="grid"><i class="icon ion-md-apps"></i></a>
-                                    <a  href="#" data-target="list"><i class="icon ion-ios-list"></i></a>
+                                    <!-- <a  href="#" data-target="list"><i class="icon ion-ios-list"></i></a> -->
                                 </div>
                                 
                                 <!--=======  End of view mode  =======-->
@@ -177,63 +177,35 @@
                                 <div class="content">
                                     <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.sku}}</a></h2>
                                     <!-- <span>In Stock: {{ product.get_quantity_on_hand }}</span> -->
-                                    
                                             In Stock: {{ i.QuantityOnHand}}
-                                            
-                                        
-
-                                
-                                    
                                     {% if request.user.is_authenticated %}
                                     <p class="product-price">
                                         <span class="main-price discounted">${{ product.price }}</span>
-                                        <span class="discounted-price">${{ product.sale_price }}</span>
-                                        
+                                        <span class="discounted-price">${{ product.sale_price }}</span>                                      
                                     </p>
-                                    
-                            
+                                                              
                                     <p>
-                                        
-                                        
                                         <div class="cart-buttons mb-20">
-                                            <!-- <script type="text/javascript">
-                                                var row_data = "{{ product.get_quantity_on_hand }}";
-                                                console.log(row_data)
-                                                document.getElementById("{{product.id}}").setAttribute("max", row_data);
-                                            </script> -->
-                                            <!-- <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button> -->
-                                               
+                                        
                                             <form action="{% url "cart:cart_add" product.id %}" method="post">
                                                 <div class="pro-qty mb-20">
                                                         {{ cart_product_form.quantity }}
                                                         
-                                                    
-                                                        <!-- <input type="text" value="1" min="1" name="quantity" required="" id="{{product.id}}">
-                                                        <input type="hidden" name="override" value="False" id="id_override"> -->
+                                                
                                                         <a href="#" class="inc qty-btn">+</a>
                                                         <a href="#" class="dec qty-btn">-</a>
                                                         
                                                     
-                                                    <!-- <input type="text" name="quantity" value="1" min="1" max="{{ product.get_quantity_on_hand }}" required="" id="{{product.id}}" value="1" min="1">
-                                                    <a href="#" class="inc qty-btn">+</a>
-                                                    <a href="#" class="dec qty-btn">-</a>   
-                                                    <input type="hidden" name="override" value="True" id="id_override">
-                                                    <a href="#" class="inc qty-btn">+</a>
-                                                    <a href="#" class="dec qty-btn">-</a> -->
+                                                    
                                                 </div>
                                                 <div>
                                                     {{ cart_product_form.override }}
                                                     <button type="submit" class="add-to-cart-butonu" >Add to Cart</button>
                                                 </div>
-                                                <!-- <p>
-                                                    <label for="id_quantity">Quantity:</label> 
-                                                    <input type="number" value="1" min="1" max="{{ product.get_quantity_on_hand }}" name="quantity" class="col-xs-2" required="" id="{{product.id}}">
-                                                    <input type="hidden" name="override" value="False" id="id_override">
-                                                </p> -->
+                                                
                                                 
                                                 {% csrf_token %}
-                                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
-                                                
+                                               
                                             </form>
                 
                                         </div>
@@ -275,237 +247,30 @@
 
                             <!--=======  End of grid view product  =======-->
 
-                            <!--=======  list view product  =======-->
-                            
-                            <div class="fl-product shop-list-view-product">
-                                <div style="width: 200px; 
-                                height: 200px;
-                                /*background-color: red;*/
-                                /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
-                                background-repeat: no-repeat;
-                                background-size: contain;
-                                background-position: center;
-                                margin: 0 auto;">
-                                    <a href="{{ product.get_absolute_url }}">
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                        <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
-                                    <!-- <div class="rating">
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div> -->
-                                    {% if request.user.is_authenticated %}
-                                    <p class="product-price">
-                                        <!-- <span class="main-price discounted">$71</span> -->
-                                        <span class="main-price starting-from">starting at</span>
-                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
-                                    </p>
-                                    {% endif %}
-
-                                    <p class="product-description">{{ product.description|truncatechars:200 }}</p>
-                                    
-                        
-
-                                    <div class="hover-icons">
-                                        <ul>
-                                            <li><a href="{{ product.get_absolute_url }}"  data-tooltip="Choose Size">Choose Size</a></li>
-                                            {% if user.is_superuser is True %}
-                                            <li><a href="/admin/products/product/{{product.id}}/change/"  data-tooltip="Edit"><i class="icon ion-md-options"></i></a></li>
-                                            {% endif %}
-                                        </ul>
-                                        
-                            
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!--=======  End of list view product  =======-->
-                            
-                            
                         </div>
-                        {% endif %}
-                        {% endif %}
-                                    {% endfor %}
-                        {% endfor %}
-                       
-                        {% for product in clearance_productsbbb %}
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                            <!--=======  grid view product  =======-->
-                            
-                            <!--=======  single product  =======-->
-                            
-                            <div class="fl-product shop-grid-view-product">
-                                <!-- class="image" -->
-                                <div style="width: 200px; 
-                                            height: 200px;
-                                            /*background-color: red;*/
-                                            /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
-                                            background-repeat: no-repeat;
-                                            background-size: contain;
-                                            background-position: center;
-                                            margin: 0 auto;" > 
-                                            <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
-                                    <a href="{{ product.get_absolute_url }}">
-                                        
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                        
-                                    </a>
-                                    
-                                    <!-- wishlist icon -->
-                                    <!-- <span class="wishlist-icon">
-                                            <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-                                    </span> -->
-                                </div>
-
-                                <div class="content">
-                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.sku}}</a></h2>
-                                    
-                                    
-                                    {% if request.user.is_authenticated %}
-                                    
-                                    
-                                    <p class="product-price">
-                                        <span class="main-price starting-from">starting at</span>
-                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
-                                    </p>
-                                    <p>
-                                        
-                                        
-                                        <div class="cart-buttons mb-20">
-                                            <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button>
-                                                <!-- <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                                {{ cart_product_form.as_p }}
-                                                {% csrf_token %} -->
-                                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
-                                                <!-- <button type="submit" class="add-to-cart-butonu" >Add to Cart</button> -->
-                                                
-                                                <!-- </form> -->
-                
-                                        </div>
-                                    
-                                        {% else%}
-                                        <div class="rating">
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                        </div>
-                                        <div class="product-feature-details">
-                                            <div class="cart-buttons mb-20">
-                                                <div class="add-to-cart-btn d-block">
-                                                    <a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa fa-check-circle"> </i> Become A Dealer</a>
-                                                    
-                                                </div>
-                                            <small><p>Already Delaer? <a href="{% url 'login' %}">Login</a></p></small>
-                                            </div>
-                                            
-                                        </div>
-                                    {% endif %}
-
-                                    
-
-                                    <!-- <div class="hover-icons">
-                                        
-                                        <ul>
-                                            <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-                                            <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-                                            <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
-                                        </ul>
-                                    </div> -->
-                                </div>
-                            </div>
-                            
-                            <!--=======  End of single product  =======-->
-
-                            <!--=======  End of grid view product  =======-->
-
-                            <!--=======  list view product  =======-->
-                            
-                            <div class="fl-product shop-list-view-product">
-                                <div style="width: 200px; 
-                                height: 200px;
-                                /*background-color: red;*/
-                                /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
-                                background-repeat: no-repeat;
-                                background-size: contain;
-                                background-position: center;
-                                margin: 0 auto;">
-                                    <a href="{{ product.get_absolute_url }}">
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                        <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
-                                    <!-- <div class="rating">
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div> -->
-                                    {% if request.user.is_authenticated %}
-                                    <p class="product-price">
-                                        <!-- <span class="main-price discounted">$71</span> -->
-                                        <span class="main-price starting-from">starting at</span>
-                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
-                                    </p>
-                                    {% endif %}
-
-                                    <p class="product-description">{{ product.description|truncatechars:200 }}</p>
-                                    
-                        
-
-                                    <div class="hover-icons">
-                                        <ul>
-                                            <li><a href="{{ product.get_absolute_url }}"  data-tooltip="Choose Size">Choose Size</a></li>
-                                            {% if user.is_superuser is True %}
-                                            <li><a href="/admin/products/product/{{product.id}}/change/"  data-tooltip="Edit"><i class="icon ion-md-options"></i></a></li>
-                                            {% endif %}
-                                        </ul>
-                                        
-                            
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!--=======  End of list view product  =======-->
-                            
-                            
-                        </div>
+                                {% endif %}
+                                {% endif %}
+                            {% endfor %}
                         {% endfor %}
                         
                     </div>
-                    
-                    
                     <!--=======  End of shop product display area  =======-->
 
                     <!--=======  pagination area  =======-->
                     
                     <div class="pagination-area  mb-md-50 mb-sm-50">
-                        <div style="text-align:center;">
-                            {% include "pagination.html" with page=clearance_products %}
-                          </div>
-                          {% for c in categories %}
-                            {% if not category.slug == c.slug %}
+                        <!--<div style="text-align:center;">
                             
-                            {% endif %}
-                          {% endfor %}
-                          </div>
+                            {% include "pagination.html" with page=ps %}
+                        </div> -->
+                          
                         <!-- <ul>
                             <li><a class="active" href="#">1</a></li>
                             <li><a href="#">2</a></li>
                             <li><a href="#">3</a></li>
                             <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
                         </ul> -->
-                    </div>
+                    </div> 
                     
                     
                     <!--=======  End of pagination area  =======-->
@@ -521,12 +286,8 @@
             // messages timeout for 10 sec 
             setTimeout(function() {
                 $('.alert').fadeOut('slow');
-            }, 2500); // <-- time in milliseconds, 1000 =  1 sec
+            }, 2000); // <-- time in milliseconds, 1000 =  1 sec
     
-            // delete message
-            $('.del-msg').live('click',function(){
-                $('.del-msg').parent().attr('style', 'display:none;');
-            })
         });
     </script>
 

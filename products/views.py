@@ -351,34 +351,46 @@ def clearance(request):
     
     veri = json.loads(data.decode("utf-8"))
     veri2 = veri["data"]
-    print("veri2 nin type ne")
-    print(type(veri2))
+    
     stocks = []
+    id_or_sku_qty_zero = []
     for i in veri["data"]:
         
         stocks.append(i['QuantityOnHand'])
+        if int(i['QuantityOnHand']) == 0:
+            
+            try:
+                id_or_sku_qty_zero.append(i["Id"])
+            except:
+                id_or_sku_qty_zero.append(i["Sku"])
 
-
+    try:
+        clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=id_or_sku_qty_zero)
+    except:
+        clearance_products_exclude_zero = clearance_products.exclude(sku__in=id_or_sku_qty_zero)
+    print("zerolr exculed hali")
+    print(clearance_products_exclude_zero)
     cart_product_form = CartAddProductForm(auto_id=False)
 
-    paginator = Paginator(object_list, 3) # 3 posts in each page
+    paginator = Paginator(clearance_products_exclude_zero, 1) # 3 posts in each page
     page = request.GET.get('page')
-    print("page buradaaaaaaaaaaaaaa!")
-    print(page)
+    
     try:
-        clearance_products = paginator.page(page)
+        ps = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer deliver the first page
-        clearance_products = paginator.page(1)
+        ps= paginator.page(1)
     except EmptyPage:
         # If page is out of range deliver last page of results
-        clearance_products = paginator.page(paginator.num_pages)
+        ps = paginator.page(paginator.num_pages)
     context = {
         "clearance_products":clearance_products,
         'stocks':stocks,
         'veri2':veri2,
         'cart_product_form':cart_product_form,
-        'page':page
+        'page':page,
+        'ps':ps,
+        'clearance_products_exclude_zero':clearance_products_exclude_zero
         #'loop_times':range(1, stock+1)
     }
     return render(request, "clearance.html", context)
