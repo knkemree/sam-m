@@ -105,16 +105,18 @@ def product_list_view(request, category_slug=None):
         
         
         object_list = Product.objects.filter(available=True, category=category)
-        paginator = Paginator(object_list, 20) # 3 posts in each page
-        page = request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer deliver the first page
-            products = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range deliver last page of results
-            products = paginator.page(paginator.num_pages)
+        print("burada mi??????")
+        print(object_list)
+        # paginator = Paginator(object_list, 1) # 3 posts in each page
+        # page = request.GET.get('page')
+        # try:
+        #     products = paginator.page(page)
+        # except PageNotAnInteger:
+        #     # If page is not an integer deliver the first page
+        #     products = paginator.page(1)
+        # except EmptyPage:
+        #     # If page is out of range deliver last page of results
+        #     products = paginator.page(paginator.num_pages)
 
     else:
         #shop sayfasini doldurabilmek icin asagidaki listlerin doldurulmasi veya ilgili listlerin olusturulmasi gerekiyor /products/ sayfasinda suan hicbirsey yok
@@ -125,18 +127,22 @@ def product_list_view(request, category_slug=None):
         child_categories = []
         child_category_product_set = []
         all_categories = []
+
+
         object_list = Product.objects.filter(available=True)
 
-        paginator = Paginator(object_list, 19) # 3 posts in each page
-        page = request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer deliver the first page
-            products = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range deliver last page of results
-            products = paginator.page(paginator.num_pages)
+    paginator = Paginator(object_list, 1) # 3 posts in each page
+    page = request.GET.get('page')
+    print("page buradaaaaaaaaaaaaaa!")
+    print(page)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        products = paginator.page(paginator.num_pages)
 
 
     return render(request,
@@ -355,11 +361,25 @@ def clearance(request):
 
 
     cart_product_form = CartAddProductForm(auto_id=False)
+
+    paginator = Paginator(clearance_products, 1) # 3 posts in each page
+    page = request.GET.get('page')
+    print("page buradaaaaaaaaaaaaaa!")
+    print(page)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        products = paginator.page(paginator.num_pages)
     context = {
         "clearance_products":clearance_products,
         'stocks':stocks,
         'veri2':veri2,
         'cart_product_form':cart_product_form,
+        'page':page
         #'loop_times':range(1, stock+1)
     }
     return render(request, "clearance.html", context)
