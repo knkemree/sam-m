@@ -16,7 +16,7 @@
 									aria-selected="true">Bed Sheets</a>
 								
 								<a class="nav-item nav-link" id="nav-onsale-tab" data-toggle="tab" href="#on-sale" role="tab"
-									aria-selected="false">Towels</a>
+									aria-selected="false">Towels {{ towel }}</a>
 							</div>
 						</nav>
 						<div class="tab-content" id="nav-tabContent">
@@ -25,7 +25,7 @@
 								
 								<div class="fl-slider tab-product-slider">
 									<!--=======  single product  =======-->
-									{% for p in bed_sheets %}
+									{% for p in bed_sheets %} 
 									<div class="fl-product">
 										<!-- <div class="image sale-product"> -->
 										<div style="width: 200px; 
@@ -86,7 +86,7 @@
 								
 								<div class="fl-slider tab-product-slider">
 									<!--=======  single product  =======-->
-									{% for p in towels %}
+									{% for p in towel.products %}
 									<div class="fl-product">
 										<!-- <div class="image sale-product"> -->
 										<div class="image">

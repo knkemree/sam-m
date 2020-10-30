@@ -71,18 +71,18 @@ def home_page(request):
         bed_sheets = []
 
     try:
-        towel = Category.objects.filter(slug__contains="towels")
+        towel = Category.objects.filter(slug__contains="towel")
+        print(towel, "bunu print ediyor mu")
         towels = Product.objects.filter(category_id=towel.id)
+        
     except:
-        towels= []
-
+        towel= []
+    
     cart_product_form = CartAddProductForm()
     context ={
-        "title": "Hello world",
-        "content": " This is Home page",
         'area_rugs': area_rugs,
         'bed_sheets': bed_sheets,
-        'towels':towels,
+        'towel':towel,
         'top_level_cats': top_level_cats,
         'cart_product_form':cart_product_form,
         'sliders':sliders,
