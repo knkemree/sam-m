@@ -33,7 +33,7 @@ def login_form(request):
         if user is not None:
             login(request, user)
             if valuenext:
-                if valuenext == "http://127.0.0.1:8000/logout/" or valuenext == "http://127.0.0.1:8000/login/" or valuenext == 'https://msrugs.com/login/' or valuenext == 'https://msrugs.com/logout/' :
+                if valuenext == "http://127.0.0.1:8000/logout/" or valuenext == "http://127.0.0.1:8000/login/" or valuenext == 'https://msrugs.com/login/' or valuenext == 'https://msrugs.com/logout/' or valuenext == 'https://samnmtrade.com/login/' or valuenext == 'https://samnmtrade.com/logout/' :
                     return redirect('/')
                 return redirect(next_url)
                 #return redirect(next_url) #next url varsa next url'ye yonlendirir
