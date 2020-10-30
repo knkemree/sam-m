@@ -136,42 +136,4 @@
 		</div>
 	</div>
 	
-	<script>
-		$(window).load(function() {
-    $('.deneme').each(function() {
-        var maxWidth = 320; // Max width for the image
-        var minHeight = 270;    // Max height for the image
-        var ratio = 0;  // Used for aspect ratio
-        var width = $(this).width();    // Current image width
-        var height = $(this).height();  // Current image height
-
-        if(width > maxWidth){
-            ratio = maxWidth / width;   // get ratio for scaling image
-            $(this).css("width", maxWidth); // Set new width
-            $(this).css("height", height * ratio);  // Scale height based on ratio
-            height = height * ratio;    // Reset height to match scaled image
-            width = width * ratio;    // Reset width to match scaled image
-        }
-
-        // Check if current height is larger than max
-        if(height < minHeight){
-            ratio = minHeight / height; // get ratio for scaling image
-            $(this).css("height", minHeight);   // Set new height
-            $(this).css("width", width * ratio);    // Scale width based on ratio
-            width = width * ratio;    // Reset width to match scaled image
-        }
-
-        var $img = $(this),
-        css = {
-            position: 'absolute',
-            marginLeft: '-' + ( parseInt( $img.css('width') ) / 2 ) + 'px',
-            left: '50%',
-            top: '50%',
-            marginTop: '-' + ( parseInt( $img.css('height') ) / 2 ) + 'px'
-        };
-
-        $img.css( css );
-   });
-});
-	</script>
 	<!--=====  End of tab slider section  ======-->
