@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'localflavor',
     'corsheaders',
     'ckeditor',
+    'import_export',
     
     'editorjs_field',
 
@@ -251,7 +252,8 @@ CORS_ORIGIN_ALLOW_ALL=True
 
 CORS_ORIGIN_WHITELIST = [
     "https://msrugs.com",
-    "https://nyc3.digitaloceanspaces.com",
+    "https://samnmtrade.com",
+    
 ]
 
 CORS_ALLOW_METHODS = (
@@ -264,4 +266,6 @@ CORS_ALLOW_METHODS = (
 )
 
 CKEDITOR_UPLOAD_PATH = "uploads"
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 

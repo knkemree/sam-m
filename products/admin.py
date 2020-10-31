@@ -1,12 +1,46 @@
 from django.contrib import admin
-from .models import Product, Category
 from django.utils.safestring import mark_safe
-from products.models import ProductImage, Variation
+from .models import ProductImage, Variation, Product, Category
+from import_export import resources
+from import_export.fields import Field
+from import_export.widgets import ForeignKeyWidget
+from import_export.admin import ImportExportModelAdmin
 
 
 
 
+class ProductResource(resources.ModelResource):
+    class Meta:
+        model = Product
+        skip_unchanged = True
+        report_skipped = False
+        #published = Field(attribute='created', column_name='created_date')
+        #fields = ('id', 'name', 'category__name','created')
+        #exclude = ('imported', )
+        #export_order = ('id', 'name', 'category__name','created')
+        #import_id_fields = ('isbn',)   
+        #widgets = {'published': {'format': '%d.%m.%Y'},}
+    # def dehydrate_full_title(self, product):
+    #     return '%s by %s' % (product.name, product.category.name)
+class VariationResource(resources.ModelResource):
+    product = Field(
+            column_name='product',
+            attribute='product',
+            widget=ForeignKeyWidget(Product, 'name')
+            )
 
+    class Meta:
+        model = Variation
+        import_id_fields = ('id',) 
+        #fields = ('id', 'product__name','product__slug','product__color','product__category__name', 'category','title','sku','price','cost','sale_price',)
+        fields = ('id','product','product__id','product__color', 'product__slug','category','title','sku','price','cost','sale_price',)
+      
+        #export_order = ('id', 'product__name','product__slug','product__color','product__category__name', 'category','title','sku','price','cost','sale_price',)
+        
+        #exclude = ('id', )
+            
+        
+    
 
 # Register your models here.
 class ImageInline(admin.TabularInline):
@@ -29,13 +63,15 @@ class CategoryAdmin(admin.ModelAdmin):
     
     
 @admin.register(Product) 
-class ProductAdmin(admin.ModelAdmin): 
+class ProductAdmin(ImportExportModelAdmin): 
     list_display = ['name', 'category', 'available', 'created', 'updated'] 
     list_filter = ['category', 'created','available', 'updated'] 
     list_editable = [ 'available'] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
     inlines = [ImageInline, VariationInline]
+    resource_class = VariationResource
+
 
 
 #admin.site.register(AttributeBase)

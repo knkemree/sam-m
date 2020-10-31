@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.db.models import Min
 from django.core.exceptions import ValidationError
+from django.core.files import File
+
 
 # from ckeditor.fields import RichTextField
 
@@ -11,6 +13,7 @@ import os
 import http.client
 import mimetypes
 import json
+import urllib
 
 # Create your models here.   
 
@@ -52,7 +55,8 @@ class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True) 
-    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True, default= 'img/no_image.png')
+    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True,)
+    image_url = models.URLField(blank=True, null=True)
     #description = RichTextField(blank=True, null=True) 
     #description = QuillField(blank=True, null=True)
     description = models.TextField(blank=True, null=True) 
@@ -71,6 +75,10 @@ class Product(models.Model):
         
     def __str__(self): 
         return self.name
+    def save(self, **kwargs):
+        self.get_remote_image()
+
+        return super(Product, self).save(**kwargs)
 
     def get_absolute_url(self):
         return reverse('products:product_detail_view',
@@ -80,6 +88,15 @@ class Product(models.Model):
 
     def get_lowest_price(self):
         return self.variation_set.all().aggregate(Min('price'))
+
+    def get_remote_image(self):
+        if self.image_url and self.image == None:
+            result = urllib.urlretrieve(self.image_url)
+            self.image.save(
+                    os.path.basename(self.image_url),
+                    File(open(result[0]))
+                    )
+            self.save()
 
     class Meta:
         ordering = ['name','-created']
@@ -123,6 +140,7 @@ VAR_CATEGORIES = (
 
 class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    
     category = models.CharField(max_length=120, choices= VAR_CATEGORIES, default='size')
     title = models.CharField(max_length=120) 
     sku = models.CharField(max_length=60, blank=False, unique=True, help_text="SKU must be unique") 
