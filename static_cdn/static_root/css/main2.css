@@ -2470,10 +2470,10 @@ a#more-btn {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  background-color:red;
-  /* background-color: #dddddd; */
+  background-color: #dddddd;
   padding: 0;
-  height: 570px; }
+  /* height: 570px; */
+  height: 400px; }
   @media only screen and (min-width: 992px) and (max-width: 1199px) {
     .slider-style-2 .hero-slider-item {
       height: 450px; } }

@@ -19,10 +19,10 @@
 	<div class="hero-area mb-30">
 		<!--=======  slider container  =======-->
 			
-		<!-- <div class="slider-container"> -->
+		<div class="slider-container">
 			<!--=======  hero slider one  =======-->
 				
-			<div class="hero-slider">
+			<div class="slider-style-2">
 				<!--=======  slider item  =======-->
 				{% for slider in sliders %}
 				
@@ -34,8 +34,7 @@
 						
 					<div class="d-flex flex-column justify-content-center align-items-start h-100" >
 						
-						<a href="{{ slider.link }}"><img class="img-fluid" style=" display: inline-block; object-fit: cover;" src="{{ slider.image.url }}" alt=""></a>
-						
+						<a href="{{ slider.link }}"><img class="img-fluid" style=" display: inline-block;" src="{{ slider.image.url }}" alt=""></a>
 						<div class="container" >
 							
 							<div class="row">
@@ -44,7 +43,7 @@
 								</div>
 
 								<div class="col-lg-8">
-									<!-- <div class="slider-content">
+									<div class="slider-content">
 										
 										
 
@@ -62,7 +61,7 @@
 										<p>{{ slider.text|safe }} </p>
 										{% endif %}
 
-										<p class="slider-price">starting at <span>$260.99</span></p>
+										<!-- <p class="slider-price">starting at <span>$260.99</span></p> -->
 										<br>
 										{% if slider.button_text %}
 										<div class="text-center">
@@ -70,7 +69,7 @@
 										</div>
 										{% endif %}
 									
-									</div> -->
+									</div>
 								</div>
 							</div>
 						</div>
@@ -85,7 +84,7 @@
 			</div>
 			
 			<!--=======  End of hero slider one  =======-->
-		<!-- </div> -->
+		</div>
 		
 		<!--=======  End of slider container  =======-->
 	</div>
