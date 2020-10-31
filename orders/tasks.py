@@ -3,6 +3,9 @@ from django.core.mail import send_mail, mail_admins
 from django.template import loader
 from django.conf import settings
 from .models import Order, OrderItem
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 @shared_task
