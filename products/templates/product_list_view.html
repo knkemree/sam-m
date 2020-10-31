@@ -292,7 +292,7 @@
                                             <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                     <a href="{{ product.get_absolute_url }}">
                                         
-                                        <img style="height: 100px; width: 100px; object-fit: cover;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                         
                                     </a>
                                     
@@ -375,8 +375,8 @@
                                 background-position: center;
                                 margin: 0 auto;">
                                     <a href="{{ product.get_absolute_url }}">
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                        <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
+                                        <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        
                                     </a>
                                 </div>
                                 <div class="content">
@@ -429,7 +429,7 @@
                                 <!-- class="image" -->
                                 <div style="width: 200px; 
                                             height: 200px;
-                                            /*background-color: red;*/
+                                            /* background-color: red; */
                                             /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
                                             background-repeat: no-repeat;
                                             background-size: contain;
@@ -438,7 +438,7 @@
                                             <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                     <a href="{{ product.get_absolute_url }}">
                                         
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                         
                                     </a>
                                     
@@ -523,8 +523,8 @@
                                 background-position: center;
                                 margin: 0 auto;">
                                     <a href="{{ product.get_absolute_url }}">
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                        <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
+                                        <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        
                                     </a>
                                 </div>
                                 <div class="content">
