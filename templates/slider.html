@@ -3,8 +3,20 @@
 <!--=============================================
 	=            hero slider         =
 	=============================================-->
+	<!-- {% for slider in sliders %}
+	<div class="row">
+		<div class="col-md-4 col-ms-6">
+		   <div class="g-item">
+				 <img clas="img-responsive" src="{{ slider.image.url }}" alt="">
+				 <a data-rel="lightbox" class="overlay" href="">
+					 <span>+</span>
+				 </a>
+		   </div> 
+		</div> 
+	 </div> 
+	{% endfor %} -->
 	
-	<div class="hero-area home-four mb-30">
+	<div class="hero-area mb-30">
 		<!--=======  slider container  =======-->
 			
 		<div class="slider-container">
@@ -12,37 +24,68 @@
 				
 			<div class="slider-style-2">
 				<!--=======  slider item  =======-->
-
-				{% for slider in sliders %}	
-				<div class="hero-slider-item" style="background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')">
+				{% for slider in sliders %}
+				
+				<div class="hero-slider-item">
+				<!-- <div class="hero-slider-item" style="max-width: 100%; display: inline-block; background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')"> -->
 					
 
 					<!--=======  slider content  =======-->
 						
 					<div class="d-flex flex-column justify-content-center align-items-start h-100">
-						<div class="container">
-							<div class="row">
-								<div class="col-lg-7 col-xl-6 col-md-7 text-center">
-									<div class="slider-content">
-										<p>Exclusive Offer -20% Off This Week </p>
-										<h1>Desk Accesories</h1>
-										<p>Poul Henningsen developed the PH 5 in 1958 in response to constant changes to the shape and size of incandescent bulbs by bulb manufacturers.</p>
-										<a href="shop-left-sidebar.html" class="slider-btn">SHOP NOW</a>
-									</div>
+						
+						<a href="{{ slider.link }}"><img style="max-width: 100%; display:inline-block;" src="{{ slider.image.url }}" alt=""></a>
+						<div class="carousel-caption d-none d-md-block">
+							<div class="slider-content">
+										
+										
+
+								{% if slider.blinking_text %}
+								<div class="text-center blinking">
+									<h6>{{ slider.blinking_text }}</h6>
 								</div>
+								{% endif %}
+								
+								{% if slider.header_text %}
+								<h1 class="text-center" style="background-color:white; opacity: 0.7;">{{ slider.header_text|safe }}</h1>
+								{% endif %}
+
+								{% if slider.text %}
+								<p>{{ slider.text|safe }} </p>
+								{% endif %}
+
+								<!-- <p class="slider-price">starting at <span>$260.99</span></p> -->
+								<br>
+								{% if slider.button_text %}
+								<div class="text-center">
+									<button type="button" class="btn btn-info"><a href="{% if slider.link %}{{ slider.link }}{% endif %}">{{ slider.button_text }}</a></button>
+								</div>
+								{% endif %}
+							
 							</div>
-						</div>
+						  </div>
+						
+							
+							
+								
+							
+						
 					</div>
 						
 					<!--=======  End of slider content  =======-->
 				</div>
 				{% endfor %}
-				
+					
 				<!--=======  End of slider item  =======-->
+
 			</div>
 			
+			<!--=======  End of hero slider one  =======-->
 		</div>
+		
+		<!--=======  End of slider container  =======-->
 	</div>
-{% endif %}
-<br>
-	<!-- <div class="hero-slider-item" style="max-width: 100%; display: inline-block; background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')"> -->
+	
+	<!--=====  End of hero slider  ======-->
+	{% endif %}
+	<br>

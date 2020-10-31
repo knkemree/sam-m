@@ -1,0 +1,84 @@
+{% load static %}
+<style>
+    .carousel-caption {
+	background: rgba(black, 0.3);
+	padding: 15px;
+	margin: 0;
+	font-size: 19px;
+	margin-bottom: 40px;
+}
+.carousel-progress {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: rgba(black, 0.3);
+	display: block;
+	width: 100%;
+	height: 5px;
+}
+</style>
+<script>
+    $(".carousel-swipe").each(function(){
+	var swipe_obj = this;
+	var mc = new Hammer(swipe_obj);
+	mc.on("panleft panright panend panstart", function(event) {
+		var obj_width = $(swipe_obj).width();
+		xPos = event.deltaX;
+		moveRight = xPos > 0;
+		moveLeft  = !moveRight;
+		prevClass = "right prev";
+		nextClass = "next left";
+		var percent =(1 - (xPos < 0 ? (xPos * (0-1)) / obj_width : xPos / obj_width)).toFixed(5);
+		percent = percent < 0 ? 0 : percent;
+		console.log(percent);
+		$(swipe_obj).find(".item.active").css({"left": xPos+"px", "opacity": percent, "z-index": "9999"});
+		if (moveLeft) {
+			$(swipe_obj).find(".item").removeClass(prevClass);
+			$(swipe_obj).find(".item.active").next().addClass(nextClass);
+		} else {
+			$(swipe_obj).find(".item").removeClass(nextClass);
+			$(swipe_obj).find(".item.active").prev().addClass(prevClass);
+		}
+		if (event.type == "panend") {
+			$(swipe_obj).find(".item").removeClass(nextClass + " " + prevClass);
+			clickTo = moveLeft ? "[data-slide=next]" : "[data-slide=prev]";
+			$(swipe_obj).find(clickTo).click();
+			$(swipe_obj).find(".item").animate({left: "0", "z-index": '', opacity: 1}, 700);
+		}
+	});
+});
+</script>
+
+<div class="container">
+    <div class="page-header">
+      <h1>Bootstrap default carousel with swipe and animation</h1>
+      <p class="lead">How to add the swipes gesture to comand the Bootstrap carousel on mobile devices.</p>
+      <p>Made by <strong><a href="https://codepen.io/walfter">Walfter</a></strong></p>
+    </div>
+    <div class="carousel slide carousel-swipe" id="carousel" data-ride="carousel" data-interval="10000">
+      <ol class="carousel-indicators">
+        <li class="active" data-target="#carousel" data-slide-to="0"></li>
+        <li data-target="#carousel" data-slide-to="1"></li>
+        <li data-target="#carousel" data-slide-to="2"></li>
+        <li data-target="#carousel" data-slide-to="3"></li>
+        <li data-target="#carousel" data-slide-to="4"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item active"><img src="https://unsplash.it/1400/700/?random"/>
+          <div class="carousel-caption">Заголовок</div>
+        </div>
+        <div class="item"><img src="https://unsplash.it/1400/700/?image=999"/>
+          <div class="carousel-caption">Заголовок</div>
+        </div>
+        <div class="item"><img src="https://unsplash.it/1400/700/?image=967"/>
+          <div class="carousel-caption">Заголовок</div>
+        </div>
+        <div class="item"><img src="https://unsplash.it/1400/700/?image=916"/>
+          <div class="carousel-caption">Заголовок</div>
+        </div>
+        <div class="item"><img src="https://unsplash.it/1400/700/?image=921"/>
+          <div class="carousel-caption">Заголовок</div>
+        </div>
+      </div><a class="left carousel-control" href="#carousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span><span class="sr-only">Prev</span></a><a class="right carousel-control" href="#carousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">next</span></a>
+    </div>
+  </div>
