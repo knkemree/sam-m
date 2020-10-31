@@ -11,32 +11,41 @@
 				 <a data-rel="lightbox" class="overlay" href="">
 					 <span>+</span>
 				 </a>
-		   </div> 
-		</div> 
-	 </div> 
+		   </div>
+		</div>
+	 </div>
 	{% endfor %} -->
-	
-	<div class="hero-area mb-30">
-		<!--=======  slider container  =======-->
-			
-		<div class="slider-container">
-			<!--=======  hero slider one  =======-->
-				
-			<div class="slider-style-2">
-				<!--=======  slider item  =======-->
-				{% for slider in sliders %}
-				
-				<div class="hero-slider-item">
-				<!-- <div class="hero-slider-item" style="max-width: 100%; display: inline-block; background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')"> -->
-					
+
+<div class="hero-area mb-30">
+<!--=======  slider container  =======-->
+
+	<div class="slider-container">
+<!--=======  hero slider one  =======-->
+
+		<div class="slider-style-2">
+<!--=======  slider item  =======-->
+
+
+			{% for slider in sliders %}
+			<!-- <div class="hero-slider-item" style="max-width: 100%; display: inline-block;"> -->
+			<div class="hero-slider-item" style="max-width: 100%; display: inline-block; background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')">
+
+
+
 
 					<!--=======  slider content  =======-->
-						
+
 					<div class="d-flex flex-column justify-content-center align-items-start h-100" >
-						
-						<a href="{{ slider.link }}"><img class="img-fluid" style=" display: inline-block;" src="{{ slider.image.url }}" alt=""></a>
+						<!-- <img style="width: 100%;
+					height: 100%;
+					object-fit: cover" src="{{ slider.image.url }}" alt="Responsive image"> -->
+
+
+						<!-- <a href="{{ slider.link }}"><img class="img-fluid"  src="{{ slider.image.url }}" alt=""></a> -->
+
 						<div class="container" >
-							
+
+
 							<div class="row">
 								<div class="col-lg-2">
 
@@ -44,15 +53,15 @@
 
 								<div class="col-lg-8">
 									<div class="slider-content">
-										
-										
+
+
 
 										{% if slider.blinking_text %}
 										<div class="text-center blinking">
-											<h6>{{ slider.blinking_text }}</h6>
+										<h6>{{ slider.blinking_text }}</h6>
 										</div>
 										{% endif %}
-										
+
 										{% if slider.header_text %}
 										<h1 class="text-center" style="background-color:white; opacity: 0.7;">{{ slider.header_text|safe }}</h1>
 										{% endif %}
@@ -65,30 +74,32 @@
 										<br>
 										{% if slider.button_text %}
 										<div class="text-center">
-											<button type="button" class="btn btn-info"><a href="{% if slider.link %}{{ slider.link }}{% endif %}">{{ slider.button_text }}</a></button>
+										<button type="button" class="btn btn-info"><a href="{% if slider.link %}{{ slider.link }}{% endif %}">{{ slider.button_text }}</a></button>
 										</div>
 										{% endif %}
-									
+
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-						
-					<!--=======  End of slider content  =======-->
-				</div>
-				{% endfor %}
-					
-				<!--=======  End of slider item  =======-->
 
+					</div>
+
+<!--=======  End of slider content  =======-->
 			</div>
-			
-			<!--=======  End of hero slider one  =======-->
+			{% endfor %}
+
+
+<!--=======  End of slider item  =======-->
+
 		</div>
-		
-		<!--=======  End of slider container  =======-->
+
+<!--=======  End of hero slider one  =======-->
 	</div>
-	
+
+<!--=======  End of slider container  =======-->
+</div>
+
 	<!--=====  End of hero slider  ======-->
 	{% endif %}
 	<br>
