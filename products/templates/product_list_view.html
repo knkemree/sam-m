@@ -292,7 +292,7 @@
                                             <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                     <a href="{{ product.get_absolute_url }}">
                                         
-                                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        <img style="height: 100%; width: 100%;;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                         
                                     </a>
                                     
