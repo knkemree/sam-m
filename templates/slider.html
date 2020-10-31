@@ -32,44 +32,48 @@
 
 					<!--=======  slider content  =======-->
 						
-					<div class="d-flex flex-column justify-content-center align-items-start h-100">
+					<div class="d-flex flex-column justify-content-center align-items-start h-100" >
 						
-						<a href="{{ slider.link }}"><img style="max-width: 100%; display:inline-block;" src="{{ slider.image.url }}" alt=""></a>
-						<div class="carousel-caption d-none d-md-block">
-							<div class="slider-content">
-										
-										
-
-								{% if slider.blinking_text %}
-								<div class="text-center blinking">
-									<h6>{{ slider.blinking_text }}</h6>
-								</div>
-								{% endif %}
-								
-								{% if slider.header_text %}
-								<h1 class="text-center" style="background-color:white; opacity: 0.7;">{{ slider.header_text|safe }}</h1>
-								{% endif %}
-
-								{% if slider.text %}
-								<p>{{ slider.text|safe }} </p>
-								{% endif %}
-
-								<!-- <p class="slider-price">starting at <span>$260.99</span></p> -->
-								<br>
-								{% if slider.button_text %}
-								<div class="text-center">
-									<button type="button" class="btn btn-info"><a href="{% if slider.link %}{{ slider.link }}{% endif %}">{{ slider.button_text }}</a></button>
-								</div>
-								{% endif %}
+						<a href="{{ slider.link }}"><img style="max-width: 100%; display: inline-block;" src="{{ slider.image.url }}" alt=""></a>
+						
+						<div class="container" >
 							
+							<div class="row">
+								<div class="col-lg-2">
+
+								</div>
+
+								<div class="col-lg-8">
+									<!-- <div class="slider-content">
+										
+										
+
+										{% if slider.blinking_text %}
+										<div class="text-center blinking">
+											<h6>{{ slider.blinking_text }}</h6>
+										</div>
+										{% endif %}
+										
+										{% if slider.header_text %}
+										<h1 class="text-center" style="background-color:white; opacity: 0.7;">{{ slider.header_text|safe }}</h1>
+										{% endif %}
+
+										{% if slider.text %}
+										<p>{{ slider.text|safe }} </p>
+										{% endif %}
+
+										<p class="slider-price">starting at <span>$260.99</span></p>
+										<br>
+										{% if slider.button_text %}
+										<div class="text-center">
+											<button type="button" class="btn btn-info"><a href="{% if slider.link %}{{ slider.link }}{% endif %}">{{ slider.button_text }}</a></button>
+										</div>
+										{% endif %}
+									
+									</div> -->
+								</div>
 							</div>
-						  </div>
-						
-							
-							
-								
-							
-						
+						</div>
 					</div>
 						
 					<!--=======  End of slider content  =======-->
