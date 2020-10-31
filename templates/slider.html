@@ -1,4 +1,23 @@
 {% load static %}
+<style>
+	div.background {
+	  background: url(klematis.jpg) repeat;
+	  border: 2px solid black;
+	}
+	
+	div.transbox {
+	  margin: 30px;
+	  background-color: #ffffff;
+	  border: 1px solid black;
+	  opacity: 0.6;
+	}
+	
+	div.transbox p {
+	  margin: 5%;
+	  font-weight: bold;
+	  color: #000000;
+	}
+	</style>
 {% if sliders %}
 <!--=============================================
 	=            hero slider         =
@@ -28,7 +47,18 @@
 
 			{% for slider in sliders %}
 			<!-- <div class="hero-slider-item" style="max-width: 100%; display: inline-block;"> -->
-			<div class="hero-slider-item" style="object-fit: cover; display: inline-block; background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')">
+			<div class="hero-slider-item" style="
+			 
+			 
+			 background: linear-gradient( rgba(0,0,0,0.3), rgba(0, 0, 0, 0.3) ),url('{{ MEDIA_URL }}{{ slider.image.url }}') no-repeat center center fixed;
+			 /* background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}'); */
+			 background-position: center;
+			  background-size: cover;
+			  position: relative;
+			 display: inline-block;
+			 
+			 "
+			 >
 
 
 
@@ -63,7 +93,9 @@
 										{% endif %}
 
 										{% if slider.header_text %}
-										<h1 class="text-center" style="background-color:white; opacity: 0.7;">{{ slider.header_text|safe }}</h1>
+										<h1 class="text-center" style=" color:white; 
+										background-color:transparent; 
+										text-shadow: white 0px 0px 10px;" >{{ slider.header_text|safe }}</h1>
 										{% endif %}
 
 										{% if slider.text %}
