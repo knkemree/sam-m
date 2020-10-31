@@ -103,7 +103,7 @@
                             <div class="tab-pane fade" id="{{ rs.image.id}}" role="tabpanel" aria-labelledby="single-slide-tab-2">
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img img-full">
-                                    <img src="{{ rs.image.url }}" class="img-fluid" alt="">
+                                    <img style="max-height: 150px; width: auto; object-fit: cover;" src="{{ rs.image.url }}" class="img-fluid" alt="">
                                     <a href="{{ rs.image.url }}"  class="big-image-popup"><i class="fa fa-search-plus"></i></a>
                                 </div>
                                 <!--Single Product Image End-->
@@ -121,7 +121,7 @@
                                 <div style="width: 100px; 
                                             height: 100px;
                                             background-color: white;
-                                            background-image: url('{{ MEDIA_URL }}{{ rs.image.url }}') ;
+                                            /* background-image: url('{{ MEDIA_URL }}{{ rs.image.url }}') ; */
                                             background-repeat: no-repeat;
                                             background-size: contain;
                                             background-position: center;
@@ -129,7 +129,10 @@
                                             <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                     <a href="">
                                         
-                                        <img src="" class="img-fluid" alt="">
+                                        <img style="height: 100px; width: auto;
+                                        margin-left: auto;
+                                        margin-right: auto;
+                                         object-fit: cover;" src="{{ rs.image.url }}" class="img-fluid" alt="">
                                         
                                     </a>
                                     
