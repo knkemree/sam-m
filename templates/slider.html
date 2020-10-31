@@ -22,19 +22,21 @@
 		<div class="slider-container">
 			<!--=======  hero slider one  =======-->
 				
-			<div class="hero-slider">
+			<div class="slider-style-2">
 				<!--=======  slider item  =======-->
 				{% for slider in sliders %}
 				
-				<!-- <div class="hero-slider-item slider-bg-1" style="width: 100%; display: inline-block;"> -->
-				<div class="hero-slider-item" style="max-width: 1400px; display: inline-block; background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')">
+				<div class="hero-slider-item" style="width: 100%; display: inline-block;">
+				<!-- <div class="hero-slider-item" style="max-width: 100%; display: inline-block; background-image: url('{{ MEDIA_URL }}{{ slider.image.url }}')"> -->
 				
 
 					<!--=======  slider content  =======-->
 						
 					<div class="d-flex flex-column justify-content-center align-items-start h-100" >
-						<!-- <a href="{{ slider.link }}"><img src="{{ slider.image.url }}" alt=""></a> -->
+						<a href="{{ slider.link }}"><img style="max-width: 100%; display: inline-block;" src="{{ slider.image.url }}" alt=""></a>
+						
 						<div class="container">
+							
 							<div class="row">
 								<div class="col-lg-2">
 
