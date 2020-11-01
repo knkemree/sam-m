@@ -91,14 +91,16 @@
                             <div class="category">
                                 
                                 <ul>
+                                    {{parent_categories}}
+                                    {{ parent_category }}{{ child_category }}
                                     {% for p in parent_categories %}
                                     <li>
                                         <a href="{{ p.get_absolute_url }}">{{ p.name }}</a>
                                         
                                         {% if p.name == parent_category.name %}
-                                            {% for single_child_category in child_categories %}
+                                            {% for single_child_category in parent_category.children.all %}
                                                 <li>      
-                                                    <small><a href="{{ single_child_category.get_absolute_url }}">-> {{ single_child_category.name }}</a></small>
+                                                    <small><a href="{{ single_child_category.get_absolute_url }}"><i class="fa fa-minus" aria-hidden="true"></i> {{ single_child_category.name }}</a></small>
                                                 </li>
                                             {% endfor %}
                                         {% else %}
@@ -110,7 +112,7 @@
                                                         
                                                             {% if category.parent_id == child_category.parent_id %}
                                                             <li>
-                                                                <small><a href="{{ category.get_absolute_url }}"> -> {{ category.name }}</a></small>
+                                                                <small><a href="{{ category.get_absolute_url }}"> <i class="fa fa-minus" aria-hidden="true"></i> {{ category.name }}</a></small>
                                                             </li>
                                                             {% endif %}
                                                         
@@ -272,8 +274,7 @@
 
                     <!--=======  shop product display area  =======-->
                     <div class="shop-product-wrap grid row mb-30 no-gutters">
-                        {% if parent_category %}
-                        {% for product in parent_category_product_set %}
+                        {% for product in parent_category.product_set.all %}
                         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                             <!--=======  grid view product  =======-->
                             
@@ -418,8 +419,158 @@
                             
                         </div>
                         {% endfor %}
-                        {% else %}
-                        {% for product in child_category_product_set %}
+                        {% for i in parent_category.children.all %}
+                        {% for product in i.product_set.all %}
+                        
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <!--=======  grid view product  =======-->
+                            
+                            <!--=======  single product  =======-->
+                            
+                            <div class="fl-product shop-grid-view-product">
+                                <!-- class="image" -->
+                                <div style="width: 200px; 
+                                            height: 200px;
+                                            /* background-color: red;
+                                            background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ; */
+                                            background-repeat: no-repeat;
+                                            background-size: contain;
+                                            background-position: center;
+                                            margin: 0 auto;" > 
+                                            <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
+                                    <a href="{{ product.get_absolute_url }}">
+                                        
+                                        <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        
+                                    </a>
+                                    
+                                    <!-- wishlist icon -->
+                                    <!-- <span class="wishlist-icon">
+                                            <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
+                                    </span> -->
+                                </div>
+                                <div class="content">
+                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
+                                    
+                                    
+                                    {% if request.user.is_authenticated %}
+                                    
+                                    <p class="product-price">
+                                        <span class="main-price starting-from">starting at</span>
+                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
+                                    </p>
+                                    <p>
+                                        
+                                        
+                                        <div class="cart-buttons mb-20">
+                                            <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button>
+                                                <!-- <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                                {{ cart_product_form.as_p }}
+                                                {% csrf_token %} -->
+                                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
+                                                <!-- <button type="submit" class="add-to-cart-butonu" >Add to Cart</button> -->
+                                                
+                                                <!-- </form> -->
+                
+                                        </div>
+                                    
+                                        {% else%}
+                                        <div class="rating">
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                            <i class="fa fa-star active"></i>
+                                        </div>
+                                        <div class="product-feature-details">
+                                            <div class="cart-buttons mb-20">
+                                                <div class="add-to-cart-btn d-block">
+                                                    <a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa fa-check-circle"> </i> Become A Dealer</a>
+                                                    
+                                                </div>
+                                            <small><p>Already Delaer? <a href="{% url 'login' %}">Login</a></p></small>
+                                            </div>
+                                            
+                                        </div>
+                                    {% endif %}
+
+                                    
+
+                                    <!-- <div class="hover-icons">
+                                        
+                                        <ul>
+                                            <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
+                                            <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
+                                            <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+                            </div>
+                            
+                            <!--=======  End of single product  =======-->
+
+                            <!--=======  End of grid view product  =======-->
+
+                            <!--=======  list view product  =======-->
+                            
+                            <div class="fl-product shop-list-view-product">
+                                <div style="width: 200px; 
+                                height: 200px;
+                                /*background-color: red;*/
+                                /*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+                                background-repeat: no-repeat;
+                                background-size: contain;
+                                background-position: center;
+                                margin: 0 auto;">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                        
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
+                                    <!-- <div class="rating">
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div> -->
+                                    {% if request.user.is_authenticated %}
+                                    <p class="product-price">
+                                        <!-- <span class="main-price discounted">$71</span> -->
+                                        <span class="main-price starting-from">starting at</span>
+                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
+                                    </p>
+                                    {% endif %}
+
+                                    <p class="product-description">{{ product.description|truncatechars:200 }}</p>
+                                    
+                        
+
+                                    <div class="hover-icons">
+                                        <ul>
+                                            <li><a href="{{ product.get_absolute_url }}"  data-tooltip="Choose Size">Choose Size</a></li>
+                                            {% if user.is_superuser is True %}
+                                            <li><a href="/admin/products/product/{{product.id}}/change/"  data-tooltip="Edit"><i class="icon ion-md-options"></i></a></li>
+                                            {% endif %}
+                                        </ul>
+                                        
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--=======  End of list view product  =======-->
+                            
+                            
+                        </div>
+                        
+                        {% endfor %}
+                        {% endfor %}
+                        
+
+                        {% for product in child_category.product_set.all %}
                         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                             <!--=======  grid view product  =======-->
                             
@@ -566,7 +717,7 @@
                             
                         </div>
                         {% endfor %}
-                        {% endif %}
+                        
                     </div>
                     
                     

@@ -2,6 +2,7 @@ import http.client
 import mimetypes
 import json
 import pandas as pd
+from itertools import chain
 
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, redirect, render
@@ -19,6 +20,7 @@ from .forms import updateQtyForm
 from cart.forms import CartAddProductForm
 from cart.cart import Cart
 from django.core.exceptions import ValidationError
+from products.models import Category
 
 register = template.Library()
 
@@ -64,58 +66,46 @@ def product_list_view(request, category_slug=None):
     
     if category_slug:
         try:
-            all_categories = []
-            child_category = []
-            parent_categories = Category.objects.filter(active=True, parent=None)
             parent_category = Category.objects.get(slug=category_slug, parent=None)
-            parent_category_product_set = []
-            child_categories = parent_category.children.all()
-            
-            if child_categories:
-                for child_category in child_categories:
-                    
-                    child_category_product_set = Product.objects.filter(active=True, category=child_category)
-                    for single_product in child_category_product_set:
-                        parent_category_product_set.append(single_product)
-            else:
-                parent_category_product_set = Product.objects.filter(available=True, category=parent_category)
-                child_category_product_set = []
-            
         except:
+            parent_category = None
+        parent_categories = Category.objects.filter(active=True, parent=None)
+
+        if parent_category:
+            #parent_category = Category.objects.get(slug=category_slug, parent=None)
+            child_category = []
+
+            # parent_category_product_set = []
+            all_categories = []
+               
+            # parent_category_product_set = list(chain(products_w_parent_cat, products_w_sub_cat))
+            # print("parent cat product set byradaaaaaaaaaaaaaaaaaaa!!!")
+            # print(parent_category_product_set)
+            
+            # child_categories = parent_category.children.all()
+            
+            # if child_categories:
+            #     for child_category in child_categories:
+                    
+            #         child_category_product_set = Product.objects.filter(active=True, category=child_category)
+            #         for single_product in child_category_product_set:
+            #             parent_category_product_set.append(single_product)
+            # else:
+            #     parent_category_product_set = Product.objects.filter(available=True, category=parent_category)
+            #     child_category_product_set = []
+            
+        else:
+            child_category = get_object_or_404(Category, slug=category_slug)
             all_categories = Category.objects.filter(active=True)
+            
 
             parent_category = []
-            parent_categories = Category.objects.filter(active=True, parent=None)
+            
             parent_category_product_set = []
             
-            child_category = get_object_or_404(Category, slug=category_slug)
-            child_categories = []
-            child_category_product_set = Product.objects.filter(available=True, category=child_category )
- 
-    category = None
-    
-    categories = Category.objects.filter(active=True, parent=None)
-    products = Product.objects.filter(available=True)
-    
-    cart_product_form = CartAddProductForm()
-
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
-        object_list = Product.objects.filter(available=True, category=category)
-        print("burada mi??????")
-        print(object_list)
-        # paginator = Paginator(object_list, 1) # 3 posts in each page
-        # page = request.GET.get('page')
-        # try:
-        #     products = paginator.page(page)
-        # except PageNotAnInteger:
-        #     # If page is not an integer deliver the first page
-        #     products = paginator.page(1)
-        # except EmptyPage:
-        #     # If page is out of range deliver last page of results
-        #     products = paginator.page(paginator.num_pages)
-
+            
+            # child_categories = []
+            # child_category_product_set = Product.objects.filter(available=True, category=child_category )
     else:
         #shop sayfasini doldurabilmek icin asagidaki listlerin doldurulmasi veya ilgili listlerin olusturulmasi gerekiyor /products/ sayfasinda suan hicbirsey yok
         parent_category = []
@@ -126,13 +116,12 @@ def product_list_view(request, category_slug=None):
         child_category_product_set = []
         all_categories = []
 
+    
+    cart_product_form = CartAddProductForm()
 
-        object_list = Product.objects.filter(available=True)
-
+    object_list = Product.objects.filter(available=True)
     paginator = Paginator(object_list, 50) # 3 posts in each page
     page = request.GET.get('page')
-    print("page buradaaaaaaaaaaaaaa!")
-    print(page)
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
@@ -146,17 +135,14 @@ def product_list_view(request, category_slug=None):
     return render(request,
                   'product_list_view.html',
 
-                  {'category': category,
-                   'categories': categories,
-                   'products': products,
+                  {
                    'parent_category':parent_category,
                    'parent_categories':parent_categories,
-                   'parent_category_product_set':parent_category_product_set,
+                   #'parent_category_product_set':parent_category_product_set,
                    'child_category':child_category,
-                   'child_categories':child_categories,
-                   'child_category_product_set':child_category_product_set,
+                   #'child_categories':child_categories,
+                   #'child_category_product_set':child_category_product_set,
                    'all_categories':all_categories,
-
 
                    'page': page,
                 
