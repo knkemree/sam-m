@@ -243,7 +243,7 @@
         
             <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
-                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"><i class="fa fa-plus"></i> Stock Availability</button>									
+                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" style="color: #13A3CA;"><i class="fa fa-plus"></i> Stock Availability</button>									
                 </h2>
             </div>
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
@@ -285,8 +285,8 @@
                         {% endif %}
                         
                         {% if request.user.is_authenticated %}
-                        {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>{% if quantity_on_hand >= 1 %} {{ quantity_on_hand }}{% else %} Out of Stock{% endif %}</a></p>{% endif %}{% endif %}
-                        {% if product.color is not  null %}<p><a><strong>Color: </strong> {{ product.color }}</a></p>{% endif %}
+                        {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>{% if quantity_on_hand >= 1 %} <strong style="color:rgb(64, 190, 32);">{{ quantity_on_hand }}</strong>{% else %}<span style="color:red;"> Out of Stock </span>{% endif %}</a></p>{% endif %}{% endif %}
+                        {% if product.color is not  null %}<p><a><strong>Color: </strong>{{ product.color }}</span></a></p>{% endif %}
                             {% if product.variation_set.sizes %}
                             
                             <!-- <form id ="variation" action="{% url "products:choose_size" product.id  %}" method="post" > -->
