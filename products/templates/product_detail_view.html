@@ -218,7 +218,32 @@
                         
                         
                         {% if product.description is not None %}
-                        <p class="product-description mb-20">{{ product.description|safe }}</p>
+                        <p class="product-description mb-20">{{ product.description|safe }}
+
+                        </p>
+                        <table class="table">
+                            <thead>
+                            
+                              <tr>
+                                <th scope="col"></th>
+                                {% for i in product.variation_set.all %}
+                                <th>{{ i.title }}</th>
+                                {% endfor %}
+
+                                
+                              </tr>
+                            
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">In Stock</th>
+                                {% for i in product.variation_set.all %}
+                                <td>{{ i.price }}</td>
+                                {% endfor %}
+                                
+                              </tr>
+                            </tbody>
+                        </table>
                         {% endif %}
                         
                         {% if request.user.is_authenticated %}
