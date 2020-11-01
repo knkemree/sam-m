@@ -140,15 +140,15 @@ def product_detail_view(request, id, slug, variantid=None):
     list_ids_or_sku = []
 
     try:
-        for variant in product.variation_set.all():
-            api_id = variant.sku
+        for var in product.variation_set.all():
+            api_id = var.sku
             list_ids_or_sku.append(api_id)
 
         payload1 = {"idType":"sku","idList":list_ids_or_sku}
         payload = str(payload1)
     except:
-        for variant in product.variation_set.all():
-            api_id = variant.ecomdashid
+        for var in product.variation_set.all():
+            api_id = var.ecomdashid
             list_ids_or_sku.append(api_id)
 
         payload1 = {"idType":"id","idList":list_ids_or_sku}
@@ -169,14 +169,7 @@ def product_detail_view(request, id, slug, variantid=None):
     
     veri = json.loads(data.decode("utf-8"))
     veri2 = veri["data"]
-    
-    stocks = []
-    for i in veri["data"]:
-        
-        stocks.append(i['QuantityOnHand'])
-    print("detail view product qtys")
-
-    print(stocks)  
+     
     if variantid:
         try:
             variant = Variation.objects.get(id=variantid)
@@ -240,7 +233,6 @@ def product_detail_view(request, id, slug, variantid=None):
                   'variant':variant,
                   'quantity_on_hand':quantity_on_hand, 
                   'loop_times':range(1, int(quantity_on_hand)+1),
-                  'stocks':stocks,
                   'veri2':veri2
                   }
                   )
