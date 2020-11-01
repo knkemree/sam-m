@@ -221,29 +221,63 @@
                         {% if product.description is not None %}
                         <div class="product-description mb-20">
                             <p>{{ product.description|safe }}</p>
-                            <table class="table">
-                                <thead>
-                                
-                                  <tr>
-                                    <th scope="col">Size</th>
-                                    {% for i in product.variation_set.all %}
-                                    <th>{{ i.title }}</th>
-                                    {% endfor %}
-    
-                                    
-                                  </tr>
-                                
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <th scope="row">Price</th>
-                                    {% for i in product.variation_set.all %}
-                                    <td>{{ i.price }}</td>
-                                    {% endfor %}
-                                    
-                                  </tr>
-                                </tbody>
-                            </table>
+                            
+
+<script>
+    $(document).ready(function(){
+        // Add minus icon for collapse element which is open by default
+        $(".collapse.show").each(function(){
+        	$(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+        });
+        
+        // Toggle plus minus icon on show hide of collapse element
+        $(".collapse").on('show.bs.collapse', function(){
+        	$(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+        }).on('hide.bs.collapse', function(){
+        	$(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+        });
+    });
+</script>
+
+    <div class="accordion" id="accordionExample">
+        
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"><i class="fa fa-plus"></i> Stock Availability</button>									
+                </h2>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                
+                    <table class="table">
+                        <thead>
+                        
+                          <tr>
+                            <th scope="col">Size</th>
+                            {% for i in product.variation_set.all %}
+                            <th>{{ i.title }}</th>
+                            {% endfor %}
+
+                            
+                          </tr>
+                        
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">Stock</th>
+                            {% for i in product.variation_set.all %}
+                            <td>{{ i.pricef }}</td>
+                            {% endfor %}
+                            
+                          </tr>
+                        </tbody>
+                    </table>
+                
+            </div>
+        
+        
+    </div>
+
+                            
                             
 
                         </div>
