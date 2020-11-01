@@ -291,7 +291,19 @@
                         
                         
                         {% if request.user.is_authenticated %}
-                        {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>{% if quantity_on_hand >= 1 %} <strong style="color:rgb(64, 190, 32);">{{ quantity_on_hand }}</strong>{% else %}<span style="color:red;"> Out of Stock </span>{% endif %}</a></p>{% endif %}{% endif %}
+                        {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>
+                            {% for ecom in veri2 %} 
+                                {% if ecom.Id|floatformat == variant.ecomdashid|floatformat %} 
+                                    {% if ecom.QuantityOnHand >= 1 %}
+                                        <strong style="color:rgb(64, 190, 32);">{{ecom.QuantityOnHand}}</strong>
+                                    {% else %}
+                                        <span style="color:red;"> Out of Stock </span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% endif %}
+                        
                         {% if product.color is not  null %}<p><a><strong>Color: </strong>{{ product.color }}</span></a></p>{% endif %}
                             {% if product.variation_set.sizes %}
                             
