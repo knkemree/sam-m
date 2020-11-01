@@ -322,7 +322,7 @@
 									<div class="cart-float-single-item d-flex">
 										<!-- <span onclick="window.location.href = '{% url 'cart:cart_remove' variation.id %}';" class="remove-item" id="remove-item"><a><i class="icon ion-md-close"></i></a></span> -->
 										<div class="cart-float-single-item-image">
-											<a href="{{ variation.product.get_absolute_url }}"><img src="{{ variation.product.image.url }}" class="img-fluid" alt=""></a>
+											<a href="{{ variation.product.get_absolute_url }}"><img style="height: 100px; width: auto;"src="{{ variation.product.image.url }}" class="img-fluid" alt=""></a>
 										</div>
 										<div class="cart-float-single-item-desc">
 											<p class="product-title"> <a href="{{ variation.product.get_absolute_url }}">{{ variation.sku }} </a></p>
