@@ -215,35 +215,37 @@
                             {% endif %}
                         </h2>
                     
-                        <table class="table">
-                            <thead>
-                            
-                              <tr>
-                                <th scope="col">Size</th>
-                                {% for i in product.variation_set.all %}
-                                <th>{{ i.title }}</th>
-                                {% endfor %}
-
-                                
-                              </tr>
-                            
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">In Stock</th>
-                                {% for i in product.variation_set.all %}
-                                <td>{{ i.price }}</td>
-                                {% endfor %}
-                                
-                              </tr>
-                            </tbody>
-                        </table>
+                        
                         
                         {% if product.description is not None %}
-                        <p class="product-description mb-20">{{ product.description|safe }}
+                        <div class="product-description mb-20">
+                            <p>{{ product.description|safe }}</p>
+                            <table class="table">
+                                <thead>
+                                
+                                  <tr>
+                                    <th scope="col">Size</th>
+                                    {% for i in product.variation_set.all %}
+                                    <th>{{ i.title }}</th>
+                                    {% endfor %}
+    
+                                    
+                                  </tr>
+                                
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">In Stock</th>
+                                    {% for i in product.variation_set.all %}
+                                    <td>{{ i.price }}</td>
+                                    {% endfor %}
+                                    
+                                  </tr>
+                                </tbody>
+                            </table>
                             
 
-                        </p>
+                        </div>
                         
                         {% endif %}
                         
