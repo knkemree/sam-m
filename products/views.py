@@ -175,6 +175,7 @@ def product_detail_view(request, id, slug, variantid=None):
         
         stocks.append(i['QuantityOnHand'])
     print("detail view product qtys")
+
     print(stocks)  
     if variantid:
         try:
@@ -239,7 +240,8 @@ def product_detail_view(request, id, slug, variantid=None):
                   'variant':variant,
                   'quantity_on_hand':quantity_on_hand, 
                   'loop_times':range(1, int(quantity_on_hand)+1),
-                  'stocks':stocks
+                  'stocks':stocks,
+                  'veri2':veri2
                   }
                   )
 
