@@ -215,12 +215,6 @@
                             {% endif %}
                         </h2>
                     
-                        
-                        
-                        {% if product.description is not None %}
-                        <p class="product-description mb-20">{{ product.description|safe }}
-
-                        </p>
                         <table class="table">
                             <thead>
                             
@@ -244,6 +238,13 @@
                               </tr>
                             </tbody>
                         </table>
+                        
+                        {% if product.description is not None %}
+                        <p class="product-description mb-20">{{ product.description|safe }}
+                            
+
+                        </p>
+                        
                         {% endif %}
                         
                         {% if request.user.is_authenticated %}
