@@ -264,8 +264,8 @@
                         <tbody>
                           <tr>
                             <th scope="row">Stock</th>
-                            {% for i in product.variation_set.all %}
-                            <td>{{ i.pricef }}</td>
+                            {% for stock in stocks %}
+                            <td>{{ stock }}</td>
                             {% endfor %}
                             
                           </tr>

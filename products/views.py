@@ -78,42 +78,18 @@ def product_list_view(request, category_slug=None):
             # parent_category_product_set = []
             all_categories = []
                
-            # parent_category_product_set = list(chain(products_w_parent_cat, products_w_sub_cat))
-            # print("parent cat product set byradaaaaaaaaaaaaaaaaaaa!!!")
-            # print(parent_category_product_set)
             
-            # child_categories = parent_category.children.all()
-            
-            # if child_categories:
-            #     for child_category in child_categories:
-                    
-            #         child_category_product_set = Product.objects.filter(active=True, category=child_category)
-            #         for single_product in child_category_product_set:
-            #             parent_category_product_set.append(single_product)
-            # else:
-            #     parent_category_product_set = Product.objects.filter(available=True, category=parent_category)
-            #     child_category_product_set = []
             
         else:
             child_category = get_object_or_404(Category, slug=category_slug)
             all_categories = Category.objects.filter(active=True)
-            
-
             parent_category = []
-            
             parent_category_product_set = []
-            
-            
-            # child_categories = []
-            # child_category_product_set = Product.objects.filter(available=True, category=child_category )
     else:
         #shop sayfasini doldurabilmek icin asagidaki listlerin doldurulmasi veya ilgili listlerin olusturulmasi gerekiyor /products/ sayfasinda suan hicbirsey yok
         parent_category = []
         parent_categories = []
-        parent_category_product_set = []
         child_category = []
-        child_categories = []
-        child_category_product_set = []
         all_categories = []
 
     
@@ -138,10 +114,7 @@ def product_list_view(request, category_slug=None):
                   {
                    'parent_category':parent_category,
                    'parent_categories':parent_categories,
-                   #'parent_category_product_set':parent_category_product_set,
                    'child_category':child_category,
-                   #'child_categories':child_categories,
-                   #'child_category_product_set':child_category_product_set,
                    'all_categories':all_categories,
 
                    'page': page,
@@ -163,8 +136,46 @@ def product_detail_view(request, id, slug, variantid=None):
     #var = None
     #sizes = Variation.objects.filter(product_id=id, category="size")
     cart = Cart(request)
+
+    list_ids_or_sku = []
+
+    try:
+        for variant in product.variation_set.all():
+            api_id = variant.sku
+            list_ids_or_sku.append(api_id)
+
+        payload1 = {"idType":"sku","idList":list_ids_or_sku}
+        payload = str(payload1)
+    except:
+        for variant in product.variation_set.all():
+            api_id = variant.ecomdashid
+            list_ids_or_sku.append(api_id)
+
+        payload1 = {"idType":"id","idList":list_ids_or_sku}
+        payload = str(payload1)
     
+
+
+    conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
+    headers = {
+    'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
+    'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39',
+    'Content-Type': 'application/json',
+    'Authorization': 'Token 201105f43f33e2b5b287c55cd73823e0d050f537'
+    }
+    conn.request("POST", "/api/inventory/getProducts", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    
+    veri = json.loads(data.decode("utf-8"))
+    veri2 = veri["data"]
+    
+    stocks = []
+    for i in veri["data"]:
         
+        stocks.append(i['QuantityOnHand'])
+    print("detail view product qtys")
+    print(stocks)  
     if variantid:
         try:
             variant = Variation.objects.get(id=variantid)
@@ -227,7 +238,8 @@ def product_detail_view(request, id, slug, variantid=None):
                   'gallery':gallery,
                   'variant':variant,
                   'quantity_on_hand':quantity_on_hand, 
-                  'loop_times':range(1, int(quantity_on_hand)+1)
+                  'loop_times':range(1, int(quantity_on_hand)+1),
+                  'stocks':stocks
                   }
                   )
 
