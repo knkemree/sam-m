@@ -231,7 +231,7 @@ def product_detail_view(request, id, slug, variantid=None):
 
     #alttakini calistirinca sag ustte cartin icinde neler oldugunu gosteren acilir sekme product detail sayfasinda calismiyor. 
     #request.session["page"] = product.slug
-    print(type(quantity_on_hand))
+    
     return render(request,
                   'product_detail_view.html',
                   {'product': product,
