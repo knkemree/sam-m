@@ -82,7 +82,7 @@
                                   {% for item in cart %}
                                     {% with product=item.product %}
                                     <tr>
-                                        <td class="pro-thumbnail"><a href="{{ product.get_absolute_url }}"><img src="{% if product.product.image %}{{ product.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="Product"></a></td>
+                                        <td class="pro-thumbnail"><a href="{{ product.get_absolute_url }}"><img style="height: 100px; width: auto;" src="{% if product.product.image %}{{ product.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="Product"></a></td>
                                         <td class="pro-title"><a href="{{ product.get_absolute_url }}">{{ product.sku }}</a></td>
                                         <td class="pro-price"><span>${{ item.price }}</span></td>
 
