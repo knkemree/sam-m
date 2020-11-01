@@ -218,9 +218,9 @@
                     
                         
                         
-                        {% if product.description is not None %}
+                        
                         <div class="product-description mb-20">
-                            <p>{{ product.description|safe }}</p>
+                            {% if product.description is not None %}<p>{{ product.description|safe }}</p>{% endif %}
                             
 
 <script>
@@ -288,7 +288,7 @@
 
                         </div>
                         
-                        {% endif %}
+                        
                         
                         {% if request.user.is_authenticated %}
                         {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>{% if quantity_on_hand >= 1 %} <strong style="color:rgb(64, 190, 32);">{{ quantity_on_hand }}</strong>{% else %}<span style="color:red;"> Out of Stock </span>{% endif %}</a></p>{% endif %}{% endif %}
