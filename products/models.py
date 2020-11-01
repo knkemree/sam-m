@@ -85,7 +85,14 @@ class Product(models.Model):
                        args=[self.id, self.slug])
 
     
-
+    def has_on_sale_variation(self):
+        num_onsale = []
+        for i in self.variation_set.all():
+            num_onsale.append(i.sale_price)
+        if len(num_onsale)>0:
+            return True
+        else:
+            return False
     def get_lowest_price(self):
         return self.variation_set.all().aggregate(Min('price'))
 

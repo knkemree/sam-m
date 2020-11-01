@@ -291,8 +291,8 @@
                                             margin: 0 auto;" > 
                                             <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                     <a href="{{ product.get_absolute_url }}">
-                                        {% for i in product.variation_set.all %}
-                                        {% if i.sale_price %}
+                                        
+                                        {% if product.has_on_sale_variation %}
                                         <span style="position: absolute;
                                         left:-20px;
                                         top:10px;
@@ -303,7 +303,7 @@
                                         padding:5px 10px;
                                         font-size:15px;">ON SALE</span>
                                         {% endif %}
-                                        {% endfor%}
+                                        
                                         
                                         <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                         
