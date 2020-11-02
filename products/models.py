@@ -76,10 +76,7 @@ class Product(models.Model):
         
     def __str__(self): 
         return self.name
-    def save(self, **kwargs):
-        self.get_remote_image()
-
-        return super(Product, self).save(**kwargs)
+    
 
     def get_absolute_url(self):
         return reverse('products:product_detail_view',
@@ -88,10 +85,10 @@ class Product(models.Model):
     def get_lowest_price(self):
         return self.variation_set.all().aggregate(Min('price'))
 
-    def get_remote_image(self):
-        print("image_url")
-        print(self.image_url)
-        return self.image_url
+    def get_default_image(self):
+        if self.image is None:
+            self.image = 'img/no_image.png'
+        return self.save()
         # if self.image_url == None:
         #     result = urllib.request.urlretrieve(self.image_url)
             # self.image.save(os.path.basename(self.image_url),
@@ -101,8 +98,14 @@ class Product(models.Model):
 
     def admin_image(self):
         return '<img src="%s"/>' % self.image
-    admin_image.allow_tags = True
+    
 
+    # def save(self, **kwargs):
+    #     self.get_default_image()
+
+    #     return super(Product, self).save(**kwargs)
+
+    admin_image.allow_tags = True
     class Meta:
         ordering = ['-created','name']
         

@@ -34,14 +34,20 @@ class VariationResource(resources.ModelResource):
             attribute='product',
             widget=ForeignKeyWidget(Product, 'name')
             )
+
+    category = Field(
+            column_name='product__category',
+            attribute='product__category',
+            widget=ForeignKeyWidget(Category, 'name')
+            )
     skip_unchanged = True
     report_skipped = True
 
     class Meta:
         model = Variation
         import_id_fields = ('product','product__category','sku',) 
-        fields = ('product','product__category','product__image','product__available','id','category','title','sku','price','cost','sale_price','ecomdashid','active')
-        export_order = ('product','product__category','product__image','product__available','id','category','title','sku','price','cost','sale_price','ecomdashid','active')
+        fields = ('product','product__category','product__image','product__available','id','title','sku','price','cost','sale_price','ecomdashid','active')
+        export_order = ('product','product__category','product__image','product__available','id','title','sku','price','cost','sale_price','ecomdashid','active')
         #exclude = ('id', )
             
     def before_import_row(self, row, **kwargs):

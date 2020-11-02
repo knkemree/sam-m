@@ -1,2 +1,15 @@
-id,product__id,product,product__color,product_slug,category,title,sku,price,cost,sale_price,,
-,,EMP-800-RED-BEI,Red-Beige,emp-800-red-bei,size,8x10,EMP-800-RED-BEI-810,114,65,,,
+category,id,name,color,slug,image,image_url,description,available,created,updated
+,20,V040A-AQU-MAG,,,,,,1,2020-11-02 15:16:08,2020-11-02 15:16:08
+3D Shaggy,19,3D099BLCREDde,,3d099blcredde,https://nyc3.digitaloceanspaces.com/samnm/samnm-static/products/2020/10/27/RM-BS-BEI-K_1_2.jpg?AWSAccessKeyId=7E2P4RU72GNS5Z4USMPC&Signature=WoZb1MhaIyRypNdHNC%2BnLa4VXcA%3D&Expires=1604088891,,,1,2020-10-30 15:44:50,2020-10-30 15:45:21
+3D Shaggy,18,3D099BLCREDd,,3d099blcredd,img/no_image.png,,,1,2020-10-30 15:42:19,2020-10-30 15:42:19
+Towels,17,TWL-BLC,BLACK,twl-blc,products/2020/10/27/Bath_Angle_1x_Black_rwRGwf7.jpg,,,1,2020-10-27 13:41:09,2020-10-30 13:38:03
+3D Shaggy,16,EMP-100-BRW-BEI,BROWN-BEIGEI,emp-100-brw-bei,img/no_image.png,,,1,2020-10-02 09:21:07,2020-10-02 16:29:38
+3D Shaggy,15,3D099BLCRED,,3d099blcred,products/2020/10/31/KLM-050-RED-BLU-57_1_1.jpg,,,1,2020-10-02 09:07:41,2020-10-31 15:40:37
+Towels,9,Mixed Angle 2x2 Beige,,mixed-angle-2x2-beige,img/no_image.png,,,1,2020-09-28 14:41:40,2020-09-28 14:47:21
+Bed Sheets,5,RM-BS-BEI,BEIGEI,rm-bs-bei-1,products/2020/10/27/RM-BS-BEI-K_1_1-min.jpg,,"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen 
+book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with 
+the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem 
+Ipsum.",1,2020-09-28 14:36:11,2020-10-31 22:11:27
+Bed Sheets,3,RM-BS-BEI-1 CCC,,rm-bs-bei-1-89,img/no_image.png,,,1,2020-09-28 14:29:35,2020-10-09 17:00:14
+3D Shaggy,2,3D888-BRN-BEG-57,,3d888-brn-beg-57,img/no_image.png,,,1,2020-09-03 15:46:08,2020-10-26 16:59:44
+Empire,1,3D999-PRP-PRP,,3D999-PRP-PRP,img/no_image.png,,,1,2020-09-03 15:42:20,2020-10-30 16:42:13
