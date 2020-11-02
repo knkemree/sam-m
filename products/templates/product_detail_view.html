@@ -459,7 +459,7 @@
                         {% endif %}
 
                         <div class="category-list-container mb-20">
-                            <p><span>Categories: </span></p>
+                            <p><span>Categories: </span>
                             <ul>
                                 {% if product.category.parent %}
                                 <li class="parent-page"><a href="{{ product.category.parent.get_absolute_url }}">{{ product.category.parent }}</a>,</li>
@@ -468,6 +468,7 @@
                                 
                                 
                             </ul>
+                        </p>
                         </div>
                 
                         <!-- <div class="social-share-buttons">
