@@ -84,7 +84,12 @@ class ProductAdmin(ImportExportModelAdmin):
 
 @admin.register(Variation) 
 class VariationAdmin(ImportExportModelAdmin):
+    list_display = ['image_tag','product','category','title','sku', 'price', 'cost', 'sale_price','ecomdashid','updated','active']
+    list_editable = ['category','title','sku', 'price', 'cost', 'sale_price','active']
     resource_class = VariationResource
+
+    def image_tag(self,obj):
+        return format_html('<img src="{0}" style="width: auto; height:45px;" />'.format(obj.product.image.url))
 
 
 #admin.site.register(Variation)
