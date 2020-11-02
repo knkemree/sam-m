@@ -55,7 +55,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True) 
-    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True,)
+    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True, default= 'img/no_image.png')
     image_url = models.URLField(blank=True, null=True)
     #description = RichTextField(blank=True, null=True) 
     #description = QuillField(blank=True, null=True)
@@ -84,26 +84,17 @@ class Product(models.Model):
         return reverse('products:product_detail_view',
                        args=[self.id, self.slug])
 
-    
-    def has_on_sale_variation(self):
-        num_onsale = []
-        for i in self.variation_set.all():
-            num_onsale.append(i.sale_price)
-        if len(num_onsale)>0:
-            return True
-        else:
-            return False
     def get_lowest_price(self):
         return self.variation_set.all().aggregate(Min('price'))
 
-    def get_remote_image(self):
-        if self.image_url and self.image == None:
-            result = urllib.urlretrieve(self.image_url)
-            self.image.save(
-                    os.path.basename(self.image_url),
-                    File(open(result[0]))
-                    )
-            self.save()
+    # def get_remote_image(self):
+    #     if self.image_url and self.image == None:
+    #         result = urllib.urlretrieve(self.image_url)
+    #         self.image.save(
+    #                 os.path.basename(self.image_url),
+    #                 File(open(result[0]))
+    #                 )
+    #         self.save()
 
     class Meta:
         ordering = ['name','-created']
