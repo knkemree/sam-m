@@ -88,6 +88,7 @@ class Product(models.Model):
         return self.variation_set.all().aggregate(Min('price'))
 
     def get_remote_image(self):
+        print("image_url")
         print(self.image_url)
         return self.image_url
         # if self.image_url == None:
