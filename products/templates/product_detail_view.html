@@ -705,8 +705,9 @@
                             <!-- <div class="image sale-product"> -->
                             <div class="image">
                                 <a href="single-product.html">
-                                    <img src="{% if other_product.image %}{{ other_product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
-                                    <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
+                                    
+                                    <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ other_product.productimage_set.all.0.image.url }}" class="img-fluid" alt="">
+                                    <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ other_product.productimage_set.all.1.image.url }}" class="img-fluid" alt="">
                                 </a>
                                 <!-- wishlist icon -->
                                 <!-- <span class="wishlist-icon">
@@ -714,6 +715,7 @@
                                 </span> -->
                             </div>
                             <div class="content">
+                                
                                 <h2 class="product-title"> <a href="single-product.html">{{ other_product }}</a></h2>
                                 <!-- <div class="rating">
                                     <i class="fa fa-star active"></i>
