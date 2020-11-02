@@ -21,7 +21,7 @@ class ProductResource(resources.ModelResource):
         skip_unchanged = True
         report_skipped = False
         #published = Field(attribute='created', column_name='created_date')
-        fields = ('category__parent','created')
+        #fields = ('category__parent','created')
         #exclude = ('imported', )
         #export_order = ('id', 'name', 'category__name','created')
         #import_id_fields = ('isbn',)   
@@ -34,15 +34,14 @@ class VariationResource(resources.ModelResource):
             attribute='product',
             widget=ForeignKeyWidget(Product, 'name')
             )
+    skip_unchanged = True
+    report_skipped = True
 
     class Meta:
         model = Variation
-        #import_id_fields = ('id',) 
-        #fields = ('product__category','product__available')
-        #fields = ('id','product','product__id','product__color', 'product__slug','category','title','sku','price','cost','sale_price',)
-      
-        #export_order = ('id', 'product__name','product__slug','product__color','product__category__name', 'category','title','sku','price','cost','sale_price',)
-        
+        import_id_fields = ('product','product__category','id',) 
+        fields = ('product','product__category','product__image','product__available','id','category','title','sku','price','cost','sale_price','ecomdashid','active')
+        export_order = ('product','product__category','product__image','product__available','id','category','title','sku','price','cost','sale_price','ecomdashid','active')
         #exclude = ('id', )
             
         
@@ -81,17 +80,25 @@ class ProductAdmin(ImportExportModelAdmin):
 
     def image_tag(self,obj):
         return format_html('<img src="{0}" style="width: auto; height:45px;" />'.format(obj.image.url))
+    
 
 @admin.register(Variation) 
 class VariationAdmin(ImportExportModelAdmin):
-    list_display = ['image_tag','product','category','title','sku', 'price', 'cost', 'sale_price','ecomdashid','updated','active']
+    list_display = ['image_tag','product','category','title','sku', 'price', 'cost', 'sale_price','ecomdashid','updated','active','clearance']
+    list_filter = ['product__category','category','active',]
     list_editable = ['category','title','sku', 'price', 'cost', 'sale_price','active']
+    search_fields = ('sku',)
+    save_as = True
     resource_class = VariationResource
 
     def image_tag(self,obj):
         return format_html('<img src="{0}" style="width: auto; height:45px;" />'.format(obj.product.image.url))
 
-
+    def clearance(self,obj):
+        if obj.sale_price:
+            return True
+        else:
+            return False
 #admin.site.register(Variation)
 #admin.site.register(AttributeBase)
 #admin.site.register(Attribute)
