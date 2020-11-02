@@ -5,6 +5,7 @@ from import_export import resources
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 from import_export.admin import ImportExportModelAdmin
+from django.utils.html import format_html
 
 
 
@@ -64,13 +65,16 @@ class CategoryAdmin(admin.ModelAdmin):
     
 @admin.register(Product) 
 class ProductAdmin(ImportExportModelAdmin): 
-    list_display = ['name', 'category', 'available', 'created', 'updated'] 
+    list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
     list_filter = ['category', 'created','available', 'updated'] 
     list_editable = [ 'available'] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
     inlines = [ImageInline, VariationInline]
     resource_class = VariationResource
+
+    def image_tag(self,obj):
+        return format_html('<img src="{0}" style="width: auto; height:45px;" />'.format(obj.image.url))
 
 
 

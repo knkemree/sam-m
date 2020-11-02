@@ -99,8 +99,12 @@ class Product(models.Model):
             #         )
             # return print("get remote method", result)
 
+    def admin_image(self):
+        return '<img src="%s"/>' % self.image
+    admin_image.allow_tags = True
+
     class Meta:
-        ordering = ['name','-created']
+        ordering = ['-created','name']
         
 
 class ProductImage(models.Model):
