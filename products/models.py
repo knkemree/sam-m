@@ -55,7 +55,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True) 
-    image = models.ImageField(upload_to='products/%Y/%m/%d', default='img/no_image.png')
+    image = models.ImageField(upload_to='products/%Y/%m/%d', default='/img/no_image.png')
     #image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True, default= 'img/no_image.png')
     image_url = models.URLField(blank=True, null=True)
     #description = RichTextField(blank=True, null=True) 
