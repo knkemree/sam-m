@@ -39,12 +39,14 @@ class VariationResource(resources.ModelResource):
 
     class Meta:
         model = Variation
-        import_id_fields = ('product','product__category','id',) 
+        import_id_fields = ('product','product__category','sku',) 
         fields = ('product','product__category','product__image','product__available','id','category','title','sku','price','cost','sale_price','ecomdashid','active')
         export_order = ('product','product__category','product__image','product__available','id','category','title','sku','price','cost','sale_price','ecomdashid','active')
         #exclude = ('id', )
             
-        
+    def before_import_row(self, row, **kwargs):
+        Product.objects.get_or_create(name=row.get('product'))  
+        Category.objects.get_or_create(id=row.get('product__category'))  
     
 
 # Register your models here.
