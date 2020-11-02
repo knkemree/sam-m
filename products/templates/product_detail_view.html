@@ -667,6 +667,10 @@
                     
                     <!--=======  End of product description review container  =======-->
                 </div>
+                
+
+                
+                
             </div>
         </div>
     </div>
@@ -677,259 +681,76 @@
     =            related product slider         =
     =============================================-->
     
-    <!-- <div class="related-product-slider-area mb-50">
+    <div class="related-product-slider-area mb-50">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12"> -->
+                <div class="col-lg-12">
 					<!--=======  section title  =======-->
 					
-					<!-- <div class="section-title">
+					<div class="section-title">
 						<h2>RELATED PRODUCTS</h2>
-					</div> -->
+					</div>
 					
 					<!--=======  End of section title  =======-->
-				<!-- </div>
+				</div>
             </div>
             <div class="row">
-                <div class="col-lg-12"> -->
+                <div class="col-lg-12">
                     <!--=======  tab product slider  =======-->
 								
-                    <!-- <div class="fl-slider tab-product-slider"> -->
+                    <div class="fl-slider tab-product-slider">
                         <!--=======  single product  =======-->
-                        
-                        <!-- <div class="fl-product">
-                            <div class="image sale-product">
+                        {% for other_product in other_products %}
+                        <div class="fl-product">
+                            <!-- <div class="image sale-product"> -->
+                            <div class="image">
                                 <a href="single-product.html">
-                                    <img src="assets/images/products/product01.jpg" class="img-fluid" alt="">
+                                    <img src="{% if other_product.image %}{{ other_product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                     <img src="assets/images/products/product01-2.jpg" class="img-fluid" alt="">
-                                </a> -->
+                                </a>
                                 <!-- wishlist icon -->
                                 <!-- <span class="wishlist-icon">
                                         <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-                                </span>
+                                </span> -->
                             </div>
                             <div class="content">
-                                <h2 class="product-title"> <a href="single-product.html">Cillum dolore</a></h2>
-                                <div class="rating">
+                                <h2 class="product-title"> <a href="single-product.html">{{ other_product }}</a></h2>
+                                <!-- <div class="rating">
                                     <i class="fa fa-star active"></i>
                                     <i class="fa fa-star active"></i>
                                     <i class="fa fa-star active"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
-                                </div>
+                                </div> -->
                                 <p class="product-price">
+                                    
                                     <span class="main-price discounted">$71</span>
                                     <span class="discounted-price">$65</span>
                                 </p>
 
-                                <div class="hover-icons">
+                                <!-- <div class="hover-icons">
                                     <ul>
                                         <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
                                         <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
                                         <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </div>
-                        </div> -->
-                        
+                        </div>
+                        {% endfor %}
                         <!--=======  End of single product  =======-->
-                        <!--=======  single product  =======-->
                         
-                        <!-- <div class="fl-product">
-                            <div class="image">
-                                <a href="single-product.html">
-                                    <img src="assets/images/products/product02.jpg" class="img-fluid" alt="">
-                                    <img src="assets/images/products/product02-2.jpg" class="img-fluid" alt="">
-                                </a> -->
-                                <!-- wishlist icon -->
-                                <!-- <span class="wishlist-icon">
-                                        <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-                                </span>
-                            </div>
-                            <div class="content">
-                                <h2 class="product-title"> <a href="single-product.html">Condimentum posuere</a></h2>
-                                <div class="rating">
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <p class="product-price">
-                                    <span class="main-price discounted">$71</span>
-                                    <span class="discounted-price">$65</span>
-                                </p>
-
-                                <div class="hover-icons">
-                                    <ul>
-                                        <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-                                        <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-                                        <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> -->
                         
-                        <!--=======  End of single product  =======-->
-                        <!--=======  single product  =======-->
                         
-                        <!-- <div class="fl-product">
-                            <div class="image sale-product">
-                                <a href="single-product.html">
-                                    <img src="assets/images/products/product03.jpg" class="img-fluid" alt="">
-                                    <img src="assets/images/products/product03-2.jpg" class="img-fluid" alt="">
-                                </a> -->
-                                <!-- wishlist icon -->
-                                <!-- <span class="wishlist-icon">
-                                        <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-                                </span>
-                            </div>
-                            <div class="content">
-                                <h2 class="product-title"> <a href="single-product.html">Donec eu libero</a></h2>
-                                <div class="rating">
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <p class="product-price">
-                                    <span class="main-price discounted">$71</span>
-                                    <span class="discounted-price">$65</span>
-                                </p>
-
-                                <div class="hover-icons">
-                                    <ul>
-                                        <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-                                        <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-                                        <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> -->
                         
-                        <!--=======  End of single product  =======-->
-                        <!--=======  single product  =======-->
                         
-                        <!-- <div class="fl-product">
-                            <div class="image">
-                                <a href="single-product.html">
-                                    <img src="assets/images/products/product04.jpg" class="img-fluid" alt="">
-                                    <img src="assets/images/products/product04-2.jpg" class="img-fluid" alt="">
-                                </a> -->
-                                <!-- wishlist icon -->
-                                <!-- <span class="wishlist-icon">
-                                        <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-                                </span>
-                            </div>
-                            <div class="content">
-                                <h2 class="product-title"> <a href="single-product.html">Officiis debitis</a></h2>
-                                <div class="rating">
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <p class="product-price">
-                                    <span class="main-price discounted">$71</span>
-                                    <span class="discounted-price">$65</span>
-                                </p>
-
-                                <div class="hover-icons">
-                                    <ul>
-                                        <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-                                        <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-                                        <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> -->
-                        
-                        <!--=======  End of single product  =======-->
-                        <!--=======  single product  =======-->
-                        
-                        <!-- <div class="fl-product">
-                            <div class="image">
-                                <a href="single-product.html">
-                                    <img src="assets/images/products/product05.jpg" class="img-fluid" alt="">
-                                    <img src="assets/images/products/product05-2.jpg" class="img-fluid" alt="">
-                                </a> -->
-                                <!-- wishlist icon -->
-                                <!-- <span class="wishlist-icon">
-                                        <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-                                </span>
-                            </div>
-                            <div class="content">
-                                <h2 class="product-title"> <a href="single-product.html">Cras neque</a></h2>
-                                <div class="rating">
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <p class="product-price">
-                                    <span class="main-price discounted">$71</span>
-                                    <span class="discounted-price">$65</span>
-                                </p>
-
-                                <div class="hover-icons">
-                                    <ul>
-                                        <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-                                        <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-                                        <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> -->
-                        
-                        <!--=======  End of single product  =======-->
-                        <!--=======  single product  =======-->
-                        
-                        <!-- <div class="fl-product">
-                            <div class="image">
-                                <a href="single-product.html">
-                                    <img src="assets/images/products/product06.jpg" class="img-fluid" alt="">
-                                    <img src="assets/images/products/product06-2.jpg" class="img-fluid" alt="">
-                                </a> -->
-                                <!-- wishlist icon -->
-                                <!-- <span class="wishlist-icon">
-                                        <a href="#" ><i class="icon ion-md-heart-empty"></i></a>
-                                </span>
-                            </div>
-                            <div class="content">
-                                <h2 class="product-title"> <a href="single-product.html">Dolorum fuga</a></h2>
-                                <div class="rating">
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star active"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <p class="product-price">
-                                    <span class="main-price discounted">$71</span>
-                                    <span class="discounted-price">$65</span>
-                                </p>
-
-                                <div class="hover-icons">
-                                    <ul>
-                                        <li><a href="#"  data-tooltip="Add to Cart"><i class="icon ion-md-cart"></i></a></li>
-                                        <li><a href="#"  data-tooltip="Compare"><i class="icon ion-md-options"></i></a></li>
-                                        <li><a href="#"  data-toggle = "modal" data-target="#quick-view-modal-container" data-tooltip="Quick View"><i class="icon ion-md-open"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> -->
-                        
-                        <!--=======  End of single product  =======-->
-                    <!-- </div> -->
+                    </div>
                     
                     <!--=======  End of tab product slider  =======-->
-                <!-- </div>
+                </div>
             </div>
         </div>
-    </div> -->
+    </div>
     
     <!--=====  End of related product slider  ======-->
 

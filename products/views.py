@@ -129,6 +129,9 @@ def product_list_view(request, category_slug=None):
 def product_detail_view(request, id, slug, variantid=None):
     
     product = get_object_or_404(Product, id=id)
+    other_products = Product.objects.filter(available=True, category=product.category).exclude(id=id)
+    print("other products !!!!!!!!!!!!!!!!!")
+    print(other_products)
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
     variant = None
@@ -191,7 +194,7 @@ def product_detail_view(request, id, slug, variantid=None):
                   'variant':variant,
                   'quantity_on_hand':quantity_on_hand, 
                   'loop_times':range(1, int(quantity_on_hand)+1),
-                  
+                  'other_products':other_products,
                   'veri2':veri2,
                   }
                   )
