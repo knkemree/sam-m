@@ -303,7 +303,7 @@
                             {% endfor %}
                         {% endif %}
                         {% endif %}
-                        
+
                         {% if product.color is not  null %}<p><a><strong>Color: </strong>{{ product.color }}</span></a></p>{% endif %}
                             {% if product.variation_set.sizes %}
                             
@@ -458,16 +458,17 @@
                         </p> 
                         {% endif %}
 
-                        <!-- <div class="category-list-container mb-20">
+                        <div class="category-list-container mb-20">
                             <span>Categories: </span>
                             <ul>
-                                <li><a href="shop-left-sidebar.html">Beds</a>,</li>
-                                <li><a href="shop-left-sidebar.html">Chests &amp; Dressers</a>,</li>
-                                <li><a href="shop-left-sidebar.html">HeadBoards</a>,</li>
-                                <li><a href="shop-left-sidebar.html">Lighting</a>,</li>
-                                <li><a href="shop-left-sidebar.html">Nightstands</a></li>
+                                {% if product.category.parent %}
+                                <li class="parent-page"><a href="{{ product.category.parent.get_absolute_url }}">{{ product.category.parent }}</a>,</li>
+                                {% endif %}
+								<li><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
+                                
+                                
                             </ul>
-                        </div> -->
+                        </div>
                 
                         <!-- <div class="social-share-buttons">
                             <h3>share this product</h3>
