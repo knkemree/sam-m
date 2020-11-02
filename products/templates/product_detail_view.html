@@ -706,8 +706,12 @@
                             <div class="image">
                                 <a href="{{ other_product.get_absolute_url }}">
                                     
-                                    <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ other_product.productimage_set.all.0.image.url }}" class="img-fluid" alt="">
-                                    <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ other_product.productimage_set.all.1.image.url }}" class="img-fluid" alt="">
+                                    <img style="height: 200px; width: auto; 
+                                    margin-left: auto;
+                                    margin-right: auto;" src="{{ other_product.productimage_set.all.0.image.url }}" class="img-fluid" alt="">
+                                    <img style="height: 200px; width: auto; 
+                                    margin-left: auto;
+                                    margin-right: auto;" src="{{ other_product.productimage_set.all.1.image.url }}" class="img-fluid" alt="">
                                 </a>
                                 <!-- wishlist icon -->
                                 <!-- <span class="wishlist-icon">
