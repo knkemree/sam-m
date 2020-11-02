@@ -67,6 +67,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(ImportExportModelAdmin): 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
     list_filter = ['category', 'created','available', 'updated'] 
+    search_fields = ('name', 'description', )
     list_editable = [ 'available'] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
