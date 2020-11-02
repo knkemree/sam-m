@@ -90,11 +90,10 @@ class Product(models.Model):
     def get_remote_image(self):
         if self.image_url == None:
             result = urllib.request.urlretrieve(self.image_url)
-            self.image.save(
-                    os.path.basename(self.image_url),
+            self.image.save(os.path.basename(self.image_url),
                     File(open(result[0]))
                     )
-            self.save()
+        return self.save()
 
     class Meta:
         ordering = ['name','-created']
