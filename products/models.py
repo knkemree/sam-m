@@ -13,7 +13,7 @@ import os
 import http.client
 import mimetypes
 import json
-import urllib
+import urllib.request
 
 # Create your models here.   
 
@@ -89,7 +89,7 @@ class Product(models.Model):
 
     def get_remote_image(self):
         if self.image_url == None:
-            result = urllib.urlretrieve(self.image_url)
+            result = urllib.request.urlretrieve(self.image_url)
             self.image.save(
                     os.path.basename(self.image_url),
                     File(open(result[0]))
