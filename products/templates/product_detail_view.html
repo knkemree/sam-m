@@ -704,7 +704,7 @@
                         <div class="fl-product">
                             <!-- <div class="image sale-product"> -->
                             <div class="image">
-                                <a href="single-product.html">
+                                <a href="{{ other_product.get_absolute_url }}">
                                     
                                     <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ other_product.productimage_set.all.0.image.url }}" class="img-fluid" alt="">
                                     <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ other_product.productimage_set.all.1.image.url }}" class="img-fluid" alt="">
@@ -716,7 +716,7 @@
                             </div>
                             <div class="content">
                                 
-                                <h2 class="product-title"> <a href="single-product.html">{{ other_product }}</a></h2>
+                                <h2 class="product-title"> <a href="{{ other_product.get_absolute_url }}">{{ other_product }}</a></h2>
                                 <!-- <div class="rating">
                                     <i class="fa fa-star active"></i>
                                     <i class="fa fa-star active"></i>
@@ -726,8 +726,10 @@
                                 </div> -->
                                 <p class="product-price">
                                     
-                                    <span class="main-price discounted">$71</span>
-                                    <span class="discounted-price">$65</span>
+                                    <!-- <span class="main-price discounted">$71</span>
+                                    <span class="discounted-price">$65</span> -->
+                                    <span class="main-price starting-from">starting at</span>
+                                    <span class="discounted-price">${{ other_product.get_lowest_price.price__min|floatformat:-2 }}</span>
                                 </p>
 
                                 <!-- <div class="hover-icons">
