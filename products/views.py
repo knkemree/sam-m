@@ -173,7 +173,9 @@ def product_detail_view(request, id, slug, variantid=None):
     if variantid:
         try:
             variant = Variation.objects.get(id=variantid)
-            
+            for i in veri2:
+                if int(float(i["Id"])) ==  int(float(variant.ecomdashid)):
+                    quantity_on_hand = i["QuantityOnHand"]
         except:
             pass
     
@@ -187,9 +189,10 @@ def product_detail_view(request, id, slug, variantid=None):
                   'cart_product_form': cart_product_form,
                   'gallery':gallery,
                   'variant':variant,
-                  
+                  'quantity_on_hand':quantity_on_hand, 
                   'loop_times':range(1, int(quantity_on_hand)+1),
-                  'veri2':veri2
+                  
+                  'veri2':veri2,
                   }
                   )
 
