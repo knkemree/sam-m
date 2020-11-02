@@ -11,12 +11,17 @@ from django.utils.html import format_html
 
 
 class ProductResource(resources.ModelResource):
+    category = Field(
+            column_name='category',
+            attribute='category',
+            widget=ForeignKeyWidget(Category, 'name')
+            )
     class Meta:
         model = Product
         skip_unchanged = True
         report_skipped = False
         #published = Field(attribute='created', column_name='created_date')
-        #fields = ('id', 'name', 'category__name','created')
+        fields = ('category__parent','created')
         #exclude = ('imported', )
         #export_order = ('id', 'name', 'category__name','created')
         #import_id_fields = ('isbn',)   
@@ -32,9 +37,9 @@ class VariationResource(resources.ModelResource):
 
     class Meta:
         model = Variation
-        import_id_fields = ('id',) 
-        #fields = ('id', 'product__name','product__slug','product__color','product__category__name', 'category','title','sku','price','cost','sale_price',)
-        fields = ('id','product','product__id','product__color', 'product__slug','category','title','sku','price','cost','sale_price',)
+        #import_id_fields = ('id',) 
+        #fields = ('product__category','product__available')
+        #fields = ('id','product','product__id','product__color', 'product__slug','category','title','sku','price','cost','sale_price',)
       
         #export_order = ('id', 'product__name','product__slug','product__color','product__category__name', 'category','title','sku','price','cost','sale_price',)
         
@@ -72,13 +77,17 @@ class ProductAdmin(ImportExportModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
     inlines = [ImageInline, VariationInline]
-    resource_class = VariationResource
+    resource_class = ProductResource
 
     def image_tag(self,obj):
         return format_html('<img src="{0}" style="width: auto; height:45px;" />'.format(obj.image.url))
 
+@admin.register(Variation) 
+class VariationAdmin(ImportExportModelAdmin):
+    resource_class = VariationResource
 
 
+#admin.site.register(Variation)
 #admin.site.register(AttributeBase)
 #admin.site.register(Attribute)
 #admin.site.register(ProductAttribute)

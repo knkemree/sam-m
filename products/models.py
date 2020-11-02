@@ -203,12 +203,3 @@ class Variation(models.Model):
                     self.save()
         except:
             pass
-
-    
-    
-        
-             
-            
-
-    
-
