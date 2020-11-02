@@ -315,11 +315,14 @@
 							
 							<!-- cart floating box -->
 							<div class="cart-floating-box hidden" id="cart-floating-box">
+								<a class="fl-btn pull-right" href="{% url 'cart:cart_detail' %}"><small>View Cart</small></a>
 								<div class="cart-items">
+									
 									{% for rs in cart %}
 									
 											{% with variation=rs.product %}
 									<div class="cart-float-single-item d-flex">
+										
 										<!-- <span onclick="window.location.href = '{% url 'cart:cart_remove' variation.id %}';" class="remove-item" id="remove-item"><a><i class="icon ion-md-close"></i></a></span> -->
 										<div class="cart-float-single-item-image">
 											<a href="{{ variation.product.get_absolute_url }}"><img style="height: 100px; width: auto;"src="{{ variation.product.image.url }}" class="img-fluid" alt=""></a>
