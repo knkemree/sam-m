@@ -87,14 +87,14 @@ class Product(models.Model):
     def get_lowest_price(self):
         return self.variation_set.all().aggregate(Min('price'))
 
-    # def get_remote_image(self):
-    #     if self.image_url and self.image == None:
-    #         result = urllib.urlretrieve(self.image_url)
-    #         self.image.save(
-    #                 os.path.basename(self.image_url),
-    #                 File(open(result[0]))
-    #                 )
-    #         self.save()
+    def get_remote_image(self):
+        if self.image_url == None:
+            result = urllib.urlretrieve(self.image_url)
+            self.image.save(
+                    os.path.basename(self.image_url),
+                    File(open(result[0]))
+                    )
+            self.save()
 
     class Meta:
         ordering = ['name','-created']
