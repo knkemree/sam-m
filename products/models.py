@@ -54,7 +54,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True) 
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
-    slug = models.SlugField(max_length=200, db_index=True, unique=True) 
+    slug = models.SlugField(max_length=200, db_index=True,) 
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True, default= 'img/logo.png', help_text="System may give an error if product cover image does not exist")
     #image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True, null=True, default= 'img/no_image.png')
     image_url = models.URLField(blank=True, null=True)
