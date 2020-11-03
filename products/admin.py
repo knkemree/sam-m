@@ -12,36 +12,53 @@ from django.utils.html import format_html
 
 
 class ProductResource(resources.ModelResource):
-    category = Field(
-            column_name='category',
+    category_name = Field(
+            column_name='category_name',
             attribute='category',
             widget=ForeignKeyWidget(Category, 'name')
             )
+    
     class Meta:
         model = Product
         skip_unchanged = True
         report_skipped = False
+        import_id_fields = ('id','category_name')
         #published = Field(attribute='created', column_name='created_date')
-        #fields = ('category__parent','created')
+        fields = ('id','category_name','name','color','slug','description')
         #exclude = ('imported', )
         #export_order = ('id', 'name', 'category__name','created')
-        #import_id_fields = ('isbn',)   
+           
         #widgets = {'published': {'format': '%d.%m.%Y'},}
     # def dehydrate_full_title(self, product):
     #     return '%s by %s' % (product.name, product.category.name)
+
+    def before_import_row(self, row, **kwargs):
+        
+        
+        #Category.objects.get_or_create(name=row.get('child_collection'))
+        #row['child_collection'] = cat.name
+        Product.objects.get_or_create(id=row.get('id'))
+        Category.objects.get_or_create(name=row.get('category_name'))
+        
+        
+        
+        #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
+
+        return super().before_import_row(row, **kwargs)
+
 class VariationResource(resources.ModelResource):
 
-    product = Field(
-            column_name='product',
+    product_name = Field(
+            column_name='product_name',
             attribute='product',
             widget=ForeignKeyWidget(Product, 'name')
             )
 
-    child_collection = Field(
-            column_name='child_collection',
-            attribute='product__category',
-            widget=ForeignKeyWidget(Category, 'name')
-            )
+    # child_collection = Field(
+    #         column_name='child_collection',
+    #         attribute='product__category',
+    #         widget=ForeignKeyWidget(Category, 'name')
+    #         )
 
     # parent_collection = Field(
     #         column_name='parent_collection',
@@ -56,17 +73,21 @@ class VariationResource(resources.ModelResource):
 
     class Meta:
         model = Variation
-        import_id_fields = ('product','sku',) 
-        fields = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
-        export_order = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
-        #exclude = ('id', )
+        import_id_fields = ('id','product_name') 
+        fields = ('product_name','id','sku','title','price','cost','sale_price',)
+        
+        #fields = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
+        #export_order = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
+        #exclude = ('ecomdashid', )
             
     def before_import_row(self, row, **kwargs):
         
         
-        cat = Category.objects.get_or_create(name=row['child_collection'])
+        #Category.objects.get_or_create(name=row.get('child_collection'))
         #row['child_collection'] = cat.name
-        pro = Product.objects.get_or_create(name=row['product'])
+        Product.objects.get_or_create(name=row.get('product_name'))
+        
+        
         
         #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
 
@@ -100,7 +121,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(ImportExportModelAdmin): 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
     list_filter = ['category', 'created','available', 'updated'] 
-    search_fields = ('name', 'description', 'slug')
+    search_fields = ('name', 'description', 'slug','id',)
     list_editable = [ 'available','category'] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
