@@ -24,7 +24,7 @@ class ProductResource(resources.ModelResource):
         report_skipped = False
         import_id_fields = ('id','category_name')
         #published = Field(attribute='created', column_name='created_date')
-        fields = ('id','category_name','name','color','slug','description')
+        fields = ('id','category_name','name','color','slug','description','available')
         #exclude = ('imported', )
         #export_order = ('id', 'name', 'category__name','created')
            
