@@ -56,7 +56,7 @@ class VariationResource(resources.ModelResource):
 
     class Meta:
         model = Variation
-        import_id_fields = ('sku',) 
+        import_id_fields = ('product','sku',) 
         fields = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
         export_order = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
         #exclude = ('id', )
