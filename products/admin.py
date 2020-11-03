@@ -65,7 +65,7 @@ class VariationResource(resources.ModelResource):
         
         Category.objects.get_or_create(name=row.get('child_collection'))
         Product.objects.get_or_create(name=row.get('product'))
-        Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
+        #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
 
         
         
@@ -97,7 +97,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(ImportExportModelAdmin): 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
     list_filter = ['category', 'created','available', 'updated'] 
-    search_fields = ('name', 'description', )
+    search_fields = ('name', 'description', 'slug')
     list_editable = [ 'available'] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
