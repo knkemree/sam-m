@@ -837,7 +837,7 @@
     </a>
   </h2>
   <p class="price">${{ product.price }}</p>
-  {{ product.description|linebreaks }}
+  <p>{{ product.description|linebreaks }}</p>
 </div>
 <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
 

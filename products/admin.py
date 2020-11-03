@@ -29,31 +29,49 @@ class ProductResource(resources.ModelResource):
     # def dehydrate_full_title(self, product):
     #     return '%s by %s' % (product.name, product.category.name)
 class VariationResource(resources.ModelResource):
+
     product = Field(
             column_name='product',
             attribute='product',
             widget=ForeignKeyWidget(Product, 'name')
             )
 
-    category = Field(
-            column_name='product__category',
+    child_collection = Field(
+            column_name='child_collection',
             attribute='product__category',
             widget=ForeignKeyWidget(Category, 'name')
             )
+
+    # parent_collection = Field(
+    #         column_name='parent_collection',
+    #         attribute='product__category',
+    #         widget=ForeignKeyWidget(Category, 'parent')
+    #         )
+
+    
+
     skip_unchanged = True
     report_skipped = True
 
     class Meta:
         model = Variation
-        import_id_fields = ('product','product__category','sku',) 
-        fields = ('product','product__category','product__image','product__available','id','title','sku','price','cost','sale_price','ecomdashid','active')
-        export_order = ('product','product__category','product__image','product__available','id','title','sku','price','cost','sale_price','ecomdashid','active')
+        import_id_fields = ('product','child_collection','sku',) 
+        fields = ('product','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
+        export_order = ('product','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
         #exclude = ('id', )
             
     def before_import_row(self, row, **kwargs):
-        Product.objects.get_or_create(name=row.get('product'))  
-        Category.objects.get_or_create(id=row.get('product__category'))  
-    
+        
+        
+        Category.objects.get_or_create(name=row.get('child_collection'))
+        Product.objects.get_or_create(name=row.get('product'))
+        Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
+
+        
+        
+
+    # def before_save_instance(self, row, **kwargs):
+    #     pass
 
 # Register your models here.
 class ImageInline(admin.TabularInline):
