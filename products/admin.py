@@ -63,7 +63,7 @@ class VariationResource(resources.ModelResource):
     def before_import_row(self, row, **kwargs):
         
         
-        #Category.objects.get_or_create(name=row.get('child_collection'))
+        Category.objects.get_or_create(name=row.get('child_collection'))
         Product.objects.get_or_create(name=row.get('product'), category=row.get('child_collection.id'))
         #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
 
