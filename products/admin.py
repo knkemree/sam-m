@@ -10,6 +10,7 @@ from django.utils.html import format_html
 
 
 
+
 class ProductResource(resources.ModelResource):
     category = Field(
             column_name='category',
@@ -56,15 +57,18 @@ class VariationResource(resources.ModelResource):
     class Meta:
         model = Variation
         import_id_fields = ('product','child_collection','sku',) 
-        fields = ('product','product__slug','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
-        export_order = ('product','product__slug','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
+        fields = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
+        export_order = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','ecomdashid','active')
         #exclude = ('id', )
             
     def before_import_row(self, row, **kwargs):
         
         
         Category.objects.get_or_create(name=row.get('child_collection'))
-        Product.objects.get_or_create(name=row.get('product'), category=row.get('child_collection.id'))
+        #row['child_collection'] = cat.name
+        Product.objects.get_or_create(name=row.get('product'), category=row.get('child_collection__id'))
+
+        print("befor import row modeliiiiiii")
         #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
 
         return super().before_import_row(row, **kwargs)
