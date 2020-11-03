@@ -98,7 +98,7 @@ class ProductAdmin(ImportExportModelAdmin):
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
     list_filter = ['category', 'created','available', 'updated'] 
     search_fields = ('name', 'description', 'slug')
-    list_editable = [ 'available'] 
+    list_editable = [ 'available','category'] 
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
     inlines = [ImageInline, VariationInline]
