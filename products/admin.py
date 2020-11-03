@@ -67,8 +67,7 @@ class VariationResource(resources.ModelResource):
         cat = Category.objects.get_or_create(name=row['child_collection'])
         #row['child_collection'] = cat.name
         pro = Product.objects.get_or_create(name=row['product'])
-        pro["category"] = int(cat["id"])
-        print("befor import row modeliiiiiii")
+        
         #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
 
         return super().before_import_row(row, **kwargs)
