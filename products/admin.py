@@ -12,19 +12,19 @@ from django.utils.html import format_html
 
 
 class ProductResource(resources.ModelResource):
-    category_name = Field(
-            column_name='category_name',
-            attribute='category',
-            widget=ForeignKeyWidget(Category, 'name')
-            )
+    # category_name = Field(
+    #         column_name='category_name',
+    #         attribute='category',
+    #         widget=ForeignKeyWidget(Category, 'name')
+    #         )
     
     class Meta:
         model = Product
         skip_unchanged = True
         report_skipped = False
-        import_id_fields = ('id','category_name')
+        import_id_fields = ('id','category')
         #published = Field(attribute='created', column_name='created_date')
-        fields = ('id','category_name','name','color','slug','description','available')
+        fields = ('id','category','name','color','slug','description','available')
         #exclude = ('imported', )
         #export_order = ('id', 'name', 'category__name','created')
            
@@ -38,7 +38,7 @@ class ProductResource(resources.ModelResource):
         #Category.objects.get_or_create(name=row.get('child_collection'))
         #row['child_collection'] = cat.name
         Product.objects.get_or_create(id=row.get('id'))
-        Category.objects.get_or_create(name=row.get('category_name'))
+        Category.objects.get_or_create(id=row.get('category'))
         
         
         

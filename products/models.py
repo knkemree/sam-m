@@ -65,8 +65,8 @@ class Product(models.Model):
     #sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True) 
     #cost = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True) 
-    created = models.DateTimeField(auto_now_add=True) 
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, null=True) 
+    updated = models.DateTimeField(auto_now=True, null=True)
     #stock = models.IntegerField(null=True, blank=True, default=0)
     #stock_managed = models.BooleanField(default=True)
 
@@ -183,10 +183,28 @@ class Variation(models.Model):
             'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
             'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
             }
+
+        
+
         conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(self.sku), payload, headers)
         res = conn.getresponse()
         data = res.read()
         veri = json.loads(data.decode("utf-8"))
+        # for i in veri["data"]:
+        #     if i["Type"]=="Kit":
+        #         kit_id = int(float(i["Id"]))
+        #         conn.request("GET", "/api/Inventory/"+str(kit_id)+"/kitcomponents", payload, headers)
+        #         res = conn.getresponse()
+        #         data = res.read()
+        #         kit_veri = json.loads(data.decode("utf-8"))
+        #         for i in kit_veri["data"]:
+        #             parent_id = int(float(i["Product"]["Id"]))
+        #             parent_sku = i["Product"]["Sku"]
+        #             self.ecomdashid = parent_id
+        #             self.sku = parent_sku
+            
+        #     elif i["Type"] = =
+
         
         if len(veri["data"]) == 0:
             raise ValidationError("Sku didn't match with Ecomdash records "+str(self.sku))
