@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.db.models import Min
 from django.core.exceptions import ValidationError
 from django.core.files import File
+from django.utils.text import slugify
 
 
 # from ckeditor.fields import RichTextField
@@ -100,10 +101,9 @@ class Product(models.Model):
         return '<img src="%s"/>' % self.image
     
 
-    # def save(self, **kwargs):
-    #     self.get_default_image()
-
-    #     return super(Product, self).save(**kwargs)
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
 
     admin_image.allow_tags = True
     class Meta:

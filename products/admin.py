@@ -120,6 +120,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product) 
 class ProductAdmin(ImportExportModelAdmin): 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
+    list_display_links = ['image_tag','name',]
     list_filter = ['category', 'created','available', 'updated'] 
     search_fields = ('name', 'description', 'slug','id',)
     list_editable = [ 'available','category'] 
@@ -135,6 +136,7 @@ class ProductAdmin(ImportExportModelAdmin):
 @admin.register(Variation) 
 class VariationAdmin(ImportExportModelAdmin):
     list_display = ['image_tag','product','category','title','sku', 'price', 'cost', 'sale_price','ecomdashid','updated','active','clearance']
+    list_display_links = ['image_tag','product',]
     list_filter = ['product__category','category','active',]
     list_editable = ['category','title','sku', 'price', 'cost', 'sale_price','active']
     search_fields = ('sku',)
