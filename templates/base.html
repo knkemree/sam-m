@@ -424,8 +424,9 @@
 						<!--=======  End of sticky logo  =======-->
 
 						<!--=======  search icon for tablet  =======-->
-                                
+						  
 						<div class="search-icon-menutop-tablet text-right d-inline-block d-lg-none">
+							
 							<a href="#" id="search-overlay-active-button">
 								<i class="icon ion-md-search"></i>
 							</a>
@@ -535,8 +536,15 @@
 						<!--=======  navigation search bar  =======-->
 						
 						<div class="navigation-search d-none d-lg-block">
-							<input type="search" placeholder="Search product ...">
-							<button><i class="icon ion-md-search"></i></button>
+							<form action="{% url 'products:post_search' %}" method="get">
+								<input  placeholder="Search product ..." type="text" name="query" required="" id="id_query">
+								<!-- <input class="btn btn-info" type="submit" value="Search"> -->
+								<button type="submit"><i class="icon ion-md-search"></i></button>
+							</form>
+							
+							<!-- <input type="search" placeholder="Search product ..."> -->
+							
+							
 						</div>
 						
 						<!--=======  End of navigation search bar  =======-->
@@ -735,10 +743,12 @@
 	<!--=============================================
 	=            search overlay         =
 	=============================================-->
-	
+	 
 	<div class="search-overlay" id="search-overlay">
 		<a href="#" class="search-overlay-close" id="search-overlay-close"><i class="fa fa-times"></i></a>
 		<div class="search-box">
+			
+			
 			<input type="search" placeholder="Search entire store here">
 			<button><i class="icon ion-md-search"></i></button>
 		</div>

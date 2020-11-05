@@ -15,6 +15,7 @@ from cart.forms import CartAddProductForm
 from django.contrib.auth.views import LoginView as DefaultLoginView
 from django.views.generic import CreateView
 from marketing.models import Slider
+from products.forms import SearchForm
 
 def login_form(request):
        #buranin ismini login koyma
@@ -57,7 +58,7 @@ def home_page(request):
     top_level_cats = Category.objects.filter(parent__isnull=True)
 
     
-    
+    search_form = SearchForm()
     try:
         area_rug = Category.objects.get(slug__contains="area-rugs")
         area_rugs = Category.objects.filter(parent_id=area_rug.id)
@@ -85,6 +86,7 @@ def home_page(request):
         'towels':towels,
         'top_level_cats': top_level_cats,
         'cart_product_form':cart_product_form,
+        'search_form':search_form,
         'sliders':sliders,
     }
     
