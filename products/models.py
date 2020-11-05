@@ -66,7 +66,7 @@ class Product(models.Model):
     #sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True) 
     #cost = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True) 
-    created = models.DateTimeField(auto_now_add=True) 
+    created = models.DateTimeField(auto_now_add=True, null=True) 
     updated = models.DateTimeField(auto_now=True)
     #stock = models.IntegerField(null=True, blank=True, default=0)
     #stock_managed = models.BooleanField(default=True)
