@@ -6,29 +6,7 @@
 	=            breadcrumb area         =
 	=============================================-->
 	
-	<div class="breadcrumb-area pt-15 pb-15">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<!--=======  breadcrumb container  =======-->
-					
-					<div class="breadcrumb-container">
-						<nav>
-							<ul>
-                                <li class="parent-page"><a href="/">Home</a></li>
-                                
-                                <li><a href="{% url 'products:post_search' %}">Search</a></li>
-                                
-								<!-- <li><a href="{{ category.get_absolute_url }}">{% if category %}{{ category.name }}{% else %}Products{% endif %}</a></li> -->
-							</ul>
-						</nav>
-					</div>
-					
-					<!--=======  End of breadcrumb container  =======-->
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	
     <!--=====  End of breadcrumb area  ======-->
 
@@ -56,7 +34,7 @@
     =            shop page content         =
     =============================================-->
     
-    <div class="shop-page-content mb-50">
+    <div class="shop-page-content my-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 order-1 order-lg-2">
@@ -67,7 +45,7 @@
                             Found {{ total_results }} result{{ total_results|pluralize }} for "{{ query }}"
                         {% endwith %}
                         </h3>
-                        <hr>
+                        
                         <!--=======  Shop header  =======-->
 					
                         <div class="shop-header mb-30">
@@ -89,7 +67,7 @@
                                         <div class="sort-by-dropdown d-flex align-items-center mb-xs-10">
                                                 
                                                 <!-- <a href="#"> <i class="icon ion-md-heart-empty"></i> Browse Wishlist</a> -->
-                                                <span><a href="/admin/products/category/{{category.id}}/change/"> <i class="icon ion-md-options"></i> Edit</a></span>
+                                            
                                             </p> 
                                         </div> 
                                         {% endif %}
@@ -220,7 +198,8 @@
                             </div>
                             {% endfor %}
                         </div>
-                        <button class='btn btn-info'><a href="{% url "products:post_search" %}">Search again</a></button>
+                        
+                        <!-- <button class='btn btn-info'><a href="{% url "products:post_search" %}">Search again</a></button> -->
                         
                     {% else %}
                         <h3>Search for products</h3>
