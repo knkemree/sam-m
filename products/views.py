@@ -360,7 +360,13 @@ def post_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Product.objects.filter(Q(name__icontains=query))
+            data = Variation.objects.filter(Q(sku__contains=query) | Q(id__exact=query)| Q(product__id__exact=query))
+            product_ids = []
+            for var in data:
+                product_ids.append(var.product.id)
+            print("aranan urunler idleri")
+            print(product_ids)
+            results = Product.objects.filter(id__in=product_ids)
     return render(request,
                   'search.html',
                   {'form': form,
