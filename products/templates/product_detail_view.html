@@ -208,9 +208,17 @@
                                 {% endif %}
                             {% else %}
                                 {% if request.user.is_authenticated %}
+                                
+                                
+                                
                                     <!-- <span class="main-price discounted">$60</span> -->
                                     <span class="main-price starting-at"><small><small>starting at</small></small></span>
+                                    
+                                    {% if product.get_lowest_price.sale_price__min %}
+                                    <span class="discounted-price">  ${{ product.get_lowest_price.sale_price__min|floatformat:-2  }}</span>
+                                    {% else %}
                                     <span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         </h2>
