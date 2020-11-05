@@ -62,6 +62,7 @@ class VariationResource(resources.ModelResource):
             widget=ForeignKeyWidget(Category, 'name')
             )
 
+
     # parent_collection = Field(
     #         column_name='parent_collection',
     #         attribute='product__category',
@@ -86,9 +87,10 @@ class VariationResource(resources.ModelResource):
     def before_import_row(self, row, **kwargs):
         
         
-        #Category.objects.get_or_create(name=row.get('child_collection'))
+        
         #row['child_collection'] = cat.name
         Product.objects.get_or_create(name=row.get('product_name'))
+        
         
         
         
@@ -155,7 +157,18 @@ class VariationAdmin(ImportExportModelAdmin):
         else:
             return False
 
-admin.site.register(ProductImage)
+@admin.register(ProductImage)
+class ProductImageAdmin(ImportExportModelAdmin):
+    list_display = ['image_tag','product','order','create_at','update_at']
+    list_display_links = ['image_tag','product',]
+    list_filter = ["product"]
+    search_fields = ('product','image',)
+    list_editable = ['order']
+
+    def image_tag(self,obj):
+        return format_html('<img src="{0}" style="width: auto; height:45px;" />'.format(obj.image.url))
+
+
 #admin.site.register(AttributeBase)
 #admin.site.register(Attribute)
 #admin.site.register(ProductAttribute)

@@ -169,12 +169,10 @@ class Variation(models.Model):
         return reverse('products:product_detail_view_by_variant',
                        args=[self.product.id, self.product.slug, self.id])
 
-    # def save(self, **kwargs):
-
-    #     return super(Variation, self).save(**kwargs)
+    
 
     def clean(self):
-        super().clean()
+        super(Variation, self).clean()
         
 
         conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
@@ -183,27 +181,11 @@ class Variation(models.Model):
             'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
             'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39'
             }
-
-        
-
         conn.request("GET", "/api/Inventory?Type=Product&Sku="+str(self.sku), payload, headers)
         res = conn.getresponse()
         data = res.read()
         veri = json.loads(data.decode("utf-8"))
-        # for i in veri["data"]:
-        #     if i["Type"]=="Kit":
-        #         kit_id = int(float(i["Id"]))
-        #         conn.request("GET", "/api/Inventory/"+str(kit_id)+"/kitcomponents", payload, headers)
-        #         res = conn.getresponse()
-        #         data = res.read()
-        #         kit_veri = json.loads(data.decode("utf-8"))
-        #         for i in kit_veri["data"]:
-        #             parent_id = int(float(i["Product"]["Id"]))
-        #             parent_sku = i["Product"]["Sku"]
-        #             self.ecomdashid = parent_id
-        #             self.sku = parent_sku
-            
-        #     elif i["Type"] = =
+        
 
         
         if len(veri["data"]) == 0:
@@ -224,3 +206,11 @@ class Variation(models.Model):
                     self.save()
         except:
             pass
+        
+    
+    # def save(self, *args, **kwargs):
+    #     self.clean()
+        
+    #     super(Variation, self).save(*args, **kwargs)
+
+    

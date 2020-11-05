@@ -23,6 +23,7 @@ from django.core.exceptions import ValidationError
 from products.models import Category
 from products.forms import SearchForm
 from django.contrib.postgres.search import SearchVector
+from django.db.models import Q
 
 register = template.Library()
 
@@ -359,9 +360,7 @@ def post_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Product.objects.filter(available=True).annotate(
-                search=SearchVector('name',),
-            ).filter(search=query)
+            results = Product.objects.filter(Q(name__icontains=query))
     return render(request,
                   'search.html',
                   {'form': form,
