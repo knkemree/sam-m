@@ -747,10 +747,14 @@
 	<div class="search-overlay" id="search-overlay">
 		<a href="#" class="search-overlay-close" id="search-overlay-close"><i class="fa fa-times"></i></a>
 		<div class="search-box">
+			<form action="{% url 'products:post_search' %}" method="get">
+				<input  placeholder="Search product ..." type="text" name="query" required="" id="id_query">
+				<!-- <input class="btn btn-info" type="submit" value="Search"> -->
+				<button type="submit"><i class="icon ion-md-search"></i></button>
+			</form>
 			
-			
-			<input type="search" placeholder="Search entire store here">
-			<button><i class="icon ion-md-search"></i></button>
+			<!-- <input type="search" placeholder="Search entire store here">
+			<button><i class="icon ion-md-search"></i></button> -->
 		</div>
 	</div>
 		
