@@ -12,19 +12,19 @@ from django.utils.html import format_html
 
 
 class ProductResource(resources.ModelResource):
-    # category_name = Field(
-    #         column_name='category_name',
-    #         attribute='category',
-    #         widget=ForeignKeyWidget(Category, 'name')
-    #         )
+    category_name = Field(
+            column_name='category_name',
+            attribute='category',
+            widget=ForeignKeyWidget(Category, 'name')
+            )
     
     class Meta:
         model = Product
         skip_unchanged = True
-        report_skipped = False
-        import_id_fields = ('id','category')
+        report_skipped = True
+        import_id_fields = ('name',)
         #published = Field(attribute='created', column_name='created_date')
-        fields = ('id','category','name','color','slug','description','available')
+        fields = ('category_name','name','color','slug','description','available')
         #exclude = ('imported', )
         #export_order = ('id', 'name', 'category__name','created')
            
@@ -37,8 +37,10 @@ class ProductResource(resources.ModelResource):
         
         #Category.objects.get_or_create(name=row.get('child_collection'))
         #row['child_collection'] = cat.name
-        Product.objects.get_or_create(id=row.get('id'))
-        Category.objects.get_or_create(id=row.get('category'))
+        #cat = Category.objects.get_or_create(id=row.get('category'))
+        #category = Category.objects.get(id=row['category'])
+        #Product.objects.get_or_create(id=row.get('id'), category_id=row['category'])
+        
         
         
         
@@ -54,11 +56,11 @@ class VariationResource(resources.ModelResource):
             widget=ForeignKeyWidget(Product, 'name')
             )
 
-    # child_collection = Field(
-    #         column_name='child_collection',
-    #         attribute='product__category',
-    #         widget=ForeignKeyWidget(Category, 'name')
-    #         )
+    child_collection = Field(
+            column_name='child_collection',
+            attribute='product__category',
+            widget=ForeignKeyWidget(Category, 'name')
+            )
 
     # parent_collection = Field(
     #         column_name='parent_collection',
@@ -73,8 +75,9 @@ class VariationResource(resources.ModelResource):
 
     class Meta:
         model = Variation
-        import_id_fields = ('id','product_name') 
-        fields = ('product_name','id','sku','title','price','cost','sale_price',)
+        import_id_field = 'sku'
+        import_id_fields = ('sku','product_name',) 
+        fields = ('product_name','sku','title','child_collection','price','cost','sale_price',)
         
         #fields = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
         #export_order = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
@@ -139,7 +142,7 @@ class VariationAdmin(ImportExportModelAdmin):
     list_display_links = ['image_tag','product',]
     list_filter = ['product__category','category','active',]
     list_editable = ['category','title','sku', 'price', 'cost', 'sale_price','active']
-    search_fields = ('sku',)
+    search_fields = ('sku','id','title','category')
     save_as = True
     resource_class = VariationResource
 
@@ -151,7 +154,8 @@ class VariationAdmin(ImportExportModelAdmin):
             return True
         else:
             return False
-#admin.site.register(Variation)
+
+admin.site.register(ProductImage)
 #admin.site.register(AttributeBase)
 #admin.site.register(Attribute)
 #admin.site.register(ProductAttribute)

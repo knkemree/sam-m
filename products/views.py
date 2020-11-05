@@ -21,6 +21,8 @@ from cart.forms import CartAddProductForm
 from cart.cart import Cart
 from django.core.exceptions import ValidationError
 from products.models import Category
+from products.forms import SearchForm
+from django.contrib.postgres.search import SearchVector
 
 register = template.Library()
 
@@ -322,8 +324,7 @@ def clearance(request):
         clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=id_or_sku_qty_zero)
     except:
         clearance_products_exclude_zero = clearance_products.exclude(sku__in=id_or_sku_qty_zero)
-    print("zerolr exculed hali")
-    print(clearance_products_exclude_zero)
+    
     cart_product_form = CartAddProductForm(auto_id=False)
 
     paginator = Paginator(clearance_products_exclude_zero, 1) # 3 posts in each page
@@ -337,6 +338,7 @@ def clearance(request):
     except EmptyPage:
         # If page is out of range deliver last page of results
         ps = paginator.page(paginator.num_pages)
+
     context = {
         "clearance_products":clearance_products,
         'stocks':stocks,
@@ -348,3 +350,20 @@ def clearance(request):
         #'loop_times':range(1, stock+1)
     }
     return render(request, "clearance.html", context)
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Product.objects.filter(available=True).annotate(
+                search=SearchVector('name',),
+            ).filter(search=query)
+    return render(request,
+                  'search.html',
+                  {'form': form,
+                   'query': query,
+                   'results': results})
