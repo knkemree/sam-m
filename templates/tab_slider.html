@@ -110,6 +110,7 @@
 											
 											<p class="product-price">
 												<!-- <span class="main-price discounted">$71</span> -->
+												{{p.get_lowest_price}}
 												<span class="main-price starting-from">starting at</span>
 												{% if p.get_lowest_price.sale_price__min %}
 												<span class="discounted-price">  ${{ p.get_lowest_price.sale_price__min|floatformat:-2  }}</span>

@@ -78,7 +78,7 @@ class VariationResource(resources.ModelResource):
         model = Variation
         import_id_field = 'sku'
         import_id_fields = ('sku','product_name',) 
-        fields = ('product_name','sku','title','child_collection','price','cost','sale_price',)
+        fields = ('product_name','sku','title','child_collection','price','cost','sale_price','product__image')
         
         #fields = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
         #export_order = ('product','product__color','child_collection','product__image','product__available','id','sku','title','price','cost','sale_price','active')
