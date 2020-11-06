@@ -364,7 +364,7 @@ def post_search(request):
             try:
                 results = Variation.objects.filter( Q(id__iexact=query)| Q(product__id__exact=query))
             except:
-                results = Variation.objects.filter(Q(sku__contains=query) )
+                results = Variation.objects.filter(Q(sku__icontains=query) )
             product_ids = []
             # for var in data:
             #     product_ids.append(var.product.id)
