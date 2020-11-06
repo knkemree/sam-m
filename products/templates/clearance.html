@@ -177,7 +177,7 @@
                                 <div class="content">
                                     <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.sku}}</a></h2>
                                     <!-- <span>In Stock: {{ product.get_quantity_on_hand }}</span> -->
-                                            <!-- In Stock: {{ i.QuantityOnHand}} -->
+                                             In Stock: {{ i.QuantityOnHand}}
                                     {% if request.user.is_authenticated %}
                                     <p class="product-price">
                                         <span class="main-price discounted">${{ product.price }}</span>
