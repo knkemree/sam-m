@@ -58,10 +58,10 @@
 											{% if request.user.is_authenticated %}
 											<p class="product-price">
 												<span class="main-price starting-from">starting at</span>
-												{% if product.get_lowest_price.sale_price__min %}
-												<span class="discounted-price">  ${{ product.get_lowest_price.sale_price__min|floatformat:-2  }}</span>
+												{% if p.get_lowest_price.sale_price__min %}
+												<span class="discounted-price">  ${{ p.get_lowest_price.sale_price__min|floatformat:-2  }}</span>
 												{% else %}
-												<span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
+												<span class="discounted-price">  ${{ p.get_lowest_price.price__min|floatformat:-2  }}</span>
 												{% endif %}
 											</p>
 											{% endif %}
@@ -111,10 +111,10 @@
 											<p class="product-price">
 												<!-- <span class="main-price discounted">$71</span> -->
 												<span class="main-price starting-from">starting at</span>
-												{% if product.get_lowest_price.sale_price__min %}
-												<span class="discounted-price">  ${{ product.get_lowest_price.sale_price__min|floatformat:-2  }}</span>
+												{% if p.get_lowest_price.sale_price__min %}
+												<span class="discounted-price">  ${{ p.get_lowest_price.sale_price__min|floatformat:-2  }}</span>
 												{% else %}
-												<span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
+												<span class="discounted-price">  ${{ p.get_lowest_price.price__min|floatformat:-2  }}</span>
 												{% endif %}
 											</p>
 
