@@ -32,7 +32,7 @@ STATIC_URL = 'https://%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-CELERY_BROKER_URL='redis://localhost:6380/'
-CELERY_RESULT_BACKEND='redis://localhost:6380/'
+CELERY_BROKER_URL='amqp://localhost'
+CELERY_RESULT_BACKEND='amqp://localhost'
 
 CKEDITOR_BASEPATH = "https://nyc3.digitaloceanspaces.com/samnm/samnm-static/ckeditor/ckeditor/"
