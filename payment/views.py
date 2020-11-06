@@ -32,8 +32,8 @@ def payment_process(request):
         print("token burda")
         print(token)
         result = stripe.Charge.create(
-            #amount=100,
-            amount=int(total_cost*100),
+            amount=100,
+            #amount=int(total_cost*100),
             currency="usd",
             source=token,
             
