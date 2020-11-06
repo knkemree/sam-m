@@ -37,7 +37,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-SITE_ID = 1
+SITE_ID = 2
 #ALLOWED_HOSTS = ['165.22.33.200','msrugs.com','www.msrugs.com']
 
 AUTH_USER_MODEL = 'account.Customers'
