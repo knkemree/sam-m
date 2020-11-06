@@ -143,6 +143,7 @@ def payment_process(request):
             # launch asynchronous task
             order_created.delay(order.id, html_message_for_customer)
             inform_admins.delay(order.id, html_message_for_admins)
+            
             return redirect('payment:done')
         else:
             return redirect('payment:canceled')

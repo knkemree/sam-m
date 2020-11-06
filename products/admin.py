@@ -126,7 +126,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(ImportExportModelAdmin): 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
     list_display_links = ['image_tag','name',]
-    list_filter = ['category', 'created','available', 'updated'] 
+    list_filter = ['category', 'created','available', 'updated','created'] 
     search_fields = ('name', 'description', 'slug','id',)
     list_editable = [ 'available','category'] 
     prepopulated_fields = {'slug': ('name',)}
@@ -142,7 +142,7 @@ class ProductAdmin(ImportExportModelAdmin):
 class VariationAdmin(ImportExportModelAdmin):
     list_display = ['image_tag','product','category','title','sku', 'price', 'cost', 'sale_price','ecomdashid','updated','active','clearance']
     list_display_links = ['image_tag','product',]
-    list_filter = ['product__category','category','active',]
+    list_filter = ['product__category','category','active', 'updated',]
     list_editable = ['category','title','sku', 'price', 'cost', 'sale_price','active']
     search_fields = ('sku','id','title','category')
     save_as = True

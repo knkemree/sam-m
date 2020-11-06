@@ -84,12 +84,10 @@ class Product(models.Model):
                        args=[self.id, self.slug])
 
     def get_lowest_price(self):
-        try:
-            
-            return self.variation_set.all().aggregate(Min('sale_price'))
-        except:
-            
-            return self.variation_set.all().aggregate(Min('price'))
+        return self.variation_set.all().aggregate(Min('price'))
+
+    def get_lowest_sale_price(self):
+        return self.variation_set.all().aggregate(Min('sale_price'))
 
     def get_default_image(self):
         if self.image is None:

@@ -213,9 +213,12 @@
                                 
                                     <!-- <span class="main-price discounted">$60</span> -->
                                     <span class="main-price starting-at"><small><small>starting at</small></small></span>
-                                    
-                                    {% if product.get_lowest_price.sale_price__min %}
-                                    <span class="discounted-price">  ${{ product.get_lowest_price.sale_price__min|floatformat:-2  }}</span>
+                                    {% if product.get_lowest_sale_price.sale_price__min|floatformat:-2 < product.get_lowest_price.price__min|floatformat:-2  %}	
+                                        {% if not product.get_lowest_sale_price.sale_price__min|floatformat:-2 %}
+                                        <span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
+                                        {% else %}
+                                        <span class="discounted-price">  ${{ product.get_lowest_sale_price.sale_price__min|floatformat:-2  }}</span>
+                                        {% endif %}
                                     {% else %}
                                     <span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
                                     {% endif %}
@@ -743,8 +746,12 @@
                                     <!-- <span class="main-price discounted">$71</span>
                                     <span class="discounted-price">$65</span> -->
                                     <span class="main-price starting-from">starting at</span>
-                                    {% if product.get_lowest_price.sale_price__min %}
-                                    <span class="discounted-price">  ${{ product.get_lowest_price.sale_price__min|floatformat:-2  }}</span>
+                                    {% if product.get_lowest_sale_price.sale_price__min|floatformat:-2 < product.get_lowest_price.price__min|floatformat:-2  %}	
+                                        {% if not product.get_lowest_sale_price.sale_price__min|floatformat:-2 %}
+                                        <span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
+                                        {% else %}
+                                        <span class="discounted-price">  ${{ product.get_lowest_sale_price.sale_price__min|floatformat:-2  }}</span>
+                                        {% endif %}
                                     {% else %}
                                     <span class="discounted-price">  ${{ product.get_lowest_price.price__min|floatformat:-2  }}</span>
                                     {% endif %}
