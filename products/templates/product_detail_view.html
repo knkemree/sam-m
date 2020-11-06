@@ -201,10 +201,10 @@
                             {% if variant %}
                                 {% if variant.sale_price %}
                                     <span class="main-price discounted">${{ variant.price }}</span>
-                                    <span class="discounted-price">${{ variant.sale_price }}</span>
+                                    <span class="discounted-price">${{ variant.sale_price }}</span> <small><small style="background-color: #FFFF00"> {{ variant.title }}</small></small>
                                 {% else %}
                             
-                                <span class="discounted-price">${{ variant.price }}</span s> <small><small style="background-color: #FFFF00"> {{ variant.title }}</small></small>
+                                <span class="discounted-price">${{ variant.price }}</span> <small><small style="background-color: #FFFF00"> {{ variant.title }}</small></small>
                                 {% endif %}
                             {% else %}
                                 {% if request.user.is_authenticated %}
