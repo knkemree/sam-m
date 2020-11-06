@@ -126,7 +126,7 @@
                                                     <!-- istersen yukaridaki css'i silip class="image" yapabilirsin. yaparsan iki resimli halini kullanabilirsin ama resim boyutlari guzel olmayacak -->
                                                     <a href="{{ product.get_absolute_url }}">
                                                         
-                                                        <img style="height: 200px; width: auto;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
+                                                        <img style="height: 200px; width: auto;" src="{% if product.product.image %}{{ product.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="img-fluid" alt="">
                                                         
                                                     </a>
                                                     
@@ -137,49 +137,47 @@
                                             </div>
                                             
                                             <div class="content">
-                                                <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.name}}</a></h2>
+                                                <h2 class="product-title"> <a href="{{ product.get_absolute_url }}">{{ product.sku}}</a></h2>
                                                 <!-- <span>In Stock: {{ product.get_quantity_on_hand }}</span> -->
                                                         
                                                 {% if request.user.is_authenticated %}
-                                    
-                                    <p class="product-price">
-                                        <span class="main-price starting-from">starting at</span>
-                                        <span class="discounted-price">${{ product.get_lowest_price.price__min|floatformat:-2 }}</span>
-                                    </p>
-                                    <p>
-                                        
-                                        
-                                        <div class="cart-buttons mb-20">
-                                            <button type="submit" class="add-to-cart-butonu" ><a href="{{ product.get_absolute_url }}">Choose Size</a></button>
-                                                <!-- <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                                {{ cart_product_form.as_p }}
-                                                {% csrf_token %} -->
-                                                <!-- <input type="submit" value="Add to Cart" class="fl-btn" class="fa fa-shopping-cart"> -->
-                                                <!-- <button type="submit" class="add-to-cart-butonu" >Add to Cart</button> -->
-                                                
-                                                <!-- </form> -->
-                
-                                        </div>
-                                    
-                                        {% else%}
-                                        <div class="rating">
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                        </div>
-                                        <div class="product-feature-details">
-                                            <div class="cart-buttons mb-20">
-                                                <div class="add-to-cart-btn d-block">
-                                                    <a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa fa-check-circle"> </i> Become A Dealer</a>
+                                                <p class="product-price">
+                                                    <span class="main-price discounted">${{ product.price }}</span>
+                                                    <span class="discounted-price">${{ product.sale_price }}</span>                                      
+                                                </p>
+                                                                          
+                                                <p>
+                                                    <div class="cart-buttons mb-20">
                                                     
-                                                </div>
-                                            <small><p>Already Delaer? <a href="{% url 'login' %}">Login</a></p></small>
-                                            </div>
-                                            
-                                        </div>
-                                    {% endif %}
+                                                       
+                                                            <div>
+                                                                
+                                                                <a href="{% url "products:product_detail_view_by_variant" product.product.id product.product.slug product.id %}"><button type="submit" class="add-to-cart-butonu" >View</button></a>
+                                                            </div>
+                                                            
+                                                            
+                            
+                                                    </div>
+                                                
+                                                    {% else%}
+                                                    <div class="rating">
+                                                        <i class="fa fa-star active"></i>
+                                                        <i class="fa fa-star active"></i>
+                                                        <i class="fa fa-star active"></i>
+                                                        <i class="fa fa-star active"></i>
+                                                        <i class="fa fa-star active"></i>
+                                                    </div>
+                                                    <div class="product-feature-details">
+                                                        <div class="cart-buttons mb-20">
+                                                            <div class="add-to-cart-btn d-block">
+                                                                <a href="{% url 'account:registration_view' %}" class="fl-btn"><i class="fa fa-check-circle"> </i> Become A Dealer</a>
+                                                                
+                                                            </div>
+                                                        <small><p>Already Delaer? <a href="{% url 'login' %}">Login</a></p></small>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                {% endif %}
             
                                                 
             

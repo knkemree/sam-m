@@ -275,6 +275,7 @@ def updateQtyView(request):
 
 def clearance(request):
     clearance_products = Variation.objects.filter(sale_price__isnull=False, active=True)
+    #clearance_products_exclude_zero = Variation.objects.filter(sale_price__isnull=False, active=True)
     object_list = Variation.objects.filter(sale_price__isnull=False, active=True)
     list_ids_or_sku = []
 
@@ -360,13 +361,16 @@ def post_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            data = Variation.objects.filter(Q(sku__contains=query) | Q(id__exact=query)| Q(product__id__exact=query))
+            try:
+                results = Variation.objects.filter( Q(id__iexact=query)| Q(product__id__exact=query))
+            except:
+                results = Variation.objects.filter(Q(sku__contains=query) )
             product_ids = []
-            for var in data:
-                product_ids.append(var.product.id)
-            print("aranan urunler idleri")
-            print(product_ids)
-            results = Product.objects.filter(id__in=product_ids)
+            # for var in data:
+            #     product_ids.append(var.product.id)
+            # print("aranan urunler idleri")
+            # print(product_ids)
+            #results = Product.objects.filter(id__in=product_ids)
     return render(request,
                   'search.html',
                   {'form': form,
