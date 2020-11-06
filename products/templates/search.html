@@ -142,8 +142,11 @@
                                                         
                                                 {% if request.user.is_authenticated %}
                                                 <p class="product-price">
+                                                    {% if product.sale_price %}
                                                     <span class="main-price discounted">${{ product.price }}</span>
-                                                    <span class="discounted-price">${{ product.sale_price }}</span>                                      
+                                                    <span class="discounted-price">${{ product.sale_price }}</span> 
+                                                    {% else %}
+                                                    <span class="discounted-price">${{ product.price }}</span> 
                                                 </p>
                                                                           
                                                 <p>
