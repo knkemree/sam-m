@@ -24,6 +24,7 @@ from Delivery.models import Delivery_methods
 import http.client
 import mimetypes
 import json
+from django.core.mail import mail_admins
 
 @staff_member_required
 def admin_order_detail(request, order_id):
@@ -136,7 +137,7 @@ def order_create(request):
             #inform_admins.delay(order.id, html_message_for_admins)
             #order_created(order.id, html_message_for_customer)
             #inform_admins(order.id, html_message_for_admins)
-            #mail_admins("subject", "message", fail_silently=False, connection=None, html_message=None)
+            #mail_admins(subject="Test Email", message="Testing celery, rabbitMq and supervisor on production", fail_silently=False, connection=None, html_message=None)
             #add.delay(4, 5)
             # set the order in the session
             

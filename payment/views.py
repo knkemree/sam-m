@@ -7,6 +7,7 @@ from django.views.decorators.debug import sensitive_post_parameters, sensitive_v
 from django.conf import settings
 from orders.models import Order
 from django.template import loader
+from orders.tasks import inform_admins, order_created
 
 #from orders.tasks import order_created, inform_admins
 #stripe.api_key = "sk_test_LGKgGvfpnOtCepkfRQxOpFub"
@@ -140,8 +141,8 @@ def payment_process(request):
             
             
             # launch asynchronous task
-            #order_created.delay(order.id, html_message_for_customer)
-            #inform_admins.delay(order.id, html_message_for_admins)
+            order_created.delay(order.id, html_message_for_customer)
+            inform_admins.delay(order.id, html_message_for_admins)
             return redirect('payment:done')
         else:
             return redirect('payment:canceled')
