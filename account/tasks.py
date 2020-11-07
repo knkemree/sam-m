@@ -8,7 +8,7 @@ logger = get_task_logger(__name__)
 
 
 @shared_task
-def email_admin(email):
+def inform_admin(email):
     
     subject = "New Customer Registered"
     message = "New Customer Registration! Customer's email address is "+str(email)
