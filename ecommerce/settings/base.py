@@ -272,3 +272,7 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 EMAIL_SUBJECT_PREFIX = 'SAM&M - '
 
+CELERY_IMPORTS = (
+    'orders.tasks',
+    'account.tasks',
+)

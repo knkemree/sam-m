@@ -12,7 +12,7 @@ from products.models import Category, Product
 from account.models import Customers
 import stripe
 from django.core.mail import send_mail
-from orders.tasks import info_admins
+from account.tasks import info_admins
 
 
 

@@ -32,32 +32,3 @@ def inform_admins(order_id, html_message):
     mail_sent = mail_admins(subject, message, html_message=html_message)
 
     return mail_sent
-
-@shared_task
-def info_admins(email):
-    
-    subject = "New Customer"
-    message = 'New Customer Registered'
-    return mail_admins(subject, message, html_message="some html message")
-
-
-
-
-@shared_task(name="sum_two_numbers")
-def add(x, y):
-    return x + y
-
-
-@shared_task(name="sum_list_numbers")
-def xsum(numbers):
-    return sum(numbers)
-
-@shared_task
-def new_reg_inform_admin(email):
-    
-    subject = "New Customer Registered"
-    message = "New Customer Registration! Customer's email address is "+str(email)
-
-    mail_sent = mail_admins(subject, message,)
-
-    return mail_sent
