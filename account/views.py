@@ -43,7 +43,7 @@ def registration_view(request):
             account = authenticate(email=email, password=raw_password)
             login(request, account)
 
-            info_admins.delay(email)
+            info_admins(email)
 
 
             return redirect('dashboard')
