@@ -11,5 +11,4 @@ def info_admins(email):
     
     subject = "New Customer"
     message = 'New Customer Registered'
-
     return mail_admins(subject, message, html_message="some html message")
