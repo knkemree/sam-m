@@ -298,10 +298,6 @@ def clearance(request):
     #         clearance_products_exclude_zero = []
 
     cart_product_form = CartAddProductForm(auto_id=False)
-
-    
-    
-    
     page = request.GET.get('page', 1)
     paginator = Paginator(clearance_products_list, 48) # 48 posts in each page
     clearance_products = paginator.page(1)
