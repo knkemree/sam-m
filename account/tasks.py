@@ -11,7 +11,7 @@ logger = get_task_logger(__name__)
 def email_admin(email):
     
     subject = "New Customer Registered"
-    message = "New Customer Registration! Customer's email address is"+str(email)
+    message = "New Customer Registration! Customer's email address is "+str(email)
 
     mail_sent = mail_admins(subject, message,)
 
