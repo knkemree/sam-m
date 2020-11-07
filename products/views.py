@@ -287,10 +287,16 @@ def clearance(request):
 
 
     try:
-        clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=result[0])
+        try:
+            clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=result[0])
+        except:
+            clearance_products_exclude_zero = []
     except:
-        clearance_products_exclude_zero = clearance_products.exclude(sku__in=result[0])
-    
+        try:
+            clearance_products_exclude_zero = clearance_products.exclude(sku__in=result[0])
+        except:
+            clearance_products_exclude_zero = []
+
     cart_product_form = CartAddProductForm(auto_id=False)
 
     paginator = Paginator(clearance_products_exclude_zero, 1) # 3 posts in each page
