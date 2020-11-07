@@ -324,24 +324,33 @@ def clearance(request):
 
 def post_search(request):
     form = SearchForm()
-    query = None
-    results = []
-    if 'query' in request.GET:
+    query = request.GET.get('query')
+    results_list = []
+    if query:
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
             try:
-                results = Variation.objects.filter( Q(id__iexact=query)| Q(product__id__exact=query))
+                results_list = Variation.objects.filter( Q(id__iexact=query)| Q(product__id__exact=query))
             except:
-                results = Variation.objects.filter(Q(sku__icontains=query) )
-            product_ids = []
-            # for var in data:
-            #     product_ids.append(var.product.id)
-            # print("aranan urunler idleri")
-            # print(product_ids)
-            #results = Product.objects.filter(id__in=product_ids)
+                results_list = Variation.objects.filter(Q(sku__icontains=query) )
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(results_list, 48) # 48 posts in each page
+    results = paginator.page(1)
+
+    try:
+        results = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        results = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        results = paginator.page(paginator.num_pages)       
+            
     return render(request,
                   'search.html',
                   {'form': form,
                    'query': query,
-                   'results': results})
+                   'results': results,
+                   'page':page,})

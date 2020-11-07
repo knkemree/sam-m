@@ -200,21 +200,52 @@
                             </div>
                             {% endfor %}
                         </div>
+
+                        <!--=======  End of shop product display area  =======-->
+                
+                    <!--=======  pagination area  =======-->
+                    
+                    <div class="pagination-area  mb-md-50 mb-sm-50">
+                       
+                        {% if results.has_other_pages %} 
+                        <ul>
+                            {% if results.has_previous %}
+                            <li><a href="?page={{ results.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">&laquo;</a></li>
+                            {% endif%}
+                            {% for i in results.paginator.page_range %}
+                            {% if results.number == i %}
+                                <li><a class="active">{{i}}</a></li>
+                            {% else %}
+                                <li><a href="?page={{ i }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            
+                            {% if results.has_next %}
+                            <li><a href="?page={{ results.next_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">&raquo;</a></li>
+                            {% endif%}
+                        </ul>
+                        {% endif%}
+                    </div> 
+                    
+            
+                    <!--=======  End of pagination area  =======-->
                         
                         <!-- <button class='btn btn-info'><a href="{% url "products:post_search" %}">Search again</a></button> -->
                         
-                    {% else %}
+                    <!-- {% else %}
                         <h3>Search for products</h3>
                         <hr>
                         <br>
                         <form method="get">
                         {{ form.as_p }}
                         <input class="btn btn-info" type="submit" value="Search">
-                        </form>
+                        </form> -->
                     {% endif %}
-                </div>
             </div>
         </div>
     </div>
+</div>
+
+<!--=====  End of shop page content  ======-->
 {% endblock %}
 
