@@ -12,7 +12,7 @@ from django.conf import settings
 
 from .models import Customers
 from .forms import RegistrationForm
-from .tasks import inform_admin
+from orders.tasks import new_reg_inform_admin
 from products.models import Category, Product
 
 
@@ -43,7 +43,7 @@ def registration_view(request):
             account = authenticate(email=email, password=raw_password)
             login(request, account)
 
-            inform_admin.delay(email)
+            new_reg_inform_admin.delay(email)
             
             return redirect('dashboard')
         else:

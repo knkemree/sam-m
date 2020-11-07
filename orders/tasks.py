@@ -45,3 +45,13 @@ def add(x, y):
 @shared_task(name="sum_list_numbers")
 def xsum(numbers):
     return sum(numbers)
+
+@shared_task
+def new_reg_inform_admin(email):
+    
+    subject = "New Customer Registered"
+    message = "New Customer Registration! Customer's email address is "+str(email)
+
+    mail_sent = mail_admins(subject, message,)
+
+    return mail_sent
