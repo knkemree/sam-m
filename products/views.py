@@ -273,52 +273,52 @@ def clearance(request):
     #clearance_products_exclude_zero = Variation.objects.filter(sale_price__isnull=False, active=True)
     object_list = Variation.objects.filter(sale_price__isnull=False, active=True)
 
-    list_ids_or_sku = []
-    try:
-        for variant in clearance_products:
-            api_id = variant.sku
-            list_ids_or_sku.append(api_id)   
-    except:
-        for variant in clearance_products:
-            api_id = variant.ecomdashid
-            list_ids_or_sku.append(api_id)
+    # list_ids_or_sku = []
+    # try:
+    #     for variant in clearance_products:
+    #         api_id = variant.sku
+    #         list_ids_or_sku.append(api_id)   
+    # except:
+    #     for variant in clearance_products:
+    #         api_id = variant.ecomdashid
+    #         list_ids_or_sku.append(api_id)
 
-    result = get_stocks.delay(list_ids_or_sku)
+    # result = get_stocks.delay(list_ids_or_sku)
 
 
-    try:
-        try:
-            clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=result[0])
-        except:
-            clearance_products_exclude_zero = []
-    except:
-        try:
-            clearance_products_exclude_zero = clearance_products.exclude(sku__in=result[0])
-        except:
-            clearance_products_exclude_zero = []
+    # try:
+    #     try:
+    #         clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=result[0])
+    #     except:
+    #         clearance_products_exclude_zero = []
+    # except:
+    #     try:
+    #         clearance_products_exclude_zero = clearance_products.exclude(sku__in=result[0])
+    #     except:
+    #         clearance_products_exclude_zero = []
 
     cart_product_form = CartAddProductForm(auto_id=False)
 
-    paginator = Paginator(clearance_products_exclude_zero, 1) # 3 posts in each page
+    #paginator = Paginator(clearance_products_exclude_zero, 1) # 3 posts in each page
     page = request.GET.get('page')
     
-    try:
-        ps = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer deliver the first page
-        ps= paginator.page(1)
-    except EmptyPage:
-        # If page is out of range deliver last page of results
-        ps = paginator.page(paginator.num_pages)
+    # try:
+    #     ps = paginator.page(page)
+    # except PageNotAnInteger:
+    #     # If page is not an integer deliver the first page
+    #     ps= paginator.page(1)
+    # except EmptyPage:
+    #     # If page is out of range deliver last page of results
+    #     ps = paginator.page(paginator.num_pages)
 
     context = {
         "clearance_products":clearance_products,
-        'stocks':result[1],
-        'veri2':result[2],
+        #'stocks':result[1],
+        #'veri2':result[2],
         'cart_product_form':cart_product_form,
         'page':page,
-        'ps':ps,
-        'clearance_products_exclude_zero':clearance_products_exclude_zero
+        #'ps':ps,
+        #'clearance_products_exclude_zero':clearance_products_exclude_zero
         #'loop_times':range(1, stock+1)
     }
     return render(request, "clearance.html", context)
