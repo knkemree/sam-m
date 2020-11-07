@@ -23,5 +23,6 @@ class Slider(models.Model):
     def __str__(self):
         return str(self.image)
 
+    
     class Meta:
         ordering = ['order','-start_date', '-end_date']
