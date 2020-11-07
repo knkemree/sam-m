@@ -303,7 +303,7 @@ def clearance(request):
     
     
     page = request.GET.get('page', 1)
-    paginator = Paginator(clearance_products_list, 20) # 3 posts in each page
+    paginator = Paginator(clearance_products_list, 50) # 50 posts in each page
     clearance_products = paginator.page(1)
 
     try:
