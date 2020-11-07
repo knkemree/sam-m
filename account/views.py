@@ -12,6 +12,7 @@ from products.models import Category, Product
 from account.models import Customers
 import stripe
 from django.core.mail import send_mail
+from account.tasks import info_admins
 
 
 
@@ -42,14 +43,7 @@ def registration_view(request):
             account = authenticate(email=email, password=raw_password)
             login(request, account)
 
-            send_mail(
-                'New Customer',
-                'A new customer registered! ' +
-                "Customer's e-mail address is {}".format(email),
-                'emre@samnmtrade.com',
-                ['emre@samnmtrade.com.com'],
-                fail_silently=False,
-            )
+            info_admins(email)
 
 
             return redirect('dashboard')
