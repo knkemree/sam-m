@@ -13,17 +13,16 @@ from django.contrib import messages
 from django.contrib.sessions.models import Session
 from django import template
 from django.utils.safestring import mark_safe
-
-from .models import Category, Product, ProductImage, Variation
-from .forms import updateQtyForm
-
-from cart.forms import CartAddProductForm
-from cart.cart import Cart
-from django.core.exceptions import ValidationError
-from products.models import Category
-from products.forms import SearchForm
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Q
+from django.core.exceptions import ValidationError
+
+from .models import Category, Product, ProductImage, Variation
+from .forms import updateQtyForm, SearchForm
+from .tasks import get_stocks
+from cart.forms import CartAddProductForm
+from cart.cart import Cart
+
 
 register = template.Library()
 
@@ -133,14 +132,10 @@ def product_detail_view(request, id, slug, variantid=None):
     
     product = get_object_or_404(Product, id=id)
     other_products = Product.objects.filter(available=True, category=product.category).exclude(id=id)
-    print("other products !!!!!!!!!!!!!!!!!")
-    print(other_products)
     cart_product_form = CartAddProductForm()
     gallery = ProductImage.objects.filter(product_id=id)
     variant = None
     quantity_on_hand = 0
-    #var = None
-    #sizes = Variation.objects.filter(product_id=id, category="size")
     cart = Cart(request)
 
     list_ids_or_sku = []
@@ -277,55 +272,24 @@ def clearance(request):
     clearance_products = Variation.objects.filter(sale_price__isnull=False, active=True)
     #clearance_products_exclude_zero = Variation.objects.filter(sale_price__isnull=False, active=True)
     object_list = Variation.objects.filter(sale_price__isnull=False, active=True)
-    list_ids_or_sku = []
 
+    list_ids_or_sku = []
     try:
         for variant in clearance_products:
             api_id = variant.sku
-            list_ids_or_sku.append(api_id)
-
-        payload1 = {"idType":"sku","idList":list_ids_or_sku}
-        payload = str(payload1)
+            list_ids_or_sku.append(api_id)   
     except:
         for variant in clearance_products:
             api_id = variant.ecomdashid
             list_ids_or_sku.append(api_id)
 
-        payload1 = {"idType":"id","idList":list_ids_or_sku}
-        payload = str(payload1)
-    
+    result = get_stocks.delay(list_ids_or_sku)
 
-
-    conn = http.client.HTTPSConnection("ecomdash.azure-api.net")
-    headers = {
-    'Ocp-Apim-Subscription-Key': 'ce0057d8843342c8b3bb5e8feb0664ac',
-    'ecd-subscription-key': '0e26a6d3e46145d5b7dd00a9f0e23c39',
-    'Content-Type': 'application/json',
-    'Authorization': 'Token 201105f43f33e2b5b287c55cd73823e0d050f537'
-    }
-    conn.request("POST", "/api/inventory/getProducts", payload, headers)
-    res = conn.getresponse()
-    data = res.read()
-    
-    veri = json.loads(data.decode("utf-8"))
-    veri2 = veri["data"]
-    
-    stocks = []
-    id_or_sku_qty_zero = []
-    for i in veri["data"]:
-        
-        stocks.append(i['QuantityOnHand'])
-        if int(i['QuantityOnHand']) == 0:
-            
-            try:
-                id_or_sku_qty_zero.append(i["Id"])
-            except:
-                id_or_sku_qty_zero.append(i["Sku"])
 
     try:
-        clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=id_or_sku_qty_zero)
+        clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=result[0])
     except:
-        clearance_products_exclude_zero = clearance_products.exclude(sku__in=id_or_sku_qty_zero)
+        clearance_products_exclude_zero = clearance_products.exclude(sku__in=result[0])
     
     cart_product_form = CartAddProductForm(auto_id=False)
 
@@ -343,8 +307,8 @@ def clearance(request):
 
     context = {
         "clearance_products":clearance_products,
-        'stocks':stocks,
-        'veri2':veri2,
+        'stocks':result[1],
+        'veri2':result[2],
         'cart_product_form':cart_product_form,
         'page':page,
         'ps':ps,
