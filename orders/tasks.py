@@ -33,6 +33,12 @@ def inform_admins(order_id, html_message):
 
     return mail_sent
 
+@shared_task
+def info_admins(email):
+    
+    subject = "New Customer"
+    message = 'New Customer Registered'
+    return mail_admins(subject, message, html_message="some html message")
 
 
 
