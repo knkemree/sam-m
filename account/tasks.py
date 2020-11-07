@@ -10,8 +10,8 @@ logger = get_task_logger(__name__)
 @shared_task
 def info_admins(email):
     subject = "New Customer Registered"
-    message = str(email)+" placed an order!"
+    
 
-    mail_sent = mail_admins(subject, message, html_message=email)
+    mail_sent = mail_admins(subject, html_message="A new customer registered! Customer's email address is "+str(email))
 
     return mail_sent
