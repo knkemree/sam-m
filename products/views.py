@@ -269,9 +269,9 @@ def updateQtyView(request):
     return render(request, "updateQty.html", {'form': form })
 
 def clearance(request):
-    clearance_products = Variation.objects.filter(sale_price__isnull=False, active=True).prefetch_related('product')
+    clearance_products_list = Variation.objects.filter(sale_price__isnull=False, active=True).prefetch_related('product').order_by('product__category')
     #clearance_products_exclude_zero = Variation.objects.filter(sale_price__isnull=False, active=True)
-    object_list = Variation.objects.filter(sale_price__isnull=False, active=True)
+    
 
     # list_ids_or_sku = []
     # try:
@@ -299,17 +299,21 @@ def clearance(request):
 
     cart_product_form = CartAddProductForm(auto_id=False)
 
-    #paginator = Paginator(clearance_products_exclude_zero, 1) # 3 posts in each page
-    page = request.GET.get('page')
     
-    # try:
-    #     ps = paginator.page(page)
-    # except PageNotAnInteger:
-    #     # If page is not an integer deliver the first page
-    #     ps= paginator.page(1)
-    # except EmptyPage:
-    #     # If page is out of range deliver last page of results
-    #     ps = paginator.page(paginator.num_pages)
+    
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(clearance_products_list, 20) # 3 posts in each page
+    clearance_products = paginator.page(1)
+
+    try:
+        clearance_products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        clearance_products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        clearance_products = paginator.page(paginator.num_pages)
 
     context = {
         "clearance_products":clearance_products,
@@ -317,7 +321,6 @@ def clearance(request):
         #'veri2':result[2],
         'cart_product_form':cart_product_form,
         'page':page,
-        #'ps':ps,
         #'clearance_products_exclude_zero':clearance_products_exclude_zero
         #'loop_times':range(1, stock+1)
     }

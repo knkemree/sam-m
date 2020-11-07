@@ -265,6 +265,27 @@
                     <!--=======  pagination area  =======-->
                     
                     <div class="pagination-area  mb-md-50 mb-sm-50">
+                        {% if clearance_products.has_other_pages %}
+                        <ul class="pagination">
+                            {% if clearance_products.has_previous %}
+                            <li><a href="?page={{ clearance_products.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                            <li class="disabled"><span>&laquo;</span></li>
+                            {% endif %}
+                            {% for i in clearance_products.paginator.page_range %}
+                            {% if clearance_products.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if clearance_products.has_next %}
+                            <li><a href="?page={{ clearance_products.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
                         <!--<div style="text-align:center;">
                             
                             {% include "pagination.html" with page=ps %}
