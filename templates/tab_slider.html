@@ -28,6 +28,7 @@
 									{% for p in bed_sheets %} 
 									<div class="fl-product">
 										<!-- <div class="image sale-product"> -->
+										<!-- asagidaki dive class="image" ekle eger uzerine geldiginde ikinci foto gostersin istiyorsan -->	
 										<div style="width: 200px; 
 										height: 200px;
 										/*background-color: red;*/
@@ -99,7 +100,15 @@
 									
 									<div class="fl-product">
 										<!-- <div class="image sale-product"> -->
-											<div class="image">
+											<!-- asagidaki dive class="image" ekle eger uzerine geldiginde ikinci foto gostersin istiyorsan -->	
+											<div style="width: 200px; 
+											height: 200px;
+											/*background-color: red;*/
+											/*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+											background-repeat: no-repeat;
+											background-size: contain;
+											background-position: center;
+											margin: 0 auto;">
 												<a href="{{ p.get_absolute_url }}">
 													
 													<img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.image.url }}" class="img-fluid" alt="">
