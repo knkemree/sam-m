@@ -224,6 +224,9 @@ class Variation(models.Model):
 
     objects = VariationManager()
 
+    class Meta:
+        ordering = ['price',]
+
     def __str__(self): 
         return self.sku
 
