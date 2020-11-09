@@ -1,5 +1,9 @@
 from django.db import models
 import os
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+from PIL import Image
 
 # Create your models here.
 def slider_upload(instance, filename):
@@ -26,3 +30,23 @@ class Slider(models.Model):
     
     class Meta:
         ordering = ['order','-start_date', '-end_date']
+
+    def save(self, *args, **kwargs):
+
+        img = Image.open(self.image)
+
+        if img.height > 200 or img.width > 200:
+
+            output_size = (1280, 1280)
+            img.thumbnail(output_size)
+            img = img.convert('RGB')
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.image = InMemoryUploadedFile(output, 'ImageField',
+                                            f'{self.image.name.split(".")[0]}.jpg',
+                                            'image/jpeg', sys.getsizeof(output),
+                                            None)
+        super(Slider, self).save(*args, **kwargs)

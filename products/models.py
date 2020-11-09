@@ -6,10 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.utils.text import slugify
 
-
 # from ckeditor.fields import RichTextField
-
-
 import os
 import http.client
 import mimetypes
@@ -53,6 +50,26 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('products:product_list_by_category',
                        args=[self.slug])
+
+    def save(self, *args, **kwargs):
+
+        img = Image.open(self.image)
+
+        if img.height > 200 or img.width > 200:
+
+            output_size = (600, 600)
+            img.thumbnail(output_size)
+            img = img.convert('RGB')
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.image = InMemoryUploadedFile(output, 'ImageField',
+                                            f'{self.image.name.split(".")[0]}.jpg',
+                                            'image/jpeg', sys.getsizeof(output),
+                                            None)
+        super(Category, self).save(*args, **kwargs)
 
 
 class Product(models.Model): 
