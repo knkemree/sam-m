@@ -15,6 +15,7 @@ import http.client
 import mimetypes
 import json
 import urllib.request
+from PIL import Image
 
 # Create your models here.   
 
@@ -106,6 +107,9 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+        image_pil = Image.open(self.image)
+        image_pil.thumbnail((600, 60))
+        
         super(Product, self).save(*args, **kwargs)
 
     admin_image.allow_tags = True
