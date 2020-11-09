@@ -16,6 +16,9 @@ import mimetypes
 import json
 import urllib.request
 from PIL import Image
+from io import BytesIO, StringIO 
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 
 # Create your models here.   
 
@@ -107,9 +110,25 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        image_pil = Image.open(self.image)
-        image_pil.thumbnail((600, 60))
-        
+
+        img = Image.open(self.image)
+
+        if img.height > 200 or img.width > 200:
+
+            output_size = (600, 600)
+            img.thumbnail(output_size)
+            img = img.convert('RGB')
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.image = InMemoryUploadedFile(output, 'ImageField',
+                                            f'{self.image.name.split(".")[0]}.jpg',
+                                            'image/jpeg', sys.getsizeof(output),
+                                            None)
+         
+
         super(Product, self).save(*args, **kwargs)
 
     admin_image.allow_tags = True
@@ -131,7 +150,26 @@ class ProductImage(models.Model):
         #return self.product.name
     class Meta:
         ordering = ['order']
-    
+
+    def save(self, *args, **kwargs):
+
+        img = Image.open(self.image)
+
+        if img.height > 200 or img.width > 200:
+
+            output_size = (600, 600)
+            img.thumbnail(output_size)
+            img = img.convert('RGB')
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.image = InMemoryUploadedFile(output, 'ImageField',
+                                            f'{self.image.name.split(".")[0]}.jpg',
+                                            'image/jpeg', sys.getsizeof(output),
+                                            None)
+        super(ProductImage, self).save(*args, **kwargs)
     
 
 class VariationManager(models.Manager):
