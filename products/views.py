@@ -97,34 +97,13 @@ def product_list_view(request, category_slug=None):
     
     cart_product_form = CartAddProductForm()
 
-    object_list = Product.objects.filter(available=True)
-    paginator = Paginator(object_list, 50) # 3 posts in each page
-    page = request.GET.get('page')
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer deliver the first page
-        products = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range deliver last page of results
-        products = paginator.page(paginator.num_pages)
-
-
     return render(request,
                   'product_list_view.html',
-
-                  {
-                   'parent_category':parent_category,
+                  {'parent_category':parent_category,
                    'parent_categories':parent_categories,
                    'child_category':child_category,
                    'all_categories':all_categories,
-
-                   'page': page,
-                
-                    'cart_product_form':cart_product_form,
-                    
-                    }
-                    )
+                    'cart_product_form':cart_product_form,})
 
 
 
@@ -193,9 +172,7 @@ def product_detail_view(request, id, slug, variantid=None):
                   'quantity_on_hand':quantity_on_hand, 
                   'loop_times':range(1, int(quantity_on_hand)+1),
                   'other_products':other_products,
-                  'veri2':veri2,
-                  }
-                  )
+                  'veri2':veri2,})
 
 def updateQtyView(request):
 
@@ -271,8 +248,6 @@ def updateQtyView(request):
 def clearance(request):
     clearance_products_list = Variation.objects.filter(sale_price__isnull=False, active=True).prefetch_related('product').order_by('product__category','sku',)
     #clearance_products_exclude_zero = Variation.objects.filter(sale_price__isnull=False, active=True)
-    
-
     # list_ids_or_sku = []
     # try:
     #     for variant in clearance_products:
@@ -284,8 +259,6 @@ def clearance(request):
     #         list_ids_or_sku.append(api_id)
 
     # result = get_stocks.delay(list_ids_or_sku)
-
-
     # try:
     #     try:
     #         clearance_products_exclude_zero = clearance_products.exclude(ecomdashid__in=result[0])

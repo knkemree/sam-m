@@ -32,8 +32,8 @@ def payment_process(request):
         print("token burda")
         print(token)
         result = stripe.Charge.create(
-            #amount=100,
-            amount=int(total_cost*100),
+            amount=100,
+            #amount=int(total_cost*100),
             currency="usd",
             source=token,
             
@@ -83,7 +83,7 @@ def payment_process(request):
                 'content': "Thank you for your order! Your order number is #"+str(order.id)+".",
                 "order_no": order.id,
                 "order_total": order.order_total,
-                'super_list':super_list,
+                'super_list':order.items.all(),
                 "address":order.address,
                 "postal_code":order.postal_code,
                 "city":order.city,
@@ -128,7 +128,7 @@ def payment_process(request):
                 "order_no": order.id,
                 "order_total": order.order_total,
                 'time':order.created,
-                'super_list':super_list,
+                'super_list':order.items.all(),
                 "address":order.address,
                 "postal_code":order.postal_code,
                 "city":order.city,
