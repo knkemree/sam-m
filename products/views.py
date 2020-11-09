@@ -269,7 +269,7 @@ def updateQtyView(request):
     return render(request, "updateQty.html", {'form': form })
 
 def clearance(request):
-    clearance_products_list = Variation.objects.filter(sale_price__isnull=False, active=True).prefetch_related('product').order_by('sku','product__category')
+    clearance_products_list = Variation.objects.filter(sale_price__isnull=False, active=True).prefetch_related('product').order_by('product__category','sku',)
     #clearance_products_exclude_zero = Variation.objects.filter(sale_price__isnull=False, active=True)
     
 
