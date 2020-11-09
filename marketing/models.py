@@ -37,7 +37,7 @@ class Slider(models.Model):
 
         if img.height > 200 or img.width > 200:
 
-            output_size = (960, 960)
+            output_size = (580, 1920)
             img.thumbnail(output_size)
             img = img.convert('RGB')
             output = BytesIO()
