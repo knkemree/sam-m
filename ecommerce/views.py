@@ -54,10 +54,7 @@ def login_form(request):
 
 def home_page(request):
     sliders = Slider.objects.filter(active=1)
-    
     top_level_cats = Category.objects.filter(parent__isnull=True)
-
-    
     search_form = SearchForm()
     try:
         area_rug = Category.objects.get(slug__contains="area-rugs")
@@ -67,15 +64,13 @@ def home_page(request):
     
     try:
         bed_sheet = Category.objects.get(slug__contains="bed-sheets")
-        bed_sheets = Product.objects.filter(category_id=bed_sheet.id)
+        bed_sheets = Product.objects.filter(category_id=bed_sheet.id)[:10]
     except:
         bed_sheets = []
 
     try:
         towel = Category.objects.get(slug__contains="towel")
-        print(towel, "bunu print ediyor mu")
-        towels = Product.objects.filter(category_id=towel.id)
-        
+        towels = Product.objects.filter(category_id=towel.id)[0:10]
     except:
         towels= []
     
