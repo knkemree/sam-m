@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title %}Custom T-Shirts{% endblock %}
 
 {% block blank %}
 <link href="{% static 'css/tee.css' %}" rel="stylesheet">
@@ -111,17 +111,22 @@
                             <br><br>
                             <label for="tshirt-custompicture">Upload your own design:</label>
                             <input type="file" id="tshirt-custompicture" />
+                            <br>
+                            <input id='save' type="button" value="Save as image"/>
+                            
                             
                             <!-- Include Fabric.js in the page -->
                             <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.1.0/fabric.min.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
 
                             <script>
                                 let canvas = new fabric.Canvas('tshirt-canvas');
 
                                 function updateTshirtImage(imageURL){
                                     fabric.Image.fromURL(imageURL, function(img) {                   
-                                        img.scaleToHeight(300);
-                                        img.scaleToWidth(300); 
+                                        img.scaleToHeight(100);
+                                        img.scaleToWidth(100); 
                                         canvas.centerObject(img);
                                         canvas.add(img);
                                         canvas.renderAll();
@@ -173,7 +178,29 @@
                                         canvas.remove(canvas.getActiveObject());
                                     }
                                 }, false);
+
+                                var node = document.getElementById('tshirt-div');
+                                $('#save').click(){
+                                    domtoimage.toPng(node)
+                                        .then(function (blob) {
+                                         window.saveAs(blob, 'my-node.png');
+                                        // var img = new Image();
+                                        // img.src = dataUrl;
+                                        // document.body.appendChild(img);
+                                });
+                                }
+                                
+                                
                             </script>
+                            
+                            
+                            
+                            <!-- <script>
+                                domtoimage.toBlob(document.getElementById('tshirt-div'))
+                                    .then(function (blob) {
+                                        window.saveAs(blob, 'my-node.png');
+                                    });
+                            </script> -->
                         </div>
                     </div>
                 </div>
