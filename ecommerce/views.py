@@ -151,3 +151,7 @@ def order_details(request, order_id):
         'order': order,
     }
     return render(request, 'order_details.html', context)
+
+
+def tee(request):
+    return render(request, 'tee/tee.html')
