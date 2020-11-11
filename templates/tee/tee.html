@@ -146,38 +146,7 @@
 
                                 canvas.add(iTextSample);
 
-                                function addHandler(id, fn, eventName) {
-  document.getElementById(id)[eventName || 'onclick'] = function() {
-    var el = this;
-    if (obj = canvas.getActiveObject()) {
-      fn.call(el, obj);
-      canvas.renderAll();
-    }
-  };
-}
-
-function setStyle(object, styleName, value) {
-  if (object.setSelectionStyles && object.isEditing) {
-    var style = { };
-    style[styleName] = value;
-    object.setSelectionStyles(style);
-  }
-  else {
-    object[styleName] = value;
-  }
-}
-
-function getStyle(object, styleName) {
-  return (object.getSelectionStyles && object.isEditing)
-    ? object.getSelectionStyles()[styleName]
-    : object[styleName];
-}
-
-
-addHandler('underline', function(obj) {
-  var isUnderline = (getStyle(obj, 'textDecoration') || '').indexOf('underline') > -1;
-  setStyle(obj, 'textDecoration', isUnderline ? '' : 'underline');
-});
+                                
                                 
 
                                 // canvas.add(new fabric.IText('Text', { 
