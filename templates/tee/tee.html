@@ -84,6 +84,7 @@
                                 <div id="drawingArea" class="drawing-area">					
                                     <div class="canvas-container">
                                         <canvas id="tshirt-canvas" width="200" height="400"></canvas>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -122,6 +123,69 @@
 
                             <script>
                                 let canvas = new fabric.Canvas('tshirt-canvas');
+
+                                
+
+                                var iTextSample = new fabric.IText('hello\nworld', {
+                                left: 50,
+                                top: 50,
+                                fontFamily: 'Helvetica',
+                                fill: '#333',
+                                lineHeight: 1.1,
+                                styles: {
+                                    0: {
+                                    0: { textDecoration: 'underline', fontSize: 80 },
+                                    1: { textBackgroundColor: 'red' }
+                                    },
+                                    1: {
+                                    0: { textBackgroundColor: 'rgba(0,255,0,0.5)' },
+                                    4: { fontSize: 20 }
+                                    }
+                                }
+                                });
+
+                                canvas.add(iTextSample);
+
+                                function addHandler(id, fn, eventName) {
+  document.getElementById(id)[eventName || 'onclick'] = function() {
+    var el = this;
+    if (obj = canvas.getActiveObject()) {
+      fn.call(el, obj);
+      canvas.renderAll();
+    }
+  };
+}
+
+function setStyle(object, styleName, value) {
+  if (object.setSelectionStyles && object.isEditing) {
+    var style = { };
+    style[styleName] = value;
+    object.setSelectionStyles(style);
+  }
+  else {
+    object[styleName] = value;
+  }
+}
+
+function getStyle(object, styleName) {
+  return (object.getSelectionStyles && object.isEditing)
+    ? object.getSelectionStyles()[styleName]
+    : object[styleName];
+}
+
+
+addHandler('underline', function(obj) {
+  var isUnderline = (getStyle(obj, 'textDecoration') || '').indexOf('underline') > -1;
+  setStyle(obj, 'textDecoration', isUnderline ? '' : 'underline');
+});
+                                
+
+                                // canvas.add(new fabric.IText('Text', { 
+                                // fontFamily: 'arial black',
+                                // left: 50, 
+                                // top: 150 ,
+                                
+                                // }));
 
                                 function updateTshirtImage(imageURL){
                                     fabric.Image.fromURL(imageURL, function(img) {                   
