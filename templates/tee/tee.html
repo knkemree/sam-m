@@ -17,6 +17,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.1.0/fontfaceobserver.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-input-spinner@1.9.7/src/bootstrap-input-spinner.js"></script>
 
 <!--=============================================
 	=            breadcrumb area         =
@@ -104,11 +105,11 @@
                             <p><button onclick="Addtext()">Add Text</button></p>
                             
                             <label for="font-family">Font family:</label>
-                            <select id="font-family"></select>
-                            <div class="row d-flex justify-content-start">
+                            <select id="font-family" class="form-control"></select>
+                            <div class="row d-flex justify-content-start my-3">
                                 <div class="col-lg-2 col-2">
                                     <label for="fill">Text color:</label>
-                                    <input type="color" list="presetColors" id="fill">
+                                    <input type="color" list="presetColors" id="fill" class="form-control">
                                     <datalist id="presetColors">
                                         
                                         <option value="#000000"/>
@@ -160,7 +161,7 @@
                                 </div>
                                 <div class="col-lg-2 col-2">
                                     <label for="stroke">Outline</label>
-                                    <input type="color" list="presetStroke" id="stroke">
+                                    <input type="color" list="presetStroke" id="stroke" class="form-control">
                                     <datalist id="presetStroke">
                                         <option value="#333"/>
                                         <option value="#000000"/>
@@ -211,7 +212,7 @@
                                 </div>
                                 <div class="col-lg-2 col-2">
                                     <label for="shadow">Shadow</label>
-                                    <input type="color" list="presetStroke" id="shadow">
+                                    <input type="color" list="presetStroke" id="shadow" class="form-control">
                                     <datalist id="presetStroke">
                                         
                                         <option value="#000000"/>
@@ -263,29 +264,30 @@
                             </div>
                             <div class="row d-flex justify-content-start my-3">
                                 <div class="col">
-                                    <input type="number" value="4.5" data-decimals="2" min="0" max="9" step="0.1"/>
+                                    Text Size:
+                                    <!-- <input type="number" value="4.5" data-decimals="2" min="0" max="9" step="0.1" id="text-size"/> -->
+                                    <input id="text-font-size" data-decimals="2" step="0.1" value="50" type="number" class="form-control">
                                 </div>
                                 <div class="col">
-                                    <input type="number" value="4.5" data-decimals="2" min="0" max="9" step="0.1"/>
+                                    Letter Spacing:
+                                    <input id="letter-spacing" data-decimals="2" step="0.1" value="50" type="number" class="form-control">
                                 </div>
                             </div>
-                            <p>
                             
-                            </p>
 
                             
                             
-                            <br><br>
+                            
                             <label for="tshirt-design">T-Shirt Design:</label>
-                            <select id="tshirt-design">
+                            <select id="tshirt-design" class="form-control">
                                 <option value="">Select one of our designs ...</option>
                                 <option value="https://ourcodeworld.com/public-media/gallery/gallery-5d5b0e95d294c.png">Batman</option>
                             </select>
 
                             <!-- The Select that allows the user to change the color of the T-Shirt -->
-                            <br><br>
+                            <br>
                             <label for="tshirt-color">T-Shirt Color:</label>
-                            <select id="tshirt-color">
+                            <select id="tshirt-color" class="form-control">
                                 <!-- You can add any color with a new option and definings its hex code -->
                                 <option value="#ffffff">White</option>
                                 <option value="#000">Black</option>
@@ -296,7 +298,7 @@
 
                             <br><br>
                             <label for="tshirt-custompicture">Upload your own design:</label>
-                            <input type="file" id="tshirt-custompicture" />
+                            <input type="file" id="tshirt-custompicture" class="form-control"/>
                             <br><br>
                             <input id='save' type="button" value="Save as image"/>
                             
@@ -419,6 +421,7 @@
                                     var shadow = new fabric.Shadow({ 
                                         color: this.value, 
                                         affectStroke: false,
+                                        
                                         blur: 5, 
                                     });
                                     obj.set("shadow", shadow);
@@ -559,6 +562,71 @@
                                     canvas.add(cloned);
                                     });
                                 }
+
+                                // document.getElementById('text-size').onchange = function() {
+                                
+                                //     canvas.getActiveObject().set("fontSize", this.value);
+                                //     canvas.requestRenderAll();
+                                
+                                // };
+                                $(document).ready(function() {
+  $('#text-font-size').keyup(function() {
+    var val = $(this).val();
+    if (isNaN(val)) {
+      alert('please enter number');
+      $(this).val('');
+    }
+    var activeObject = canvas.getActiveObject();
+    activeObject.fontSize = val;
+    canvas.renderAll();
+  });
+  $('#add-text-btn').click(function() {
+    if ($('#text-font-size').val()) {
+      var txtfontsize = $('#text-font-size').val();
+    } else {
+      var txtfontsize = 40;
+    }
+    var message = $('#add-text-value').val();
+    var txtfontfamily = $('#font-family').val();
+    var new_text = new fabric.IText(message, {
+      left: 100,
+      top: 100,
+      fontSize: txtfontsize,
+      lockUniScaling: true,
+      fontFamily: txtfontfamily,
+      fill: '#000'
+    });
+    canvas.add(new_text);
+    canvas.setActiveObject(new_text);
+  });
+
+  canvas.on('object:selected', function(options) {
+    if (options.target) {
+      $("textarea#add-text-value").val(options.target.text);
+      $("#text-font-size").val(options.target.fontSize);
+    }
+  });
+
+  canvas.on('object:scaling', function(event) {
+    if (event.target) {
+      $("textarea#add-text-value").val(event.target.text);
+      $("#text-font-size").val((event.target.fontSize * event.target.scaleX).toFixed(0));
+    }
+  });
+
+  canvas.on('object:modified', function(event) {
+    if (event.target) {
+      event.target.fontSize *= event.target.scaleX;
+      event.target.fontSize = event.target.fontSize.toFixed(0);
+      event.target.scaleX = 1;
+      event.target.scaleY = 1;
+      event.target._clearCache();
+      $("textarea#add-text-value").val(event.target.text);
+      $("#text-font-size").val(event.target.fontSize);
+    }
+  });
+
+});
                                 
                             </script>
                             
