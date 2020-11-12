@@ -105,7 +105,7 @@
                             
                             <label for="font-family">Font family:</label>
                             <select id="font-family"></select>
-                            <div class="row">
+                            <div class="row d-flex justify-content-start">
                                 <div class="col-lg-2 col-2">
                                     <label for="fill">Text color:</label>
                                     <input type="color" list="presetColors" id="fill">
@@ -210,7 +210,63 @@
                                     </datalist>
                                 </div>
                                 <div class="col-lg-2 col-2">
-                                    Shadow
+                                    <label for="shadow">Shadow</label>
+                                    <input type="color" list="presetStroke" id="shadow">
+                                    <datalist id="presetStroke">
+                                        
+                                        <option value="#000000"/>
+                                        <option value="#ffffff"/>
+                                        <option value="#e8e8e8"/>
+                                        <option value="#BABABA"/>
+                                        <option value="#989898"/>
+                                        <option value="#696969"/>
+                                        <option value="#7c1123"/>
+                                        <option value="#c70f28"/>
+                                        <option value="#ed1c24"/>
+                                        <option value="#f27981"/>
+                                        <option value="#ffcad0"/>
+                                        <option value="#e9bdd5"/>
+                                        <option value="#d072a6"/>
+                                        <option value="#cd368c"/>
+                                        <option value="#c52d89"/>
+                                        <option value="#84175e"/>
+                                        <option value="#fff2b3"/>
+                                        <option value="#ffe94d"/>
+                                        <option value="#ffc829"/>
+                                        <option value="#ffb18a"/>
+                                        <option value="#f5873f"/>
+                                        <option value="#f26522"/>
+                                        <option value="#bc5500"/>
+                                        <option value="#e5e43b"/>
+                                        <option value="#f7c194"/>
+                                        <option value="#bf854b"/>
+                                        <option value="#603913"/>
+                                        <option value="#e7ffd7"/>
+                                        <option value="#a1c75b"/>
+                                        <option value="#74b87e"/>
+                                        <option value="#74a952"/>
+                                        <option value="#006838"/>
+                                        <option value="#bfd8c6"/>
+                                        <option value="#00505a"/>
+                                        <option value="#ebffff"/>
+                                        <option value="#a2e5f4"/>
+                                        <option value="#43b3d4"/>
+                                        <option value="#3399b5"/>
+                                        <option value="#6ea5d9"/>
+                                        <option value="#0e3d84"/>
+                                        <option value="#0f1e3c"/>
+                                        <option value="#46276b"/>
+                                        <option value="#8a6aa7"/>
+                                        <option value="#b195c2"/>
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-start my-3">
+                                <div class="col">
+                                    <input type="number" value="4.5" data-decimals="2" min="0" max="9" step="0.1"/>
+                                </div>
+                                <div class="col">
+                                    <input type="number" value="4.5" data-decimals="2" min="0" max="9" step="0.1"/>
                                 </div>
                             </div>
                             <p>
@@ -264,6 +320,8 @@
 
                                 var cloneImg = document.createElement('img');
                                 cloneImg.src = cloneIcon;
+
+                                 
                                 
                                 fabric.Object.prototype.transparentCorners = true;
                                 fabric.Object.prototype.cornerColor = '#B2CCFF';
@@ -351,6 +409,23 @@
                                 canvas.renderAll();
                                 });
 
+                                $('#shadow').change(function(){
+                                var obj = canvas.getActiveObject();
+
+                                if(obj){
+                                    // old api
+                                    // obj.setFill($(this).val());
+                                    // Create shadow object 
+                                    var shadow = new fabric.Shadow({ 
+                                        color: this.value, 
+                                        affectStroke: false,
+                                        blur: 5, 
+                                    });
+                                    obj.set("shadow", shadow);
+                                }
+                                canvas.renderAll();
+                                });
+
                                 // Add text
                                 function Addtext() {
                                     var iTextSample = new fabric.IText('text', {
@@ -364,7 +439,7 @@
                                         // stroke: '#000000',
                                         strokeWidth: 2,
                                         // 
-                                        
+                                        shadow: shadow,
                                         paintFirst: 'stroke', // stroke behind fill
                                         // styles: {
                                         //     0: {
