@@ -3,6 +3,14 @@
 {% block title %}Custom T-Shirts{% endblock %}
 
 {% block blank %}
+<!-- Include Fabric.js in the page -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.1.0/fabric.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.1.0/fontfaceobserver.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-input-spinner@1.9.7/src/bootstrap-input-spinner.js"></script>
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Graduate&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100&display=swap');
@@ -11,13 +19,9 @@
     @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 </style>
-<link href="{% static 'css/tee.css' %}" rel="stylesheet">
-<!-- Loading the Pacifico font family -->
- 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.1.0/fontfaceobserver.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-input-spinner@1.9.7/src/bootstrap-input-spinner.js"></script>
+<link rel="stylesheet" href="{% static 'css/colors_picker.css' %}">
+<link href="{% static 'css/tee.css' %}" rel="stylesheet">
 
 <!--=============================================
 	=            breadcrumb area         =
@@ -74,233 +78,60 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-					
-                            <h2>Design Your T-Shirt</h2>
-                            <br>
-                            <!-- Create the container of the tool -->
-                            <div id="tshirt-div" style="background-image:url('https://cinnabzi.com/wp-content/uploads/2020/11/Screenshot-2020-11-12-203700.png');">
-                                <!-- 
-                                    Initially, the image will have the background tshirt that has transparency
-                                    So we can simply update the color with CSS or JavaScript dinamically
-                                -->
-                                <img id="tshirt-backgroundpicture" src="{% static 'img/background_tshirt.png' %}"/>
+                    <h2 style="font-family: Roboto;">Design & Sell</h2>
+                    <br>
+                    <!-- Create the container of the tool -->
+                    <!-- <div id="tshirt-div" style="background-image:url('https://cinnabzi.com/wp-content/uploads/2020/11/Screenshot-2020-11-12-203700.png');"> -->
+                        <div id="tshirt-div">
+                        <!-- 
+                            Initially, the image will have the background tshirt that has transparency
+                            So we can simply update the color with CSS or JavaScript dinamically
+                        -->
+                        <img id="tshirt-backgroundpicture" src="{% static 'img/background_tshirt.png' %}"/>
 
-                                <!-- 
-                                    The container where Fabric.js will work. Notice that in the the style of #canvas
-                                    the width and height need to match with the attributes
-                                -->
-                                <div id="drawingArea" class="drawing-area" style="border: 1px dashed #B2CCFF; background: rgba(105, 105, 105, 0.15);" >
-                                    <div class="canvas-container" >
-                                        <canvas id="tshirt-canvas" width="200" height="400"></canvas>
-                                    </div> 
-                                </div>  
+                        <!-- 
+                            The container where Fabric.js will work. Notice that in the the style of #canvas
+                            the width and height need to match with the attributes
+                        -->
+                        <div id="drawingArea" class="drawing-area" style="border: 1px dashed #B2CCFF; background: rgba(105, 105, 105, 0.15);" >
+                            <div class="canvas-container" >
+                                <canvas id="tshirt-canvas" width="200" height="400"></canvas>
                             </div> 
+                        </div>  
+                    </div> 
+                </div>
+                <div class="col">
+                    <!-- Product Color -->
+                    <div>
+                        <span>Color</span>
+                
+                        <div class="color-choose">
+                        <div>
+                            <input data-image="red" type="radio" id="red" name="color" value="red" checked>
+                            <label for="red"><span></span></label>
                         </div>
-                        <div class="col-lg-6 col-6">
-                            
-                            <!-- <p>To remove a loaded picture on the T-Shirt select it and press the <kbd>DEL</kbd> key.</p>
-                            <br> -->
+                        <div>
+                            <input data-image="blue" type="radio" id="blue" name="color" value="blue">
+                            <label for="blue" ><span style="background-image: url('https://cinnabzi.com/wp-content/uploads/2020/11/heather_gray3.png')"></span></label>
+                        </div>
+                        <div>
+                            <input data-image="black" type="radio" name="color" >
+                            <label for="black"><span style="background-image: url('https://cinnabzi.com/wp-content/uploads/2020/11/TURQUOISE.png');" ></span></label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="font-family">Font family</label>
+                        <select id="font-family" class="form-control"></select>
+                    </div>
 
-                            <!-- The select that will allow the user to pick one of the static designs -->
-                            <p><button onclick="Addtext()">Add Text</button></p>
-                            <!-- <textarea rows="7" id="add-text-value" class="form-control">Your Text Here</textarea>
-                            <br> -->
-                            <label for="font-family">Font family:</label>
-                            <select id="font-family" class="form-control"></select>
-                            <div class="row d-flex justify-content-start my-3">
-                                <div class="col-lg-2 col-2">
-                                    <label for="fill">Text color:</label>
-                                    <input type="color" list="presetColors" id="fill" class="form-control">
-                                    <datalist id="presetColors">
-                                        <option value="#ffffff"/>
-                                        <option value="#000000"/>
-                                        <option value="#e8e8e8"/>
-                                        <option value="#BABABA"/>
-                                        <option value="#989898"/>
-                                        <option value="#696969"/>
-                                        <option value="#7c1123"/>
-                                        <option value="#c70f28"/>
-                                        <option value="#ed1c24"/>
-                                        <option value="#f27981"/>
-                                        <option value="#ffcad0"/>
-                                        <option value="#e9bdd5"/>
-                                        <option value="#d072a6"/>
-                                        <option value="#cd368c"/>
-                                        <option value="#c52d89"/>
-                                        <option value="#84175e"/>
-                                        <option value="#fff2b3"/>
-                                        <option value="#ffe94d"/>
-                                        <option value="#ffc829"/>
-                                        <option value="#ffb18a"/>
-                                        <option value="#f5873f"/>
-                                        <option value="#f26522"/>
-                                        <option value="#bc5500"/>
-                                        <option value="#e5e43b"/>
-                                        <option value="#f7c194"/>
-                                        <option value="#bf854b"/>
-                                        <option value="#603913"/>
-                                        <option value="#e7ffd7"/>
-                                        <option value="#a1c75b"/>
-                                        <option value="#74b87e"/>
-                                        <option value="#74a952"/>
-                                        <option value="#006838"/>
-                                        <option value="#bfd8c6"/>
-                                        <option value="#00505a"/>
-                                        <option value="#ebffff"/>
-                                        <option value="#a2e5f4"/>
-                                        <option value="#43b3d4"/>
-                                        <option value="#3399b5"/>
-                                        <option value="#6ea5d9"/>
-                                        <option value="#0e3d84"/>
-                                        <option value="#0f1e3c"/>
-                                        <option value="#46276b"/>
-                                        <option value="#8a6aa7"/>
-                                        <option value="#b195c2"/>  
-
-                                    </datalist>
-                                </div>
-                                <div class="col-lg-2 col-2">
-                                    <label for="stroke">Outline</label>
-                                    <input type="color" list="presetStroke" id="stroke" class="form-control">
-                                    <datalist id="presetStroke">
-                                        <option value="#333"/>
-                                        <option value="#000000"/>
-                                        <option value="#ffffff"/>
-                                        <option value="#e8e8e8"/>
-                                        <option value="#BABABA"/>
-                                        <option value="#989898"/>
-                                        <option value="#696969"/>
-                                        <option value="#7c1123"/>
-                                        <option value="#c70f28"/>
-                                        <option value="#ed1c24"/>
-                                        <option value="#f27981"/>
-                                        <option value="#ffcad0"/>
-                                        <option value="#e9bdd5"/>
-                                        <option value="#d072a6"/>
-                                        <option value="#cd368c"/>
-                                        <option value="#c52d89"/>
-                                        <option value="#84175e"/>
-                                        <option value="#fff2b3"/>
-                                        <option value="#ffe94d"/>
-                                        <option value="#ffc829"/>
-                                        <option value="#ffb18a"/>
-                                        <option value="#f5873f"/>
-                                        <option value="#f26522"/>
-                                        <option value="#bc5500"/>
-                                        <option value="#e5e43b"/>
-                                        <option value="#f7c194"/>
-                                        <option value="#bf854b"/>
-                                        <option value="#603913"/>
-                                        <option value="#e7ffd7"/>
-                                        <option value="#a1c75b"/>
-                                        <option value="#74b87e"/>
-                                        <option value="#74a952"/>
-                                        <option value="#006838"/>
-                                        <option value="#bfd8c6"/>
-                                        <option value="#00505a"/>
-                                        <option value="#ebffff"/>
-                                        <option value="#a2e5f4"/>
-                                        <option value="#43b3d4"/>
-                                        <option value="#3399b5"/>
-                                        <option value="#6ea5d9"/>
-                                        <option value="#0e3d84"/>
-                                        <option value="#0f1e3c"/>
-                                        <option value="#46276b"/>
-                                        <option value="#8a6aa7"/>
-                                        <option value="#b195c2"/>
-                                    </datalist>
-                                </div>
-                                <div class="col-lg-2 col-2">
-                                    <label for="shadow">Shadow</label>
-                                    <input type="color" list="presetStroke" id="shadow" class="form-control">
-                                    <datalist id="presetStroke">
-                                        
-                                        <option value="#000000"/>
-                                        <option value="#ffffff"/>
-                                        <option value="#e8e8e8"/>
-                                        <option value="#BABABA"/>
-                                        <option value="#989898"/>
-                                        <option value="#696969"/>
-                                        <option value="#7c1123"/>
-                                        <option value="#c70f28"/>
-                                        <option value="#ed1c24"/>
-                                        <option value="#f27981"/>
-                                        <option value="#ffcad0"/>
-                                        <option value="#e9bdd5"/>
-                                        <option value="#d072a6"/>
-                                        <option value="#cd368c"/>
-                                        <option value="#c52d89"/>
-                                        <option value="#84175e"/>
-                                        <option value="#fff2b3"/>
-                                        <option value="#ffe94d"/>
-                                        <option value="#ffc829"/>
-                                        <option value="#ffb18a"/>
-                                        <option value="#f5873f"/>
-                                        <option value="#f26522"/>
-                                        <option value="#bc5500"/>
-                                        <option value="#e5e43b"/>
-                                        <option value="#f7c194"/>
-                                        <option value="#bf854b"/>
-                                        <option value="#603913"/>
-                                        <option value="#e7ffd7"/>
-                                        <option value="#a1c75b"/>
-                                        <option value="#74b87e"/>
-                                        <option value="#74a952"/>
-                                        <option value="#006838"/>
-                                        <option value="#bfd8c6"/>
-                                        <option value="#00505a"/>
-                                        <option value="#ebffff"/>
-                                        <option value="#a2e5f4"/>
-                                        <option value="#43b3d4"/>
-                                        <option value="#3399b5"/>
-                                        <option value="#6ea5d9"/>
-                                        <option value="#0e3d84"/>
-                                        <option value="#0f1e3c"/>
-                                        <option value="#46276b"/>
-                                        <option value="#8a6aa7"/>
-                                        <option value="#b195c2"/>
-                                    </datalist>
-                                </div>
-                            </div>
-                            <div class="row d-flex justify-content-start my-3">
-                                <div class="col">
-                                    Text Size:
-                                    <!-- <input type="number" value="4.5" data-decimals="2" min="0" max="9" step="0.1" id="text-size"/> -->
-                                    <input id="text-font-size" data-decimals="2" step="0.1" value="50" type="number" class="form-control">
-                                </div>
-                                <div class="col">
-                                    Letter Spacing:
-                                    <input id="letter-spacing" data-decimals="2" step="0.1" value="50" type="number" class="form-control">
-                                </div>
-                            </div>
-                            
-
-                            
-                            
-                            
-                            <label for="tshirt-design">T-Shirt Design:</label>
-                            <select id="tshirt-design" class="form-control">
-                                <option value="">Select one of our designs ...</option>
-                                <option value="https://ourcodeworld.com/public-media/gallery/gallery-5d5b0e95d294c.png">Batman</option>
-                            </select>
-
-                            <!-- The Select that allows the user to change the color of the T-Shirt -->
-                            <br>
-                            <!-- <label for="tshirt-color">T-Shirt Color:</label>
-                            <select id="tshirt-color" class="form-control">
-                                
-                                <option value="#ffffff">White</option>
-                                <option value="#000">Black</option>
-                                <option value="#f00">Red</option>
-                                <option value="#cd368c">Green</option>
-                                <option value="#ff0">Yellow</option>
-                            </select> -->
-                            <label for="tshirt-color">T-Shirt Colors:</label>
-                            <input type="color" list="presetColors" id="tshirt-color" class="form-control">
+                    <div class="row d-flex justify-content-start my-3">
+                        <div class="col">
+                            <label for="fill">Text color:</label>
+                            <input type="color" list="presetColors" id="fill" class="form-control">
                             <datalist id="presetColors">
-                                
-                                <option value="#000000"/>
                                 <option value="#ffffff"/>
+                                <option value="#000000"/>
                                 <option value="#e8e8e8"/>
                                 <option value="#BABABA"/>
                                 <option value="#989898"/>
@@ -345,401 +176,594 @@
                                 <option value="#b195c2"/>  
 
                             </datalist>
-                            <select id="patterns">
-                                <option value="TURQUOISE.png">TURQUOISE</option>
-                                <option value="red">red</option>
+                        </div>
+                        <div class="col">
+                            <label for="stroke">Outline</label>
+                            <input type="color" list="presetStroke" id="stroke" class="form-control">
+                            <datalist id="presetStroke">
+                                <option value="#333"/>
+                                <option value="#000000"/>
+                                <option value="#ffffff"/>
+                                <option value="#e8e8e8"/>
+                                <option value="#BABABA"/>
+                                <option value="#989898"/>
+                                <option value="#696969"/>
+                                <option value="#7c1123"/>
+                                <option value="#c70f28"/>
+                                <option value="#ed1c24"/>
+                                <option value="#f27981"/>
+                                <option value="#ffcad0"/>
+                                <option value="#e9bdd5"/>
+                                <option value="#d072a6"/>
+                                <option value="#cd368c"/>
+                                <option value="#c52d89"/>
+                                <option value="#84175e"/>
+                                <option value="#fff2b3"/>
+                                <option value="#ffe94d"/>
+                                <option value="#ffc829"/>
+                                <option value="#ffb18a"/>
+                                <option value="#f5873f"/>
+                                <option value="#f26522"/>
+                                <option value="#bc5500"/>
+                                <option value="#e5e43b"/>
+                                <option value="#f7c194"/>
+                                <option value="#bf854b"/>
+                                <option value="#603913"/>
+                                <option value="#e7ffd7"/>
+                                <option value="#a1c75b"/>
+                                <option value="#74b87e"/>
+                                <option value="#74a952"/>
+                                <option value="#006838"/>
+                                <option value="#bfd8c6"/>
+                                <option value="#00505a"/>
+                                <option value="#ebffff"/>
+                                <option value="#a2e5f4"/>
+                                <option value="#43b3d4"/>
+                                <option value="#3399b5"/>
+                                <option value="#6ea5d9"/>
+                                <option value="#0e3d84"/>
+                                <option value="#0f1e3c"/>
+                                <option value="#46276b"/>
+                                <option value="#8a6aa7"/>
+                                <option value="#b195c2"/>
+                            </datalist>
+                        </div>
+                        <div class="col">
+                            <label for="shadow">Shadow</label>
+                            <input type="color" list="presetStroke" id="shadow" class="form-control">
+                            <datalist id="presetStroke">
                                 
-                              </select>
-
-                            <br><br>
-                            <label for="tshirt-custompicture">Upload your own design:</label>
-                            <input type="file" id="tshirt-custompicture" class="form-control"/>
-                            <br><br>
-                            <input id='save' type="button" value="Save as image"/>
+                                <option value="#000000"/>
+                                <option value="#ffffff"/>
+                                <option value="#e8e8e8"/>
+                                <option value="#BABABA"/>
+                                <option value="#989898"/>
+                                <option value="#696969"/>
+                                <option value="#7c1123"/>
+                                <option value="#c70f28"/>
+                                <option value="#ed1c24"/>
+                                <option value="#f27981"/>
+                                <option value="#ffcad0"/>
+                                <option value="#e9bdd5"/>
+                                <option value="#d072a6"/>
+                                <option value="#cd368c"/>
+                                <option value="#c52d89"/>
+                                <option value="#84175e"/>
+                                <option value="#fff2b3"/>
+                                <option value="#ffe94d"/>
+                                <option value="#ffc829"/>
+                                <option value="#ffb18a"/>
+                                <option value="#f5873f"/>
+                                <option value="#f26522"/>
+                                <option value="#bc5500"/>
+                                <option value="#e5e43b"/>
+                                <option value="#f7c194"/>
+                                <option value="#bf854b"/>
+                                <option value="#603913"/>
+                                <option value="#e7ffd7"/>
+                                <option value="#a1c75b"/>
+                                <option value="#74b87e"/>
+                                <option value="#74a952"/>
+                                <option value="#006838"/>
+                                <option value="#bfd8c6"/>
+                                <option value="#00505a"/>
+                                <option value="#ebffff"/>
+                                <option value="#a2e5f4"/>
+                                <option value="#43b3d4"/>
+                                <option value="#3399b5"/>
+                                <option value="#6ea5d9"/>
+                                <option value="#0e3d84"/>
+                                <option value="#0f1e3c"/>
+                                <option value="#46276b"/>
+                                <option value="#8a6aa7"/>
+                                <option value="#b195c2"/>
+                            </datalist>
+                        </div>
+                        <div class="col">
                             
-                            
-                            <!-- Include Fabric.js in the page -->
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.1.0/fabric.min.js"></script>
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+                            <!-- <input type="number" value="4.5" data-decimals="2" min="0" max="9" step="0.1" id="text-size"/> -->
+                            <label for="text-font-size">Text Size</label>
+                            <input id="text-font-size" data-decimals="2" step="0.1" value="50" type="number" class="form-control">
+                        </div>
+                        <div class="col">
+                            <label for="letter-spacing">Spacing</label>
+                            <input id="letter-spacing" data-decimals="2" step="0.1" value="50" type="number" class="form-control">
+                        </div>
 
-                            <script>
-                                let canvas = new fabric.Canvas('tshirt-canvas');
-                                // canvas.item(0).hasControls = false;
-                                // canvas.setActiveObject(canvas.item(0));
-                                // this.__canvases.push(canvas);
-                                var deleteIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
+                    
+                    </div>
+                    
+                    <!-- <p>To remove a loaded picture on the T-Shirt select it and press the <kbd>DEL</kbd> key.</p>
+                    <br> -->
+                    <!-- The select that will allow the user to pick one of the static designs -->
+                    <!-- <textarea rows="2" id="add-text-value" class="form-control my-3" placeholder="Type your text..." style="font-family: Roboto;"></textarea> -->
+                    
+                    <p><button class="btn btn-info my-3" style="font-family: Roboto;" onclick="Addtext()">Add Text</button></p>
+                    
+                    <label for="tshirt-design">T-Shirt Design:</label>
+                    <select id="tshirt-design" class="form-control">
+                        <option value="">Select one of our designs ...</option>
+                        <option value="https://ourcodeworld.com/public-media/gallery/gallery-5d5b0e95d294c.png">Batman</option>
+                    </select>
 
-                                var cloneIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 55.699 55.699' width='100px' height='100px' xml:space='preserve'%3E%3Cpath style='fill:%23010002;' d='M51.51,18.001c-0.006-0.085-0.022-0.167-0.05-0.248c-0.012-0.034-0.02-0.067-0.035-0.1 c-0.049-0.106-0.109-0.206-0.194-0.291v-0.001l0,0c0,0-0.001-0.001-0.001-0.002L34.161,0.293c-0.086-0.087-0.188-0.148-0.295-0.197 c-0.027-0.013-0.057-0.02-0.086-0.03c-0.086-0.029-0.174-0.048-0.265-0.053C33.494,0.011,33.475,0,33.453,0H22.177 c-3.678,0-6.669,2.992-6.669,6.67v1.674h-4.663c-3.678,0-6.67,2.992-6.67,6.67V49.03c0,3.678,2.992,6.669,6.67,6.669h22.677 c3.677,0,6.669-2.991,6.669-6.669v-1.675h4.664c3.678,0,6.669-2.991,6.669-6.669V18.069C51.524,18.045,51.512,18.025,51.51,18.001z M34.454,3.414l13.655,13.655h-8.985c-2.575,0-4.67-2.095-4.67-4.67V3.414z M38.191,49.029c0,2.574-2.095,4.669-4.669,4.669H10.845 c-2.575,0-4.67-2.095-4.67-4.669V15.014c0-2.575,2.095-4.67,4.67-4.67h5.663h4.614v10.399c0,3.678,2.991,6.669,6.668,6.669h10.4 v18.942L38.191,49.029L38.191,49.029z M36.777,25.412h-8.986c-2.574,0-4.668-2.094-4.668-4.669v-8.985L36.777,25.412z M44.855,45.355h-4.664V26.412c0-0.023-0.012-0.044-0.014-0.067c-0.006-0.085-0.021-0.167-0.049-0.249 c-0.012-0.033-0.021-0.066-0.036-0.1c-0.048-0.105-0.109-0.205-0.194-0.29l0,0l0,0c0-0.001-0.001-0.002-0.001-0.002L22.829,8.637 c-0.087-0.086-0.188-0.147-0.295-0.196c-0.029-0.013-0.058-0.021-0.088-0.031c-0.086-0.03-0.172-0.048-0.263-0.053 c-0.021-0.002-0.04-0.013-0.062-0.013h-4.614V6.67c0-2.575,2.095-4.67,4.669-4.67h10.277v10.4c0,3.678,2.992,6.67,6.67,6.67h10.399 v21.616C49.524,43.26,47.429,45.355,44.855,45.355z'/%3E%3C/svg%3E%0A"
-                                
-                                var deleteImg = document.createElement('img');
-                                deleteImg.src = deleteIcon;
-
-                                var cloneImg = document.createElement('img');
-                                cloneImg.src = cloneIcon;
-
-                                function loadPattern(url) {
-                                    fabric.util.loadImage(url, function(img) {
-                                    text.set('fill', new fabric.Pattern({
-                                        source: img,
-                                        repeat: 'repeat'
-                                    }));
-                                    shape.set('fill', new fabric.Pattern({
-                                        source: img,
-                                        repeat: 'repeat',
-                                    }));
-                                    canvas.renderAll();
-                                    });
-                                };
-                                var text = new fabric.Text('Honey,\nI\'m subtle', {
-                                    fontSize: 250,
-                                    left: 0,
-                                    top: 0,
-                                    lineHeight: 1,
-                                    originX: 'left',
-                                    fontFamily: 'Helvetica',
-                                    fontWeight: 'bold',
-                                    statefullCache: true,
-                                    scaleX: 0.4,
-                                    scaleY: 0.4
-                                });
-                                var shape = new fabric.Rect({
-                                    width: 200,
-                                    height: 100,
-                                    left: 10,
-                                    top: 300,
-                                });
-                                canvas.add(text, shape);
-
-                                
-                                
-                                fabric.Object.prototype.transparentCorners = true;
-                                fabric.Object.prototype.cornerColor = '#B2CCFF';
-                                fabric.Object.prototype.cornerStyle = 'circle';
-                                fabric.Object.prototype.cornerSize = 10;
-
-                                var fonts = ["Roboto",'Pacifico','VT323','Quicksand','Inconsolata'];
-                                
-
-                                function updateTshirtImage(imageURL){
-                                    fabric.Image.fromURL(imageURL, function(img) {                   
-                                        img.scaleToHeight(100);
-                                        img.scaleToWidth(100); 
-                                        canvas.centerObject(img);
-                                        canvas.add(img);
-                                        canvas.renderAll();
-                                    });
-                                }
-                                
-                                document.getElementById("tshirt-div").style.backgroundImage = "https://cinnabzi.com/wp-content/uploads/2020/11/Screenshot-2020-11-12-203700.png"
-                                document.getElementById("tshirt-color").addEventListener("change", function(){
-                                    document.getElementById("tshirt-div").style.backgroundColor = this.value;
-                                }, false);
-
-                                document.getElementById('patterns').onchange = function() {
-                                    loadPattern('https://cinnabzi.com/wp-content/uploads/2020/11/' + this.value);
-                                    canvas.renderAll();
-                                };
-                               
-                                document.getElementById("tshirt-design").addEventListener("change", function(){
-                                    updateTshirtImage(this.value);
-                                    console.log(this.value);
-                                }, false);
-                                // When the user clicks on upload a custom picture
-                                document.getElementById('tshirt-custompicture').addEventListener("change", function(e){
-                                    var reader = new FileReader();
-                                    
-                                    reader.onload = function (event){
-                                        var imgObj = new Image();
-                                        imgObj.src = event.target.result;
-
-                                        // When the picture loads, create the image in Fabric.js
-                                        imgObj.onload = function () {
-                                            var img = new fabric.Image(imgObj);
-
-                                            img.scaleToHeight(300);
-                                            img.scaleToWidth(300); 
-                                            i
-                                            canvas.centerObject(img);
-                                            canvas.add(img);
-                                            canvas.renderAll();
-                                        };
-                                    };
-
-                                    // If the user selected a picture, load it
-                                    if(e.target.files[0]){
-                                        reader.readAsDataURL(e.target.files[0]);
-                                    }
-                                }, false);
-
-                                // When the user selects a picture that has been added and press the DEL key
-                                // The object will be removed !
-                                document.addEventListener("keydown", function(e) {
-                                    var keyCode = e.keyCode;
-
-                                    if(keyCode == 46){
-                                        console.log("Removing selected element on Fabric.js on DELETE key !");
-                                        canvas.remove(canvas.getActiveObject());
-                                    }
-                                }, false);
-
-                                $('#fill').change(function(){
-                                    var obj = canvas.getActiveObject();
-
-                                    if(obj){
-                                        // old api
-                                        // obj.setFill($(this).val());
-                                        obj.set("fill", this.value);
-                                    }
-                                    canvas.renderAll();
-                                    });
-
-                                $('#stroke').change(function(){
-                                var obj = canvas.getActiveObject();
-
-                                if(obj){
-                                    // old api
-                                    // obj.setFill($(this).val());
-                                    obj.set("stroke", this.value);
-                                }
-                                canvas.renderAll();
-                                });
-
-                                $('#shadow').change(function(){
-                                var obj = canvas.getActiveObject();
-
-                                if(obj){
-                                    // old api
-                                    // obj.setFill($(this).val());
-                                    // Create shadow object 
-                                    var shadow = new fabric.Shadow({ 
-                                        color: this.value, 
-                                        affectStroke: false,
-                                        
-                                        blur: 5, 
-                                    });
-                                    obj.set("shadow", shadow);
-                                }
-                                canvas.renderAll();
-                                });
-
-                                
-                                // Add text
-                                function Addtext() {
-                                    var iTextSample = new fabric.IText('text', {
-                                        left: 50,
-                                        top: 50,
-                                        width: 150,
-                                        fontSize: 50,
-                                        // fontFamily: 'Times New Roman',
-                                        fill: '#333',
-                                        // lineHeight: 1.1,
-                                        // stroke: '#000000',
-                                        strokeWidth: 4,
-                                        // 
-                                        shadow: shadow,
-                                        paintFirst: 'stroke', // stroke behind fill
-                                        // styles: {
-                                        //     0: {
-                                        //     0: { textDecoration: 'underline', fontSize: 80 },
-                                        //     1: { textBackgroundColor: 'red' }
-                                        //     },
-                                        //     1: {
-                                        //     0: { textBackgroundColor: 'rgba(0,255,0,0.5)' },
-                                        //     4: { fontSize: 20 }
-                                        //     }
-                                        // }
-                                        });
-                                    iTextSample.setControlsVisibility({
-                                        mt: false, // middle top disable
-                                        mb: false, // midle bottom
-                                        ml: false, // middle left
-                                        mr: false, // I think you get it
-                                    });
-                                    
-                                    
-
-                                    // canvas.on('text:changed', function(opt) {
-                                    //     var iTextSample = opt.target;
-                                    //     if ( iTextSample.width >  iTextSample.fixedWidth) {
-                                    //          iTextSample.fontSize *=  iTextSample.fixedWidth / ( iTextSample.width + 1);
-                                    //          iTextSample.width =  iTextSample.fixedWidth;
-                                    //     }
-                                    //     });
-                                    
-                                    canvas.add(iTextSample).setActiveObject(iTextSample);
-                                };
-
-                                
-
-                                fonts.unshift('Times New Roman');
-                                // Populate the fontFamily select
-                                var select = document.getElementById("font-family");
-                                    fonts.forEach(function(font) {
-                                    var option = document.createElement('option');
-                                    option.innerHTML = font;
-                                    option.value = font;
-                                    option.style.fontFamily = font;
-                                    select.appendChild(option);
-                                });
-                                
-
-                                // Apply selected font on change
-                                document.getElementById('font-family').onchange = function() {
-                                if (this.value !== 'Times New Roman') {
-                                    loadAndUse(this.value);
-                                } else {
-                                    canvas.getActiveObject().set("stroke", this.value);
-                                    canvas.requestRenderAll();
-                                }
-                                };
-
-                               
-
-                                function loadAndUse(font) {
-                                var myfont = new FontFaceObserver(font)
-                                myfont.load()
-                                    .then(function() {
-                                    // when font is loaded, use it.
-                                    canvas.getActiveObject().set("fontFamily", font);
-                                    canvas.requestRenderAll();
-                                    }).catch(function(e) {
-                                    console.log(e)
-                                    alert("Can't load " + font +". Did you choose the text?");
-                                    });
-                                };
-
-                                function  renderIcon(icon){                            
-                                    return function renderIcon(ctx, left, top, styleOverride, fabricObject) {
-                                    var size = this.cornerSize;
-                                    ctx.save();
-                                    ctx.translate(left, top);
-                                    ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
-                                    ctx.drawImage(icon, -size/2, -size/2, size, size);
-                                    ctx.restore();
-                                    }
-                                }
-
-                                fabric.Object.prototype.controls.deleteControl = new fabric.Control({
-                                    x: 0.5,
-                                    y: -0.5,
-                                    // offsetY: -16,
-                                    // offsetX: 16,
-                                    offsetY: 0,
-                                    offsetX: 0,
-                                    cursorStyle: 'pointer',
-                                    mouseUpHandler: deleteObject,
-                                    render: renderIcon(deleteImg),
-                                    cornerSize: 18
-                                });
-
-                                fabric.Object.prototype.controls.clone = new fabric.Control({
-                                    x: -0.5,
-                                    y: -0.5,
-                                    // offsetY: -16,
-                                    // offsetX: -16,
-                                    offsetY: -12,
-                                    offsetX: -12,
-                                    cursorStyle: 'pointer',
-                                    mouseUpHandler: cloneObject,
-                                    render: renderIcon(cloneImg),
-                                    cornerSize: 14
-                                });
-
-                                function deleteObject(eventData, target) {
-                                        var canvas = target.canvas;
-                                            canvas.remove(target);
-                                        canvas.requestRenderAll();
-                                    }
-
-                                function cloneObject(eventData, target) {
-                                    var canvas = target.canvas;
-                                    target.clone(function(cloned) {
-                                    cloned.left += 10;
-                                    cloned.top += 10;
-                                    canvas.add(cloned);
-                                    });
-                                }
-
-                                // document.getElementById('text-size').onchange = function() {
-                                
-                                //     canvas.getActiveObject().set("fontSize", this.value);
-                                //     canvas.requestRenderAll();
-                                
-                                // };
-                                $(document).ready(function() {
-                                $('#text-font-size').keyup(function() {
-                                    var val = $(this).val();
-                                    if (isNaN(val)) {
-                                    alert('please enter number');
-                                    $(this).val('');
-                                    }
-                                    var activeObject = canvas.getActiveObject();
-                                    activeObject.fontSize = val;
-                                    canvas.renderAll();
-                                });
-                                $('#add-text-btn').click(function() {
-                                    if ($('#text-font-size').val()) {
-                                    var txtfontsize = $('#text-font-size').val();
-                                    } else {
-                                    var txtfontsize = 40;
-                                    }
-                                    var message = $('#add-text-value').val();
-                                    var txtfontfamily = $('#font-family').val();
-                                    var new_text = new fabric.IText(message, {
-                                    left: 100,
-                                    top: 100,
-                                    fontSize: txtfontsize,
-                                    lockUniScaling: true,
-                                    fontFamily: txtfontfamily,
-                                    fill: '#000'
-                                    });
-                                    canvas.add(new_text);
-                                    canvas.setActiveObject(new_text);
-                                });
-
-                                canvas.on('object:selected', function(options) {
-                                    if (options.target) {
-                                    $("textarea#add-text-value").val(options.target.text);
-                                    $("#text-font-size").val(options.target.fontSize);
-                                    }
-                                });
-
-                                canvas.on('object:scaling', function(event) {
-                                    if (event.target) {
-                                    $("textarea#add-text-value").val(event.target.text);
-                                    $("#text-font-size").val((event.target.fontSize * event.target.scaleX).toFixed(0));
-                                    }
-                                });
-
-                                canvas.on('object:modified', function(event) {
-                                    if (event.target) {
-                                    event.target.fontSize *= event.target.scaleX;
-                                    event.target.fontSize = event.target.fontSize.toFixed(0);
-                                    event.target.scaleX = 1;
-                                    event.target.scaleY = 1;
-                                    event.target._clearCache();
-                                    $("textarea#add-text-value").val(event.target.text);
-                                    $("#text-font-size").val(event.target.fontSize);
-                                    }
-                                });
-
-                                });
-
-                                
-                                
-                            </script>
-                            
-                            
-                            
-                            <!-- <script>
-                                domtoimage.toBlob(document.getElementById('tshirt-div'))
-                                    .then(function (blob) {
-                                        window.saveAs(blob, 'my-node.png');
-                                    });
-                            </script> -->
-                            
+                    <!-- The Select that allows the user to change the color of the T-Shirt -->
+                    <br>
+                    <!-- <label for="tshirt-color">T-Shirt Color:</label>
+                    <select id="tshirt-color" class="form-control">
                         
+                        <option value="#ffffff">White</option>
+                        <option value="#000">Black</option>
+                        <option value="#f00">Red</option>
+                        <option value="#cd368c">Green</option>
+                        <option value="#ff0">Yellow</option>
+                    </select> -->
+                    <label for="tshirt-color">T-Shirt Colors:</label>
+                    <input type="color" list="presetColors" id="tshirt-color" class="form-control">
+                    <datalist id="presetColors">
+                        
+                        <option value="#000000"/>
+                        <option value="#ffffff"/>
+                        <option value="#e8e8e8"/>
+                        <option value="#BABABA"/>
+                        <option value="#989898"/>
+                        <option value="#696969"/>
+                        <option value="#7c1123"/>
+                        <option value="#c70f28"/>
+                        <option value="#ed1c24"/>
+                        <option value="#f27981"/>
+                        <option value="#ffcad0"/>
+                        <option value="#e9bdd5"/>
+                        <option value="#d072a6"/>
+                        <option value="#cd368c"/>
+                        <option value="#c52d89"/>
+                        <option value="#84175e"/>
+                        <option value="#fff2b3"/>
+                        <option value="#ffe94d"/>
+                        <option value="#ffc829"/>
+                        <option value="#ffb18a"/>
+                        <option value="#f5873f"/>
+                        <option value="#f26522"/>
+                        <option value="#bc5500"/>
+                        <option value="#e5e43b"/>
+                        <option value="#f7c194"/>
+                        <option value="#bf854b"/>
+                        <option value="#603913"/>
+                        <option value="#e7ffd7"/>
+                        <option value="#a1c75b"/>
+                        <option value="#74b87e"/>
+                        <option value="#74a952"/>
+                        <option value="#006838"/>
+                        <option value="#bfd8c6"/>
+                        <option value="#00505a"/>
+                        <option value="#ebffff"/>
+                        <option value="#a2e5f4"/>
+                        <option value="#43b3d4"/>
+                        <option value="#3399b5"/>
+                        <option value="#6ea5d9"/>
+                        <option value="#0e3d84"/>
+                        <option value="#0f1e3c"/>
+                        <option value="#46276b"/>
+                        <option value="#8a6aa7"/>
+                        <option value="#b195c2"/>  
+
+                    </datalist>
+                    <select id="patterns">
+                        <option value="TURQUOISE.png">TURQUOISE</option>
+                        <option value="heather_gray.png">HEATHER</option>
+                        
+                        </select>
+
+                    <br><br>
+                    
+                    <label for="tshirt-custompicture">Upload your own design:</label>
+                    <input type="file" id="tshirt-custompicture" class="form-control"/>
+                    <br><br>
+                    <input id='save' type="button" value="Save as image"/>
+                    
+                    
+
+                    <script>
+                        let canvas = new fabric.Canvas('tshirt-canvas');
+                        // canvas.item(0).hasControls = false;
+                        // canvas.setActiveObject(canvas.item(0));
+                        // this.__canvases.push(canvas);
+                        var deleteIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
+
+                        var cloneIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 55.699 55.699' width='100px' height='100px' xml:space='preserve'%3E%3Cpath style='fill:%23010002;' d='M51.51,18.001c-0.006-0.085-0.022-0.167-0.05-0.248c-0.012-0.034-0.02-0.067-0.035-0.1 c-0.049-0.106-0.109-0.206-0.194-0.291v-0.001l0,0c0,0-0.001-0.001-0.001-0.002L34.161,0.293c-0.086-0.087-0.188-0.148-0.295-0.197 c-0.027-0.013-0.057-0.02-0.086-0.03c-0.086-0.029-0.174-0.048-0.265-0.053C33.494,0.011,33.475,0,33.453,0H22.177 c-3.678,0-6.669,2.992-6.669,6.67v1.674h-4.663c-3.678,0-6.67,2.992-6.67,6.67V49.03c0,3.678,2.992,6.669,6.67,6.669h22.677 c3.677,0,6.669-2.991,6.669-6.669v-1.675h4.664c3.678,0,6.669-2.991,6.669-6.669V18.069C51.524,18.045,51.512,18.025,51.51,18.001z M34.454,3.414l13.655,13.655h-8.985c-2.575,0-4.67-2.095-4.67-4.67V3.414z M38.191,49.029c0,2.574-2.095,4.669-4.669,4.669H10.845 c-2.575,0-4.67-2.095-4.67-4.669V15.014c0-2.575,2.095-4.67,4.67-4.67h5.663h4.614v10.399c0,3.678,2.991,6.669,6.668,6.669h10.4 v18.942L38.191,49.029L38.191,49.029z M36.777,25.412h-8.986c-2.574,0-4.668-2.094-4.668-4.669v-8.985L36.777,25.412z M44.855,45.355h-4.664V26.412c0-0.023-0.012-0.044-0.014-0.067c-0.006-0.085-0.021-0.167-0.049-0.249 c-0.012-0.033-0.021-0.066-0.036-0.1c-0.048-0.105-0.109-0.205-0.194-0.29l0,0l0,0c0-0.001-0.001-0.002-0.001-0.002L22.829,8.637 c-0.087-0.086-0.188-0.147-0.295-0.196c-0.029-0.013-0.058-0.021-0.088-0.031c-0.086-0.03-0.172-0.048-0.263-0.053 c-0.021-0.002-0.04-0.013-0.062-0.013h-4.614V6.67c0-2.575,2.095-4.67,4.669-4.67h10.277v10.4c0,3.678,2.992,6.67,6.67,6.67h10.399 v21.616C49.524,43.26,47.429,45.355,44.855,45.355z'/%3E%3C/svg%3E%0A"
+                        
+                        var deleteImg = document.createElement('img');
+                        deleteImg.src = deleteIcon;
+
+                        var cloneImg = document.createElement('img');
+                        cloneImg.src = cloneIcon;
+
+                        function loadPattern(url) {
+                            fabric.util.loadImage(url, function(img) {
+                            // text.set('fill', new fabric.Pattern({
+                            //     source: img,
+                            //     repeat: 'repeat'
+                            // }));
+                            // shape.set('fill', new fabric.Pattern({
+                            //     source: img,
+                            //     repeat: 'repeat',
+                            // }));
+                            canvas.renderAll();
+                            });
+                        };
+                        
+                        
+
+                        
+                        
+                        fabric.Object.prototype.transparentCorners = true;
+                        fabric.Object.prototype.cornerColor = '#B2CCFF';
+                        fabric.Object.prototype.cornerStyle = 'circle';
+                        fabric.Object.prototype.cornerSize = 10;
+
+                        var fonts = ["Roboto",'Pacifico','VT323','Quicksand','Inconsolata'];
+                        
+
+                        function updateTshirtImage(imageURL){
+                            fabric.Image.fromURL(imageURL, function(img) {                   
+                                img.scaleToHeight(100);
+                                img.scaleToWidth(100); 
+                                canvas.centerObject(img);
+                                canvas.add(img);
+                                canvas.renderAll();
+                            });
+                        }
+                        
+                        // document.getElementById("tshirt-div").style.backgroundImage = "https://cinnabzi.com/wp-content/uploads/2020/11/Screenshot-2020-11-12-203700.png"
+                        document.getElementById("tshirt-color").addEventListener("change", function(){
+                            document.getElementById("tshirt-div").style.backgroundColor = this.value;
+                        }, false);
+
+                        document.getElementById('patterns').onchange = function() {
+                            loadPattern('https://cinnabzi.com/wp-content/uploads/2020/11/' + this.value);
+                            canvas.renderAll();
+                        };
+                        
+                        document.getElementById("tshirt-design").addEventListener("change", function(){
+                            updateTshirtImage(this.value);
+                            console.log(this.value);
+                        }, false);
+                        // When the user clicks on upload a custom picture
+                        document.getElementById('tshirt-custompicture').addEventListener("change", function(e){
+                            var reader = new FileReader();
+                            
+                            reader.onload = function (event){
+                                var imgObj = new Image();
+                                imgObj.src = event.target.result;
+
+                                // When the picture loads, create the image in Fabric.js
+                                imgObj.onload = function () {
+                                    var img = new fabric.Image(imgObj);
+
+                                    img.scaleToHeight(300);
+                                    img.scaleToWidth(300);  
+                                    canvas.centerObject(img);
+                                    canvas.add(img);
+                                    canvas.renderAll();
+                                };
+                            };
+
+                            // If the user selected a picture, load it
+                            if(e.target.files[0]){
+                                reader.readAsDataURL(e.target.files[0]);
+                            }
+                        }, false);
+
+                        // When the user selects a picture that has been added and press the DEL key
+                        // The object will be removed !
+                        document.addEventListener("keydown", function(e) {
+                            var keyCode = e.keyCode;
+
+                            if(keyCode == 46){
+                                console.log("Removing selected element on Fabric.js on DELETE key !");
+                                canvas.remove(canvas.getActiveObject());
+                            }
+                        }, false);
+
+                        $('#fill').change(function(){
+                            var obj = canvas.getActiveObject();
+
+                            if(obj){
+                                // old api
+                                // obj.setFill($(this).val());
+                                obj.set("fill", this.value);
+                            }
+                            canvas.renderAll();
+                            });
+
+                        $('#stroke').change(function(){
+                        var obj = canvas.getActiveObject();
+
+                        if(obj){
+                            // old api
+                            // obj.setFill($(this).val());
+                            obj.set("stroke", this.value);
+                        }
+                        canvas.renderAll();
+                        });
+
+                        $('#shadow').change(function(){
+                        var obj = canvas.getActiveObject();
+
+                        if(obj){
+                            // old api
+                            // obj.setFill($(this).val());
+                            // Create shadow object 
+                            var shadow = new fabric.Shadow({ 
+                                color: this.value, 
+                                affectStroke: false,
+                                
+                                blur: 5, 
+                            });
+                            obj.set("shadow", shadow);
+                        }
+                        canvas.renderAll();
+                        });
+
+                        
+                        // Add text
+                        function Addtext() {
+                            var iTextSample = new fabric.IText('text', {
+                                left: 50,
+                                top: 50,
+                                width: 150,
+                                fontSize: 50,
+                                fontFamily: 'Times New Roman',
+                                fill: '#333',
+                                // lineHeight: 1.1,
+                                strokeWidth: 4,
+                                shadow: shadow,
+                                paintFirst: 'stroke', // stroke behind fill
+                                // styles: {
+                                //     0: {
+                                //     0: { textDecoration: 'underline', fontSize: 80 },
+                                //     1: { textBackgroundColor: 'red' }
+                                //     },
+                                //     1: {
+                                //     0: { textBackgroundColor: 'rgba(0,255,0,0.5)' },
+                                //     4: { fontSize: 20 }
+                                //     }
+                                // }
+                                });
+                            iTextSample.setControlsVisibility({
+                                mt: false, // middle top disable
+                                mb: false, // midle bottom
+                                ml: false, // middle left
+                                mr: false, // I think you get it
+                            });
+                            
+                            
+
+                            canvas.on('text:changed', function(opt) {
+                                
+                                var iTextSample = opt.target;
+                                if ( iTextSample.width >  200) {
+                                        iTextSample.fontSize *=  200 / ( iTextSample.width + 1);
+                                        iTextSample.width =  200;
+                                }
+                                });
+                            
+                            canvas.add(iTextSample).setActiveObject(iTextSample);
+                        };
+
+                        
+
+                        fonts.unshift('Times New Roman');
+                        // Populate the fontFamily select
+                        var select = document.getElementById("font-family");
+                            fonts.forEach(function(font) {
+                            var option = document.createElement('option');
+                            option.innerHTML = font;
+                            option.value = font;
+                            option.style.fontFamily = font;
+                            select.appendChild(option);
+                        });
+                        
+
+                        // Apply selected font on change
+                        document.getElementById('font-family').onchange = function() {
+                        if (this.value !== 'Times New Roman') {
+                            loadAndUse(this.value);
+                        } else {
+                            canvas.getActiveObject().set("stroke", this.value);
+                            canvas.requestRenderAll();
+                        }
+                        };
+
+                        
+
+                        function loadAndUse(font) {
+                        var myfont = new FontFaceObserver(font)
+                        myfont.load()
+                            .then(function() {
+                            // when font is loaded, use it.
+                            canvas.getActiveObject().set("fontFamily", font);
+                            canvas.requestRenderAll();
+                            }).catch(function(e) {
+                            console.log(e)
+                            alert("Can't load " + font +". Did you choose the text?");
+                            });
+                        };
+
+                        function  renderIcon(icon){                            
+                            return function renderIcon(ctx, left, top, styleOverride, fabricObject) {
+                            var size = this.cornerSize;
+                            ctx.save();
+                            ctx.translate(left, top);
+                            ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+                            ctx.drawImage(icon, -size/2, -size/2, size, size);
+                            ctx.restore();
+                            }
+                        }
+
+                        fabric.Object.prototype.controls.deleteControl = new fabric.Control({
+                            x: 0.5,
+                            y: -0.5,
+                            // offsetY: -16,
+                            // offsetX: 16,
+                            offsetY: 0,
+                            offsetX: 0,
+                            cursorStyle: 'pointer',
+                            mouseUpHandler: deleteObject,
+                            render: renderIcon(deleteImg),
+                            cornerSize: 18
+                        });
+
+                        fabric.Object.prototype.controls.clone = new fabric.Control({
+                            x: -0.5,
+                            y: -0.5,
+                            // offsetY: -16,
+                            // offsetX: -16,
+                            offsetY: -12,
+                            offsetX: -12,
+                            cursorStyle: 'pointer',
+                            mouseUpHandler: cloneObject,
+                            render: renderIcon(cloneImg),
+                            cornerSize: 14
+                        });
+
+                        function deleteObject(eventData, target) {
+                                var canvas = target.canvas;
+                                    canvas.remove(target);
+                                canvas.requestRenderAll();
+                            }
+
+                        function cloneObject(eventData, target) {
+                            var canvas = target.canvas;
+                            target.clone(function(cloned) {
+                            cloned.left += 10;
+                            cloned.top += 10;
+                            canvas.add(cloned);
+                            });
+                        }
+
+                        // document.getElementById('text-size').onchange = function() {
+                        
+                        //     canvas.getActiveObject().set("fontSize", this.value);
+                        //     canvas.requestRenderAll();
+                        
+                        // };
+                        $(document).ready(function() {
+                        $('#text-font-size').keyup(function() {
+                            var val = $(this).val();
+                            if (isNaN(val)) {
+                            alert('please enter number');
+                            $(this).val('');
+                            }
+                            var activeObject = canvas.getActiveObject();
+                            activeObject.fontSize = val;
+                            canvas.renderAll();
+                        });
+                        $('#add-text-btn').click(function() {
+                            if ($('#text-font-size').val()) {
+                            var txtfontsize = $('#text-font-size').val();
+                            } else {
+                            var txtfontsize = 40;
+                            }
+                            var message = $('#add-text-value').val();
+                            var txtfontfamily = $('#font-family').val();
+                            var new_text = new fabric.IText(message, {
+                            left: 100,
+                            top: 100,
+                            fontSize: txtfontsize,
+                            lockUniScaling: true,
+                            fontFamily: txtfontfamily,
+                            fill: '#000'
+                            });
+                            canvas.add(new_text);
+                            canvas.setActiveObject(new_text);
+                        });
+
+                        canvas.on('object:selected', function(options) {
+                            if (options.target) {
+                            $("textarea#add-text-value").val(options.target.text);
+                            $("#text-font-size").val(options.target.fontSize);
+                            }
+                        });
+
+                        canvas.on('object:scaling', function(event) {
+                            if (event.target) {
+                            $("textarea#add-text-value").val(event.target.text);
+                            $("#text-font-size").val((event.target.fontSize * event.target.scaleX).toFixed(0));
+                            }
+                        });
+
+                        canvas.on('object:modified', function(event) {
+                            if (event.target) {
+                            event.target.fontSize *= event.target.scaleX;
+                            event.target.fontSize = event.target.fontSize.toFixed(0);
+                            event.target.scaleX = 1;
+                            event.target.scaleY = 1;
+                            event.target._clearCache();
+                            $("textarea#add-text-value").val(event.target.text);
+                            $("#text-font-size").val(event.target.fontSize);
+                            }
+                        });
+
+                        });
+
+                        $(document).ready(function() {
+ 
+                        $('.color-choose input').on('click', function() {
+                            
+                            var headphonesColor = $(this).css( "background-color" );
+                            // document.getElementById("myDiv").style.backgroundImage
+                            document.getElementById("tshirt-div").style.backgroundColor = this.value;
+                            console.log(this.value)
+                            console.log(headphonesColor)
+                            // $('.active').removeClass('active');
+                            // $('.left-column img[data-image = ' + headphonesColor + ']').addClass('active');
+                            $(this).addClass('active');
+                        });
+
+                        });
+                        
+                        $('.color-choose span').on('click', function() {
+                                var bg = $(this).css('background-image');
+                                document.getElementById("tshirt-div").style.backgroundImage = bg
+                            });
+                            $('.color-choose input').addClass('active');
+
+                        ;
+
+                        
+                        
+                    </script>
+                    
+                    
+                    
+                    <!-- <script>
+                        domtoimage.toBlob(document.getElementById('tshirt-div'))
+                            .then(function (blob) {
+                                window.saveAs(blob, 'my-node.png');
+                            });
+                    </script> -->
+                    
+                
                 </div>
             </div>
         </div>
