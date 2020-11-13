@@ -78,7 +78,7 @@
                             <h2>Design Your T-Shirt</h2>
                             <br>
                             <!-- Create the container of the tool -->
-                            <div id="tshirt-div">
+                            <div id="tshirt-div" style="background-image:url('https://cinnabzi.com/wp-content/uploads/2020/11/Screenshot-2020-11-12-203700.png');">
                                 <!-- 
                                     Initially, the image will have the background tshirt that has transparency
                                     So we can simply update the color with CSS or JavaScript dinamically
@@ -345,6 +345,11 @@
                                 <option value="#b195c2"/>  
 
                             </datalist>
+                            <select id="patterns">
+                                <option value="TURQUOISE.png">TURQUOISE</option>
+                                <option value="red">red</option>
+                                
+                              </select>
 
                             <br><br>
                             <label for="tshirt-custompicture">Upload your own design:</label>
@@ -373,7 +378,40 @@
                                 var cloneImg = document.createElement('img');
                                 cloneImg.src = cloneIcon;
 
-                                 
+                                function loadPattern(url) {
+                                    fabric.util.loadImage(url, function(img) {
+                                    text.set('fill', new fabric.Pattern({
+                                        source: img,
+                                        repeat: 'repeat'
+                                    }));
+                                    shape.set('fill', new fabric.Pattern({
+                                        source: img,
+                                        repeat: 'repeat',
+                                    }));
+                                    canvas.renderAll();
+                                    });
+                                };
+                                var text = new fabric.Text('Honey,\nI\'m subtle', {
+                                    fontSize: 250,
+                                    left: 0,
+                                    top: 0,
+                                    lineHeight: 1,
+                                    originX: 'left',
+                                    fontFamily: 'Helvetica',
+                                    fontWeight: 'bold',
+                                    statefullCache: true,
+                                    scaleX: 0.4,
+                                    scaleY: 0.4
+                                });
+                                var shape = new fabric.Rect({
+                                    width: 200,
+                                    height: 100,
+                                    left: 10,
+                                    top: 300,
+                                });
+                                canvas.add(text, shape);
+
+                                
                                 
                                 fabric.Object.prototype.transparentCorners = true;
                                 fabric.Object.prototype.cornerColor = '#B2CCFF';
@@ -393,10 +431,15 @@
                                     });
                                 }
                                 
-                                
+                                document.getElementById("tshirt-div").style.backgroundImage = "https://cinnabzi.com/wp-content/uploads/2020/11/Screenshot-2020-11-12-203700.png"
                                 document.getElementById("tshirt-color").addEventListener("change", function(){
                                     document.getElementById("tshirt-div").style.backgroundColor = this.value;
                                 }, false);
+
+                                document.getElementById('patterns').onchange = function() {
+                                    loadPattern('https://cinnabzi.com/wp-content/uploads/2020/11/' + this.value);
+                                    canvas.renderAll();
+                                };
                                
                                 document.getElementById("tshirt-design").addEventListener("change", function(){
                                     updateTshirtImage(this.value);
@@ -416,6 +459,7 @@
 
                                             img.scaleToHeight(300);
                                             img.scaleToWidth(300); 
+                                            i
                                             canvas.centerObject(img);
                                             canvas.add(img);
                                             canvas.renderAll();
@@ -479,6 +523,7 @@
                                 canvas.renderAll();
                                 });
 
+                                
                                 // Add text
                                 function Addtext() {
                                     var iTextSample = new fabric.IText('text', {
@@ -490,7 +535,7 @@
                                         fill: '#333',
                                         // lineHeight: 1.1,
                                         // stroke: '#000000',
-                                        strokeWidth: 2,
+                                        strokeWidth: 4,
                                         // 
                                         shadow: shadow,
                                         paintFirst: 'stroke', // stroke behind fill
@@ -521,9 +566,12 @@
                                     //          iTextSample.width =  iTextSample.fixedWidth;
                                     //     }
                                     //     });
-
+                                    
                                     canvas.add(iTextSample).setActiveObject(iTextSample);
                                 };
+
+                                
+
                                 fonts.unshift('Times New Roman');
                                 // Populate the fontFamily select
                                 var select = document.getElementById("font-family");
@@ -620,63 +668,65 @@
                                 
                                 // };
                                 $(document).ready(function() {
-  $('#text-font-size').keyup(function() {
-    var val = $(this).val();
-    if (isNaN(val)) {
-      alert('please enter number');
-      $(this).val('');
-    }
-    var activeObject = canvas.getActiveObject();
-    activeObject.fontSize = val;
-    canvas.renderAll();
-  });
-  $('#add-text-btn').click(function() {
-    if ($('#text-font-size').val()) {
-      var txtfontsize = $('#text-font-size').val();
-    } else {
-      var txtfontsize = 40;
-    }
-    var message = $('#add-text-value').val();
-    var txtfontfamily = $('#font-family').val();
-    var new_text = new fabric.IText(message, {
-      left: 100,
-      top: 100,
-      fontSize: txtfontsize,
-      lockUniScaling: true,
-      fontFamily: txtfontfamily,
-      fill: '#000'
-    });
-    canvas.add(new_text);
-    canvas.setActiveObject(new_text);
-  });
+                                $('#text-font-size').keyup(function() {
+                                    var val = $(this).val();
+                                    if (isNaN(val)) {
+                                    alert('please enter number');
+                                    $(this).val('');
+                                    }
+                                    var activeObject = canvas.getActiveObject();
+                                    activeObject.fontSize = val;
+                                    canvas.renderAll();
+                                });
+                                $('#add-text-btn').click(function() {
+                                    if ($('#text-font-size').val()) {
+                                    var txtfontsize = $('#text-font-size').val();
+                                    } else {
+                                    var txtfontsize = 40;
+                                    }
+                                    var message = $('#add-text-value').val();
+                                    var txtfontfamily = $('#font-family').val();
+                                    var new_text = new fabric.IText(message, {
+                                    left: 100,
+                                    top: 100,
+                                    fontSize: txtfontsize,
+                                    lockUniScaling: true,
+                                    fontFamily: txtfontfamily,
+                                    fill: '#000'
+                                    });
+                                    canvas.add(new_text);
+                                    canvas.setActiveObject(new_text);
+                                });
 
-  canvas.on('object:selected', function(options) {
-    if (options.target) {
-      $("textarea#add-text-value").val(options.target.text);
-      $("#text-font-size").val(options.target.fontSize);
-    }
-  });
+                                canvas.on('object:selected', function(options) {
+                                    if (options.target) {
+                                    $("textarea#add-text-value").val(options.target.text);
+                                    $("#text-font-size").val(options.target.fontSize);
+                                    }
+                                });
 
-  canvas.on('object:scaling', function(event) {
-    if (event.target) {
-      $("textarea#add-text-value").val(event.target.text);
-      $("#text-font-size").val((event.target.fontSize * event.target.scaleX).toFixed(0));
-    }
-  });
+                                canvas.on('object:scaling', function(event) {
+                                    if (event.target) {
+                                    $("textarea#add-text-value").val(event.target.text);
+                                    $("#text-font-size").val((event.target.fontSize * event.target.scaleX).toFixed(0));
+                                    }
+                                });
 
-  canvas.on('object:modified', function(event) {
-    if (event.target) {
-      event.target.fontSize *= event.target.scaleX;
-      event.target.fontSize = event.target.fontSize.toFixed(0);
-      event.target.scaleX = 1;
-      event.target.scaleY = 1;
-      event.target._clearCache();
-      $("textarea#add-text-value").val(event.target.text);
-      $("#text-font-size").val(event.target.fontSize);
-    }
-  });
+                                canvas.on('object:modified', function(event) {
+                                    if (event.target) {
+                                    event.target.fontSize *= event.target.scaleX;
+                                    event.target.fontSize = event.target.fontSize.toFixed(0);
+                                    event.target.scaleX = 1;
+                                    event.target.scaleY = 1;
+                                    event.target._clearCache();
+                                    $("textarea#add-text-value").val(event.target.text);
+                                    $("#text-font-size").val(event.target.fontSize);
+                                    }
+                                });
 
-});
+                                });
+
+                                
                                 
                             </script>
                             
