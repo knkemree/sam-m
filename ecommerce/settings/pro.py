@@ -8,14 +8,14 @@ INTERNAL_IPS = [
     '165.22.33.200',
 ]
 
-def custom_show_toolbar(request):
-    return True  # Always show toolbar, for example purposes only.
+# def custom_show_toolbar(request):
+#     return True  # Always show toolbar, for example purposes only.
 
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': True,
-    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+# DEBUG_TOOLBAR_CONFIG = {
+#     'INTERCEPT_REDIRECTS': True,
+#     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
 
-}
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
