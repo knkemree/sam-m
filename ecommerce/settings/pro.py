@@ -38,12 +38,5 @@ CELERY_RESULT_BACKEND='amqp://localhost'
 CKEDITOR_BASEPATH = "https://nyc3.digitaloceanspaces.com/samnm/samnm-static/ckeditor/ckeditor/"
 
 INTERNAL_IPS = [
-
     '165.22.33.200',
 ]
-
-def show_toolbar(request):
-    return True
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
-}
