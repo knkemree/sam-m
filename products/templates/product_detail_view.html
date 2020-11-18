@@ -278,6 +278,9 @@
                             {% for var in product.variation_set.all %}
                                 
                                 {% for ecom in veri2 %} 
+                                {{ ecom.QuantityOnHand }}
+                                {{ecom.Id|floatformat}}
+                                {{variant.ecomdashid|floatformat}}
                                                             
                                     {% if var.ecomdashid|floatformat == ecom.Id|floatformat %}
                                         <td>{{ ecom.QuantityOnHand }}</td>
@@ -304,9 +307,7 @@
                         {% if request.user.is_authenticated %}
                         {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>
                             {% for ecom in veri2 %} 
-                            {{ ecom.QuantityOnHand }}
-                            {{ecom.Id|floatformat}}
-                            {{variant.ecomdashid|floatformat}}
+                            
                                 {% if ecom.Id|floatformat == variant.ecomdashid|floatformat %} 
                                     {% if ecom.QuantityOnHand >= 1 %}
                                         <strong style="color:rgb(64, 190, 32);">{{ecom.QuantityOnHand}}</strong>
