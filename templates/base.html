@@ -313,9 +313,9 @@
 							</a>
 							
 							<!-- cart floating box -->
-							<div class="cart-floating-box hidden" id="cart-floating-box">
-								<a class="fl-btn pull-right" href="{% url 'cart:cart_detail' %}"><small>View Cart</small></a>
-								<div class="cart-items">
+							<div class="cart-floating-box hidden" id="cart-floating-box" style="height: 400px;">
+								<!-- <a class="fl-btn pull-right" href="{% url 'cart:cart_detail' %}"><small>View Cart</small></a> -->
+								<div class="cart-items" style="height:90%; overflow:auto;">
 									
 									{% for rs in cart %}
 									
@@ -341,18 +341,19 @@
 									<p class="total">CART TOTAL :  <span>${{ cart.get_total_price|floatformat:2 }}</span></p>
 									{% if cart.campaign %}<p>%{{ cart.campaign.campaign_discount }} OFF : <span>-${{ cart.get_discount|floatformat:2 }}</span></p>{% endif %}
 									
+									<div class="cart-calculation">
+										<div class="calculation-details">
+											
+											<p class="total">Subtotal <span>${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</span></p>
+										</div>
+										<div class="floating-cart-btn text-center">
+											<a class="fl-btn pull-left" href="{% url 'cart:cart_detail' %}">View Cart</a>
+											<a class="fl-btn pull-right" href="{% url 'orders:order_create' %}">Checkout</a>
+										</div>
+									</div>
 								</div>
 								
-								<div class="cart-calculation">
-									<div class="calculation-details">
-										
-										<p class="total">Subtotal <span>${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</span></p>
-									</div>
-									<div class="floating-cart-btn text-center">
-										<a class="fl-btn pull-left" href="{% url 'cart:cart_detail' %}">View Cart</a>
-										<a class="fl-btn pull-right" href="{% url 'orders:order_create' %}">Checkout</a>
-									</div>
-								</div>
+								
 							</div>
 							<!-- end of cart floating box -->
 						</div>
