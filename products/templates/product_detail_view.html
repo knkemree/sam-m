@@ -280,9 +280,9 @@
                                 {% for ecom in veri2 %} 
                                 
                                                             
-                                    <!-- {% if var.ecomdashid|floatformat == ecom.Id|floatformat %} -->
+                                    {% if var.ecomdashid|floatformat == ecom.Id|floatformat %}
                                         <td>{{ ecom.QuantityOnHand }}</td>
-                                    <!-- {% endif %} -->
+                                    {% endif %}
                                 {% endfor %}
                             {% endfor %}
                             
