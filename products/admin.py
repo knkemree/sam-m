@@ -117,8 +117,14 @@ class VariationInline(admin.TabularInline):
 
 @admin.register(Category) 
 class CategoryAdmin(admin.ModelAdmin): 
-    # list_display = ['parent','name', 'slug', 'image'] 
+    list_display = ['image_tag','name','parent', 'slug', 'active'] 
+    list_display_links = ['image_tag','name',]
+    list_filter = ['parent']
+    list_editable = ['active','parent']
     prepopulated_fields = {'slug': ('name',)} 
+
+    def image_tag(self,obj):
+        return format_html('<img src="{0}" style="width: auto; height:50px;" />'.format(obj.image.url))
 
     
     
