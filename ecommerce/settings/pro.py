@@ -5,7 +5,9 @@ DEBUG = False
 ALLOWED_HOSTS = ['165.22.33.200','msrugs.com','www.msrugs.com', 'www.samnmtrade.com', 'samnmtrade.com']
 #ALLOWED_HOSTS = ['msrugs.com','www.msrugs.com']
 INTERNAL_IPS = [
+    
     '165.22.33.200',
+    'samnmtrade.com'
 ]
 
 def custom_show_toolbar(request):
