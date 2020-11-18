@@ -278,13 +278,11 @@
                             {% for var in product.variation_set.all %}
                                 
                                 {% for ecom in veri2 %} 
-                                {{ ecom.QuantityOnHand }}
-                                {{ecom.Id|floatformat}}
-                                {{variant.ecomdashid|floatformat}}
+                                
                                                             
-                                    {% if var.ecomdashid|floatformat == ecom.Id|floatformat %}
+                                    <!-- {% if var.ecomdashid|floatformat == ecom.Id|floatformat %} -->
                                         <td>{{ ecom.QuantityOnHand }}</td>
-                                    {% endif %}
+                                    <!-- {% endif %} -->
                                 {% endfor %}
                             {% endfor %}
                             
