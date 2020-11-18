@@ -437,6 +437,7 @@
 					<div class="col-12 col-lg-6">
 						<!-- navigation section -->
 						<div class="main-menu">
+							
 							<nav>
 								<ul>
 									<!-- <li><a href="/">HOME</a></li> -->
@@ -457,22 +458,18 @@
 												{% if rs.children.all %}
 													
 													<li class="menu-item-has-children"><a href="{{ rs.get_absolute_url }}">{{ rs }}</a>
-														<ul class="sub-menu">
-															
-																	
-																		
-																		{% for child in child_categories1 %}
-																			{% if rs == child.parent %}
-																			<li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
-																			{% endif%}
-																		{% endfor %}
-																	
-																	
-																
+														
+														<ul class="sub-menu" style="max-height: 500px;">
+															<div style=" height:400px; overflow:auto;">
+															{% for child in child_categories1 %}
+																{% if rs == child.parent %}
+																<li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
+																{% endif%}
+															{% endfor %}
+															</div>
 														</ul>
-													</li>
-													
-													
+														
+													</li>	
 												{% else %} 
 													<li><a href="{{ rs.get_absolute_url }}">{{ rs }}</a></li>
 												{% endif %}
