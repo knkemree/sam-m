@@ -460,7 +460,7 @@
 													<li class="menu-item-has-children"><a href="{{ rs.get_absolute_url }}">{{ rs }}</a>
 														
 														<ul class="sub-menu" style="max-height: 500px;">
-															<div style=" height:400px; overflow:auto;">
+															<div style=" max-height:400px; overflow:auto;">
 															{% for child in child_categories1 %}
 																{% if rs == child.parent %}
 																<li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
