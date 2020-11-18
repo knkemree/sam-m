@@ -225,7 +225,7 @@ class Variation(models.Model):
     objects = VariationManager()
 
     class Meta:
-        ordering = ['-product__created',]
+        ordering = ['-updated',]
 
     def __str__(self): 
         return self.sku
