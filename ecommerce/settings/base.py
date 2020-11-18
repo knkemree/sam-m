@@ -15,9 +15,9 @@ import os
 import braintree
 import mimetypes
 from decouple import config
+
+
 mimetypes.add_type("text/css", ".css", True)
-
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django_celery_beat',
     'django_celery_results',
+    'debug_toolbar',
 
 
     'storages',
@@ -94,6 +95,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     
 ]
 
@@ -276,3 +278,7 @@ CELERY_IMPORTS = (
     'orders.tasks',
     'account.tasks',
 )
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

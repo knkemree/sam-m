@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import home_page, about_page, contact_page, dashboard
 from ecommerce.views import login_form, order_details, tee
+import debug_toolbar
 
 
 urlpatterns = [
@@ -51,6 +52,7 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog')),
     path('account/', include('account.urls', namespace='account')),
     path('delivery/', include('Delivery.urls', namespace='delivery')),
+    path('__debug__/', include(debug_toolbar.urls)),
     
     
 ]
