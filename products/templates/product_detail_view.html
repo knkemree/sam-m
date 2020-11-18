@@ -304,6 +304,7 @@
                         {% if request.user.is_authenticated %}
                         {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>
                             {% for ecom in veri2 %} 
+                            {{ ecom.QuantityOnHand }}
                                 {% if ecom.Id|floatformat == variant.ecomdashid|floatformat %} 
                                     {% if ecom.QuantityOnHand >= 1 %}
                                         <strong style="color:rgb(64, 190, 32);">{{ecom.QuantityOnHand}}</strong>
@@ -847,22 +848,3 @@
         </script>
 {% endblock %}
 
-<div class="product-detail">
-  <img src="{% if product.image %}{{ product.image.url }}{% else %}
-  {% static "img/no_image.png" %}{% endif %}">
-  <h1>{{ product.name }}</h1>
-  <h2>
-    <a href="{{ product.category.get_absolute_url }}">
-      {{ product.category }}
-    </a>
-  </h2>
-  <p class="price">${{ product.price }}</p>
-  <p>{{ product.description|linebreaks }}</p>
-</div>
-<p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
-
-<form action="{% url "cart:cart_add" product.id %}" method="post">
-  {{ cart_product_form }}
-  {% csrf_token %}
-  <input onlick="myFunction()" type="submit" value="Add to cart">
-</form>
