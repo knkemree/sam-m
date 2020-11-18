@@ -1,21 +1,21 @@
 from .base import *
 
-DEBUG = True
+DEBUG = Fasle
 
 ALLOWED_HOSTS = ['165.22.33.200','msrugs.com','www.msrugs.com', 'www.samnmtrade.com', 'samnmtrade.com']
 #ALLOWED_HOSTS = ['msrugs.com','www.msrugs.com']
-INTERNAL_IPS = [
+INTERNAL_IPS = (
     '165.22.33.200',
-]
+)
 
-# def custom_show_toolbar(request):
-#     return True  # Always show toolbar, for example purposes only.
+def custom_show_toolbar(request):
+    return True  # Always show toolbar, for example purposes only.
 
-# DEBUG_TOOLBAR_CONFIG = {
-#     'INTERCEPT_REDIRECTS': True,
-#     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': True,
+    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
 
-# }
+}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
