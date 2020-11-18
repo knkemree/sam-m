@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django_celery_beat',
     'django_celery_results',
-    #'debug_toolbar',
+    'debug_toolbar',
 
 
     'storages',
@@ -77,13 +77,7 @@ INSTALLED_APPS = [
     'orders',
     'coupons.apps.CouponsConfig',
     'Delivery',
-    'marketing',
-
-    
-
-    
-    
-    
+    'marketing',   
 ]
 
 MIDDLEWARE = [
@@ -95,7 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     
 ]
 
