@@ -54,11 +54,13 @@ def login_form(request):
 
 def home_page(request):
     sliders = Slider.objects.filter(active=1)
-    top_level_cats = Category.objects.filter(parent__isnull=True)
+    top_level_cats = Category.objects.filter(parent__isnull=True, active=1)
+    
+    print(top_level_cats)
     search_form = SearchForm()
     try:
         area_rug = Category.objects.get(slug__contains="area-rugs")
-        area_rugs = Category.objects.filter(parent_id=area_rug.id)
+        area_rugs = Category.objects.filter(parent_id=area_rug.id, active=1)
     except:
         area_rugs = []
     
