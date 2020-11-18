@@ -39,7 +39,6 @@ CKEDITOR_BASEPATH = "https://nyc3.digitaloceanspaces.com/samnm/samnm-static/cked
 
 INTERNAL_IPS = [
 
-   'samnmtrade.com'
     '165.22.33.200',
 ]
 
