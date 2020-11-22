@@ -1,3 +1,4 @@
+import admin_thumbnails
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from .models import ProductImage, Variation, Product, Category
@@ -103,6 +104,7 @@ class VariationResource(resources.ModelResource):
     #     pass
 
 # Register your models here.
+@admin_thumbnails.thumbnail('image')
 class ImageInline(admin.TabularInline):
     model = ProductImage
     extra = 0
