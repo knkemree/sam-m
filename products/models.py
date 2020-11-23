@@ -73,7 +73,7 @@ class Category(models.Model):
 
 
 class Product(models.Model): 
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True) 
+    category = models.ForeignKey(Category, on_delete=models.PROTECT) 
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True) 

@@ -131,16 +131,26 @@ class CategoryAdmin(admin.ModelAdmin):
     
     
 @admin.register(Product) 
+@admin_thumbnails.thumbnail('image')
 class ProductAdmin(ImportExportModelAdmin): 
+    #list_display = ['name'] 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
-    list_display_links = ['image_tag','name',]
-    list_filter = ['category', 'created','available', 'updated','created'] 
+    #list_display_links = ['image_tag','name',]
+    #list_filter = ['category', 'created','available', 'updated','created'] 
     search_fields = ('name', 'description', 'slug','id',)
-    list_editable = [ 'available','category'] 
+    #list_editable = [ 'available','category'] 
+    list_editable = [ 'available'] 
+    list_per_page = 100
+    #list_select_related = ['category']
     prepopulated_fields = {'slug': ('name',)}
     save_as = True
     inlines = [ImageInline, VariationInline]
     resource_class = ProductResource
+
+    
+    def queryset(self, request):
+        return super(ProductAdmin, self).queryset(request).select_related("category")
+
 
     def image_tag(self,obj):
         return format_html('<img src="{0}" style="width: auto; height:45px;" />'.format(obj.image.url))
@@ -153,6 +163,7 @@ class VariationAdmin(ImportExportModelAdmin):
     list_filter = ['product__category','category','active', 'updated',]
     list_editable = ['category','title','sku', 'price', 'cost', 'sale_price','active']
     search_fields = ('sku','id','title','category')
+    list_per_page = 50
     save_as = True
     resource_class = VariationResource
 
@@ -166,6 +177,7 @@ class VariationAdmin(ImportExportModelAdmin):
             return False
 
 @admin.register(ProductImage)
+@admin_thumbnails.thumbnail('image')
 class ProductImageAdmin(ImportExportModelAdmin):
     list_display = ['image_tag','product','order','create_at','update_at']
     list_display_links = ['image_tag','product',]
