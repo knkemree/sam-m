@@ -88,9 +88,11 @@
                             Initially, the image will have the background tshirt that has transparency
                             So we can simply update the color with CSS or JavaScript dinamically
                         -->
-                        <img id="tshirt-backgroundpicture" src="{% static 'img/background_tshirt.png' %}" style="background-size: cover;
+                        <img id="tshirt-backgroundpicture" src="{% static 'img/background_tshirt.png' %}" style="
                         background-position: center;
-                        background-image: url('https://cinnabzi.com/wp-content/uploads/2020/11/Layer-40.png'), url('https://cinnabzi.com/wp-content/uploads/2020/11/Layer-41.png');"/>
+                        background-size:50%;
+                        background-repeat: repeat;
+                        background-image: url('https://cinnabzi.com/wp-content/uploads/2020/11/Layer-40.png')"/>
 
                         <!-- 
                             The container where Fabric.js will work. Notice that in the the style of #canvas
