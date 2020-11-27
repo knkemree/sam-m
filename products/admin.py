@@ -104,7 +104,7 @@ class VariationResource(resources.ModelResource):
     #     pass
 
 # Register your models here.
-@admin_thumbnails.thumbnail('image')
+#@admin_thumbnails.thumbnail('image')
 class ImageInline(admin.TabularInline):
     model = ProductImage
     extra = 0
