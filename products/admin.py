@@ -104,6 +104,7 @@ class VariationResource(resources.ModelResource):
     #     pass
 
 # Register your models here.
+@admin_thumbnails.thumbnail('image')
 class ImageInline(admin.TabularInline):
     model = ProductImage
     extra = 0
@@ -130,6 +131,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
     
 @admin.register(Product) 
+@admin_thumbnails.thumbnail('image')
 class ProductAdmin(ImportExportModelAdmin): 
     #list_display = ['name'] 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
@@ -175,6 +177,7 @@ class VariationAdmin(ImportExportModelAdmin):
             return False
 
 @admin.register(ProductImage)
+@admin_thumbnails.thumbnail('image')
 class ProductImageAdmin(ImportExportModelAdmin):
     list_display = ['image_tag','product','order','create_at','update_at']
     list_display_links = ['image_tag','product',]
