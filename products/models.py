@@ -254,7 +254,8 @@ class Variation(models.Model):
 
         
         if len(veri["data"]) == 0:
-            raise ValidationError("Sku didn't match with Ecomdash records "+str(self.sku))
+            pass
+            #raise ValidationError("Sku didn't match with Ecomdash records "+str(self.sku))
 
         try:
             if self.ecomdashid is None:
