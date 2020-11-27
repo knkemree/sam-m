@@ -94,7 +94,7 @@ def about_page(request):
         "title": "About Page",
         "content": " This is about us page"
     }
-    return render(request, "home_page.html", context)
+    return render(request, "about.html", context)
 
 def contact_page(request):
     area_rugs = Category.objects.filter(parent_id=18)

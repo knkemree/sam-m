@@ -27,7 +27,7 @@ from ecommerce.views import login_form, order_details, tee
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home_page),
-    path("about/", about_page),
+    path("about/", about_page, name='about_page'),
     path("contact/", contact_page, name='contact_page'),
     path("tee/", tee, name='tee'),
     #path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
