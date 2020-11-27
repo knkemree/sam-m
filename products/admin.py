@@ -131,7 +131,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
     
 @admin.register(Product) 
-@admin_thumbnails.thumbnail('image')
+#@admin_thumbnails.thumbnail('image')
 class ProductAdmin(ImportExportModelAdmin): 
     #list_display = ['name'] 
     list_display = ['image_tag','name', 'category', 'available', 'created', 'updated'] 
