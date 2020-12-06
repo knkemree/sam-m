@@ -12,7 +12,7 @@ def menu(request):
     
     try:
         bed_sheet = Category.objects.get(slug__contains="bed-sheets")
-        bed_sheets = Product.objects.filter(category_id=bed_sheet.id).select_related('category')
+        bed_sheets = Product.objects.filter(category_id=bed_sheet.id)
     except:
         bed_sheets = []
     print("bed_sheets")
@@ -20,7 +20,7 @@ def menu(request):
 
     try:
         towel = Category.objects.filter(slug__contains="towels")
-        towels = Product.objects.filter(category_id=towel.id).select_related('category')
+        towels = Product.objects.filter(category_id=towel.id)
     except:
         towels= []
 
