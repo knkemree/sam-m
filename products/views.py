@@ -101,7 +101,7 @@ def product_detail_view(request, id, slug, variantid=None):
     product = get_object_or_404(Product, id=id)
     other_products = Product.objects.filter(available=True, category=product.category).exclude(id=id).select_related('category').select_related('category__parent')
     cart_product_form = CartAddProductForm()
-    gallery = ProductImage.objects.filter(product_id=id)
+    gallery = ProductImage.objects.filter(product_id=id).select_related('product')
     variant = None
     quantity_on_hand = 0
     cart = Cart(request)
