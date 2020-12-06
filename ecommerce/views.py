@@ -66,13 +66,13 @@ def home_page(request):
     
     try:
         bed_sheet = Category.objects.get(slug__contains="bed-sheets")
-        bed_sheets = Product.objects.filter(category_id=bed_sheet.id)[:10].select_related('parent')
+        bed_sheets = Product.objects.filter(category_id=bed_sheet.id)[:10].select_related('category')
     except:
         bed_sheets = []
 
     try:
         towel = Category.objects.get(slug__contains="towel")
-        towels = Product.objects.filter(category_id=towel.id)[0:10].select_related('parent')
+        towels = Product.objects.filter(category_id=towel.id)[0:10].select_related('category')
     except:
         towels= []
     
