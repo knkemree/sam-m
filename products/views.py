@@ -64,7 +64,7 @@ def product_list_view(request, category_slug=None):
             parent_category = Category.objects.get(slug=category_slug, parent=None)
         except:
             parent_category = None
-        parent_categories = Category.objects.filter(active=True, parent=None).select_related('parent')
+        parent_categories = Category.objects.filter(active=True, parent=None)
 
         if parent_category:
             #parent_category = Category.objects.get(slug=category_slug, parent=None)
@@ -73,7 +73,7 @@ def product_list_view(request, category_slug=None):
             all_categories = []
         else:
             child_category = get_object_or_404(Category, slug=category_slug)
-            all_categories = Category.objects.filter(active=True).select_related('parent')
+            all_categories = Category.objects.filter(active=True)
             parent_category = []
             parent_category_product_set = []
     else:
