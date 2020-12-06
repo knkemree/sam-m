@@ -11,7 +11,7 @@ INTERNAL_IPS = [
 ]
 
 def custom_show_toolbar(request):
-    return False  # Always show toolbar, for example purposes only.
+    return True  # Always show toolbar, for example purposes only.
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': True,
