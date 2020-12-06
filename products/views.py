@@ -69,12 +69,8 @@ def product_list_view(request, category_slug=None):
         if parent_category:
             #parent_category = Category.objects.get(slug=category_slug, parent=None)
             child_category = []
-
             # parent_category_product_set = []
             all_categories = []
-               
-            
-            
         else:
             child_category = get_object_or_404(Category, slug=category_slug)
             all_categories = Category.objects.filter(active=True).select_related('parent')
@@ -239,7 +235,7 @@ def updateQtyView(request):
     return render(request, "updateQty.html", {'form': form })
 
 def clearance(request):
-    clearance_products_list = Variation.objects.filter(sale_price__isnull=False, active=True).prefetch_related('product').order_by('product__category','sku',)
+    clearance_products_list = Variation.objects.filter(sale_price__isnull=False, active=True).select_related('product__category').order_by('product__category','sku',)
     #clearance_products_exclude_zero = Variation.objects.filter(sale_price__isnull=False, active=True)
     # list_ids_or_sku = []
     # try:
