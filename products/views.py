@@ -30,8 +30,6 @@ register = template.Library()
 def choose_size(request, product_id):
     url = request.META.get('HTTP_REFERER')
     product = get_object_or_404(Product, id=product_id)
-    print("product nedir")
-    print(product)
     if request.method == "POST":
         for item in request.POST:
             key = item
@@ -39,7 +37,6 @@ def choose_size(request, product_id):
             print("variant val and key")
             print(val, key)
             if val == "-----":
-                
                 try:
                     del request.session["variation_id"]
                 except:
@@ -47,9 +44,7 @@ def choose_size(request, product_id):
             else:
                 try:
                     variation = Variation.objects.get(product=product, category__iexact=key, title__iexact=val)
-                    
-                    request.session["variation_id"] = variation.id
-                    
+                    request.session["variation_id"] = variation.id  
                 except:
                     pass
 
@@ -64,14 +59,12 @@ def choose_size(request, product_id):
     #return redirect('products:product_detail_view_by_variant')
     
 def product_list_view(request, category_slug=None):
-    
-    
     if category_slug:
         try:
             parent_category = Category.objects.get(slug=category_slug, parent=None)
         except:
             parent_category = None
-        parent_categories = Category.objects.filter(active=True, parent=None)
+        parent_categories = Category.objects.filter(active=True, parent=None).select_related('parent')
 
         if parent_category:
             #parent_category = Category.objects.get(slug=category_slug, parent=None)
@@ -84,7 +77,7 @@ def product_list_view(request, category_slug=None):
             
         else:
             child_category = get_object_or_404(Category, slug=category_slug)
-            all_categories = Category.objects.filter(active=True)
+            all_categories = Category.objects.filter(active=True).select_related('parent')
             parent_category = []
             parent_category_product_set = []
     else:
