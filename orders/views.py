@@ -8,23 +8,24 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.core.mail import mail_admins
+from django.contrib.auth.decorators import login_required
+from django.http.response import JsonResponse
 
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from .tasks import order_created, inform_admins
 from cart.cart import Cart
 from coupons.models import Campaign
-from django.contrib.auth.decorators import login_required
-from decimal import Decimal
-from django.http.response import JsonResponse
 from Delivery.forms import ShippingForm
 from Delivery.models import Delivery_methods
-#import weasyprint
 
+from decimal import Decimal
+#import weasyprint
 import http.client
 import mimetypes
 import json
-from django.core.mail import mail_admins
+
 
 @staff_member_required
 def admin_order_detail(request, order_id):

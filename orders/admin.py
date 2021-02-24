@@ -59,12 +59,8 @@ class OrderAdmin(admin.ModelAdmin):
     
     list_display = ['id','company_name', 'email',
                     'address', 'postal_code', 'city', 'payment','fulfillment','delivery_method',"order_total","order_profit","profit_margin",
-                    'created', 'updated',order_detail, ] #order_pdf
+                    'created', 'updated',order_detail,] #order_pdf
     list_filter = ['payment', 'created', 'updated', 'fulfillment','company_name']
     readonly_fields = ('order_total','order_profit','profit_margin','braintree_id',"campaign_discount",'campaign','delivery_method')
     inlines = [OrderItemInline]
     actions = [export_to_csv]
-
-
-
-
