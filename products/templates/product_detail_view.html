@@ -230,80 +230,77 @@
                         
                         
                         
-                        <div class="product-description mb-20">
-                            {% if product.description is not None %}<p>{{ product.description|safe }}</p>{% endif %}
-                            
-
-<script>
-    $(document).ready(function(){
-        // Add minus icon for collapse element which is open by default
-        $(".collapse.show").each(function(){
-        	$(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
-        });
-        
-        // Toggle plus minus icon on show hide of collapse element
-        $(".collapse").on('show.bs.collapse', function(){
-        	$(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
-        }).on('hide.bs.collapse', function(){
-        	$(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
-        });
-    });
-</script>
-
-    <div class="accordion" id="accordionExample">
-        
-            <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" style="color: #13A3CA;"><i class="fa fa-plus"></i> Stock Availability</button>									
-                </h2>
-            </div>
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                
-                    <table class="table">
-                        <thead>
                         
-                          <tr>
-                            <th scope="col">Size</th>
-                            {% for i in product.variation_set.all %}
-                            <th>{{ i.title }}</th>
-                            {% endfor %}
-
-                            
-                          </tr>
-                        
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row"> Stock</th>
-                            {% for var in product.variation_set.all %}
+                        <script>
+                            $(document).ready(function(){
+                                // Add minus icon for collapse element which is open by default
+                                $(".collapse.show").each(function(){
+                                    $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+                                });
                                 
-                                {% for ecom in veri2 %} 
-                                                            
-                                    {% if var.ecomdashid|floatformat == ecom.Id|floatformat %}
-                                        <td>{{ ecom.QuantityOnHand }}</td>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                            
-                          </tr>
-                        </tbody>
-                    </table>
-                
-            </div>
-        
-        
-    </div>
+                                // Toggle plus minus icon on show hide of collapse element
+                                $(".collapse").on('show.bs.collapse', function(){
+                                    $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+                                }).on('hide.bs.collapse', function(){
+                                    $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+                                });
+                            });
+                        </script>
 
-                            
-                            
+                        <div class="accordion" id="accordionExample">
+                            <div class="card-header" id="headingZero">
+                                <h2 class="mb-0">
+                                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseZero" style="color: #13A3CA;"><i class="fa fa-plus"></i> Description</button>									
+                                </h2>
+                            </div>
+                            <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#accordionExample">
+                                <div class="product-description mb-20">
+                                    {% if product.description is not None %}<p>{{ product.description|safe }}</p>{% endif %}
+                                </div>
+                            </div>
 
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" style="color: #13A3CA;"><i class="fa fa-plus"></i> Stock Availability</button>									
+                                </h2>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Size</th>
+                                            {% for i in product.variation_set.all %}
+                                            <th>{{ i.title }}</th>
+                                            {% endfor %} 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row"> Stock</th>
+                                            {% for var in product.variation_set.all %}
+                                                {% for ecom in veri2 %}                       
+                                                    {% if var.ecomdashid|floatformat == ecom.Id|floatformat %}
+                                                        <td>{{ ecom.QuantityOnHand }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+
+                            
+                            
+
+                        
                         
                         
                         
                         {% if request.user.is_authenticated %}
                         {% if request.user.is_authenticated %}{% if variant %}<p><a><strong>Availability: </strong>
                             {% for ecom in veri2 %} 
+                            
                                 {% if ecom.Id|floatformat == variant.ecomdashid|floatformat %} 
                                     {% if ecom.QuantityOnHand >= 1 %}
                                         <strong style="color:rgb(64, 190, 32);">{{ecom.QuantityOnHand}}</strong>
@@ -716,15 +713,16 @@
                         {% for other_product in other_products %}
                         <div class="fl-product">
                             <!-- <div class="image sale-product"> -->
-                            <div class="image">
+                                <!-- asagidaki dive class="image" ekle eger uzerine geldiginde ikinci foto gostersin istiyorsan -->	
+                            <div>
                                 <a href="{{ other_product.get_absolute_url }}">
                                     
                                     <img style="height: 200px; width: auto; 
                                     margin-left: auto;
-                                    margin-right: auto;" src="{{ other_product.productimage_set.all.0.image.url }}" class="img-fluid" alt="">
-                                    <img style="height: 200px; width: auto; 
+                                    margin-right: auto;" src="{{ other_product.image.url }}" class="img-fluid" alt="">
+                                    <!-- <img style="height: 200px; width: auto; 
                                     margin-left: auto;
-                                    margin-right: auto;" src="{{ other_product.productimage_set.all.1.image.url }}" class="img-fluid" alt="">
+                                    margin-right: auto;" src="{{ other_product.productimage_set.all.1.image.url }}" class="img-fluid" alt=""> -->
                                 </a>
                                 <!-- wishlist icon -->
                                 <!-- <span class="wishlist-icon">
@@ -846,22 +844,3 @@
         </script>
 {% endblock %}
 
-<div class="product-detail">
-  <img src="{% if product.image %}{{ product.image.url }}{% else %}
-  {% static "img/no_image.png" %}{% endif %}">
-  <h1>{{ product.name }}</h1>
-  <h2>
-    <a href="{{ product.category.get_absolute_url }}">
-      {{ product.category }}
-    </a>
-  </h2>
-  <p class="price">${{ product.price }}</p>
-  <p>{{ product.description|linebreaks }}</p>
-</div>
-<p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
-
-<form action="{% url "cart:cart_add" product.id %}" method="post">
-  {{ cart_product_form }}
-  {% csrf_token %}
-  <input onlick="myFunction()" type="submit" value="Add to cart">
-</form>

@@ -6,7 +6,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>{% block title %}SAM&M Trade{% endblock %}</title>
-	<meta name="description" content="">
+	<meta name="description" content="SAM&M Trade">
+	<meta name="keywords" content="samnm, trade, area rugs, houston, texas, tx, rugs,">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<!-- Favicon -->
@@ -32,9 +33,8 @@
 
 	<!-- Main CSS -->
 	<link href="{% static 'css/main2.css' %}" rel="stylesheet">
-	
 
-
+		
 	<!-- Modernizer JS -->
 	<script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
 	
@@ -314,9 +314,9 @@
 							</a>
 							
 							<!-- cart floating box -->
-							<div class="cart-floating-box hidden" id="cart-floating-box">
-								<a class="fl-btn pull-right" href="{% url 'cart:cart_detail' %}"><small>View Cart</small></a>
-								<div class="cart-items">
+							<div class="cart-floating-box hidden" id="cart-floating-box" style="height: 400px;">
+								<!-- <a class="fl-btn pull-right" href="{% url 'cart:cart_detail' %}"><small>View Cart</small></a> -->
+								<div class="cart-items" style="height:90%; overflow:auto;">
 									
 									{% for rs in cart %}
 									
@@ -342,18 +342,19 @@
 									<p class="total">CART TOTAL :  <span>${{ cart.get_total_price|floatformat:2 }}</span></p>
 									{% if cart.campaign %}<p>%{{ cart.campaign.campaign_discount }} OFF : <span>-${{ cart.get_discount|floatformat:2 }}</span></p>{% endif %}
 									
+									<div class="cart-calculation">
+										<div class="calculation-details">
+											
+											<p class="total">Subtotal <span>${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</span></p>
+										</div>
+										<div class="floating-cart-btn text-center">
+											<a class="fl-btn pull-left" href="{% url 'cart:cart_detail' %}">View Cart</a>
+											<a class="fl-btn pull-right" href="{% url 'orders:order_create' %}">Checkout</a>
+										</div>
+									</div>
 								</div>
 								
-								<div class="cart-calculation">
-									<div class="calculation-details">
-										
-										<p class="total">Subtotal <span>${{ cart.get_total_price_after_discount_and_shipment_fee|floatformat:2 }}</span></p>
-									</div>
-									<div class="floating-cart-btn text-center">
-										<a class="fl-btn pull-left" href="{% url 'cart:cart_detail' %}">View Cart</a>
-										<a class="fl-btn pull-right" href="{% url 'orders:order_create' %}">Checkout</a>
-									</div>
-								</div>
+								
 							</div>
 							<!-- end of cart floating box -->
 						</div>
@@ -437,6 +438,7 @@
 					<div class="col-12 col-lg-6">
 						<!-- navigation section -->
 						<div class="main-menu">
+							
 							<nav>
 								<ul>
 									<!-- <li><a href="/">HOME</a></li> -->
@@ -457,22 +459,18 @@
 												{% if rs.children.all %}
 													
 													<li class="menu-item-has-children"><a href="{{ rs.get_absolute_url }}">{{ rs }}</a>
-														<ul class="sub-menu">
-															
-																	
-																		
-																		{% for child in child_categories1 %}
-																			{% if rs == child.parent %}
-																			<li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
-																			{% endif%}
-																		{% endfor %}
-																	
-																	
-																
+														
+														<ul class="sub-menu" style="max-height: 500px;">
+															<div style=" max-height:400px; overflow:auto;">
+															{% for child in child_categories1 %}
+																{% if rs == child.parent %}
+																<li><a href="{{ child.get_absolute_url }}">{{ child.name }}</a></li>
+																{% endif%}
+															{% endfor %}
+															</div>
 														</ul>
-													</li>
-													
-													
+														
+													</li>	
 												{% else %} 
 													<li><a href="{{ rs.get_absolute_url }}">{{ rs }}</a></li>
 												{% endif %}
@@ -537,7 +535,7 @@
 						
 						<div class="navigation-search d-none d-lg-block">
 							<form action="{% url 'products:post_search' %}" method="get">
-								<input  placeholder="Search product ..." type="text" name="query" required="" id="id_query">
+								<input  placeholder="Search product ..." type="text" name="query" required="" id="id_query1">
 								<!-- <input class="btn btn-info" type="submit" value="Search"> -->
 								<button type="submit"><i class="icon ion-md-search"></i></button>
 							</form>
@@ -587,6 +585,102 @@
     {% block blank %}
 	{% endblock %}
 
+	{% block brands %}
+	{% endblock %}
+
+	<!--=============================================
+	=            brand logo slider         =
+	=============================================-->
+	
+	<div class="brand-logo-slider mb-50">
+		<div class="container">
+			<h2 style="text-align: center;">Our Products On</h2>
+			<div class="row">
+				
+				<div class="col-lg-12">
+					<!--=======  brand logo slider container  =======-->
+					
+					<div class="brand-logo-slider-container">
+						<!--=======  single brand  =======-->
+						
+						<div class="single-brand">
+							<a href="https://www.amazon.com/stores/MSRUGS/Homepage/page/8E488024-FCA1-499A-876D-D0E2238E067F">
+								
+								<img src="https://www.marketplace.org/wp-content/uploads/2019/07/modernupdate.png" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of single brand  =======-->
+						
+						<!--=======  single brand  =======-->
+						
+						<div class="single-brand">
+							<a href="https://www.walmart.com/browse/home/area-rugs/msrugs/4044_133012_110892_6718514/YnJhbmQ6TXNydWdz">
+								<img src="https://cdn.worldvectorlogo.com/logos/walmart.svg" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of single brand  =======-->
+						
+						<!--=======  single brand  =======-->
+						
+						<div class="single-brand">
+							<a href="https://www.lowes.com/pl/Msrugs--Rugs-Area-rugs-mats-Home-decor/4294410357?refinement=721458917831">
+								<img src="https://cdn.worldvectorlogo.com/logos/lowes-companies-logo.svg" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of single brand  =======-->
+						<!--=======  single brand  =======-->
+						
+						<div class="single-brand">
+							<a href="https://www.overstock.com/Home-Garden/MSRUGS-Morrocan-Collection-Area-Rug./32272462/product.html">
+								<img src="https://ak1.ostkcdn.com/img/mxc/OSTK_MAIN_LOGO_20181127KCH.jpg" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of single brand  =======-->
+						<!--=======  single brand  =======-->
+						
+						<div class="single-brand">
+							<a href="https://www.homedepot.com/b/Flooring-Rugs-Area-Rugs/MSRUGS/N-5yc1vZarjgZsat?storeSelection=">
+								<img src="https://bpando.org//wp-content/uploads//2011/03/hd01.jpg" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of single brand  =======-->
+						
+
+						<!--=======  single brand  =======-->
+						
+						<div class="single-brand">
+							<a href="https://www.sears.com/home-decor-rugs-rug-runners/b-1348893918?Brand=Msrugs&filterList=Brand">
+								<img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Sears_Logo_2020.jpg" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of single brand  =======-->
+						
+
+						<!--=======  single brand  =======-->
+						
+						<div class="single-brand">
+							<a href="https://www.wayfair.com/rugs/sb1/msrugs-area-rugs-c215386-a1251~48373.html">
+								<img src="https://digital.hbs.edu/platform-digit/wp-content/uploads/sites/2/2017/04/Wayfair-Logo.jpg" class="img-fluid" alt="">
+							</a>
+						</div>
+						
+						<!--=======  End of single brand  =======-->
+						
+					</div>
+					
+					<!--=======  End of brand logo slider container  =======-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--=====  End of brand logo slider  ======-->
 
 	<!--=============================================
 	=            footer         =
@@ -612,7 +706,8 @@
 							<div class="address-text">
 								<ul>
 									<li>Address: 1112 Staffordshire Rd, Stafford, TX 77477 - USA.</li>
-									<li>Phone: (832) 303 5264 </li>
+									<li>WhatsApp 1: +1 (832) 303 5264 </li>
+									<li>WhatsApp 2: +1 (832) 664 0525 </li>
 									<!-- <li>Fax: (012) 800 456 789</li> -->
 									<li>Email: info@samnmtrade.com</li>
 								</ul>
@@ -637,7 +732,7 @@
 						<div class="widget-block">
 							<h4 class="footer-widget-title mb-sm-10">INFORMATION</h4>
 							<ul>
-								<!-- <li><a href="/">About</a></li> -->
+								<li><a href="{% url 'about_page' %}">About</a></li>
 								<li><a href="{% url 'contact_page' %}">Contact</a></li>
 								<!-- <li><a href="/">Blog</a></li> -->
 								<!-- <li><a href="#">Services</a></li> -->
@@ -748,7 +843,7 @@
 		<a href="#" class="search-overlay-close" id="search-overlay-close"><i class="fa fa-times"></i></a>
 		<div class="search-box">
 			<form action="{% url 'products:post_search' %}" method="get">
-				<input  placeholder="Search product ..." type="text" name="query" required="" id="id_query">
+				<input  placeholder="Search product ..." type="text" name="query" required="" id="id_query2">
 				<!-- <input class="btn btn-info" type="submit" value="Search"> -->
 				<button type="submit"><i class="icon ion-md-search"></i></button>
 			</form>
@@ -781,37 +876,37 @@
 								<div class="tab-content product-large-image-list fl-product-large-image-list fl3-product-large-image-list quickview-product-large-image-list" id="myTabContent2">
 									<div class="tab-pane fade show active" id="single-slide-1-q" role="tabpanel" aria-labelledby="single-slide-tab-1-q">
 										<!--Single Product Image Start-->
-										<div class="single-product-img img-full">
+										<!-- <div class="single-product-img img-full">
 											<img src="{% static 'img/single-product-slider/01.jpg' %}" class="img-fluid" alt="">
-										</div>
+										</div> -->
 										<!--Single Product Image End-->
 									</div>
 									<div class="tab-pane fade" id="single-slide-2-q" role="tabpanel" aria-labelledby="single-slide-tab-2-q">
 										<!--Single Product Image Start-->
-										<div class="single-product-img img-full">
+										<!-- <div class="single-product-img img-full">
 											<img src="{% static 'img/single-product-slider/02.jpg' %}" class="img-fluid" alt="">
-										</div>
+										</div> -->
 										<!--Single Product Image End-->
 									</div>
 									<div class="tab-pane fade" id="single-slide-3-q" role="tabpanel" aria-labelledby="single-slide-tab-3-q">
 										<!--Single Product Image Start-->
-										<div class="single-product-img img-full">
+										<!-- <div class="single-product-img img-full">
 											<img src="{% static 'img/single-product-slider/03.jpg' %}" class="img-fluid" alt="">
-										</div>
+										</div> -->
 										<!--Single Product Image End-->
 									</div>
 									<div class="tab-pane fade" id="single-slide-4-q" role="tabpanel" aria-labelledby="single-slide-tab-4-q">
 										<!--Single Product Image Start-->
-										<div class="single-product-img img-full">
+										<!-- <div class="single-product-img img-full">
 											<img src="{% static 'img/single-product-slider/04.jpg' %}" class="img-fluid" alt="">
-										</div>
+										</div> -->
 										<!--Single Product Image End-->
 									</div>
 									<div class="tab-pane fade" id="single-slide-5-q" role="tabpanel" aria-labelledby="single-slide-tab-5-q">
 										<!--Single Product Image Start-->
-										<div class="single-product-img img-full">
+										<!-- <div class="single-product-img img-full">
 											<img src="{% static 'img/single-product-slider/05.jpg' %}" class="img-fluid" alt="">
-										</div>
+										</div> -->
 										<!--Single Product Image End-->
 									</div>
 								</div>

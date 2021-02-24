@@ -11,6 +11,9 @@ from django.conf import settings
 from products.models import Category, Product
 from account.models import Customers
 import stripe
+from django.core.mail import send_mail
+from account.tasks import info_admins
+
 
 
 
@@ -18,12 +21,6 @@ import stripe
 def registration_view(request):
     context = {}
 
-    area_rugs = Category.objects.filter(parent_id=18)
-    bed_sheets = Product.objects.filter(category_id=17)
-    towels = Product.objects.filter(category_id=19)
-    context = {'area_rugs': area_rugs,
-                    'bed_sheets': bed_sheets,
-                    'towels':towels,}
     if request.user.is_anonymous == False:
         return redirect('dashboard')
 
@@ -45,6 +42,10 @@ def registration_view(request):
             
             account = authenticate(email=email, password=raw_password)
             login(request, account)
+
+            info_admins(email)
+
+
             return redirect('dashboard')
         else:
             context['registration_form'] = form

@@ -1,5 +1,9 @@
 from django.db import models
 import os
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+from PIL import Image
 
 # Create your models here.
 def slider_upload(instance, filename):
@@ -23,5 +27,6 @@ class Slider(models.Model):
     def __str__(self):
         return str(self.image)
 
+    
     class Meta:
         ordering = ['order','-start_date', '-end_date']

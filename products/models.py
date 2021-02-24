@@ -6,15 +6,16 @@ from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.utils.text import slugify
 
-
 # from ckeditor.fields import RichTextField
-
-
 import os
 import http.client
 import mimetypes
 import json
 import urllib.request
+from PIL import Image
+from io import BytesIO, StringIO 
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 
 # Create your models here.   
 
@@ -50,9 +51,29 @@ class Category(models.Model):
         return reverse('products:product_list_by_category',
                        args=[self.slug])
 
+    def save(self, *args, **kwargs):
+
+        img = Image.open(self.image)
+
+        if img.height > 200 or img.width > 200:
+
+            output_size = (600, 600)
+            img.thumbnail(output_size)
+            img = img.convert('RGB')
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.image = InMemoryUploadedFile(output, 'ImageField',
+                                            f'{self.image.name.split(".")[0]}.jpg',
+                                            'image/jpeg', sys.getsizeof(output),
+                                            None)
+        super(Category, self).save(*args, **kwargs)
+
 
 class Product(models.Model): 
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True) 
+    category = models.ForeignKey(Category, on_delete=models.PROTECT) 
     name = models.CharField(max_length=200, db_index=True) 
     color = models.CharField(max_length=200, db_index=True, blank=True, null=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True) 
@@ -106,6 +127,25 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+
+        img = Image.open(self.image)
+
+        if img.height > 200 or img.width > 200:
+
+            output_size = (600, 600)
+            img.thumbnail(output_size)
+            img = img.convert('RGB')
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.image = InMemoryUploadedFile(output, 'ImageField',
+                                            f'{self.image.name.split(".")[0]}.jpg',
+                                            'image/jpeg', sys.getsizeof(output),
+                                            None)
+         
+
         super(Product, self).save(*args, **kwargs)
 
     admin_image.allow_tags = True
@@ -127,7 +167,26 @@ class ProductImage(models.Model):
         #return self.product.name
     class Meta:
         ordering = ['order']
-    
+
+    def save(self, *args, **kwargs):
+
+        img = Image.open(self.image)
+
+        if img.height > 200 or img.width > 200:
+
+            output_size = (600, 600)
+            img.thumbnail(output_size)
+            img = img.convert('RGB')
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.image = InMemoryUploadedFile(output, 'ImageField',
+                                            f'{self.image.name.split(".")[0]}.jpg',
+                                            'image/jpeg', sys.getsizeof(output),
+                                            None)
+        super(ProductImage, self).save(*args, **kwargs)
     
 
 class VariationManager(models.Manager):
@@ -165,6 +224,9 @@ class Variation(models.Model):
 
     objects = VariationManager()
 
+    class Meta:
+        ordering = ['-updated',]
+
     def __str__(self): 
         return self.sku
 
@@ -192,7 +254,8 @@ class Variation(models.Model):
 
         
         if len(veri["data"]) == 0:
-            raise ValidationError("Sku didn't match with Ecomdash records "+str(self.sku))
+            pass
+            #raise ValidationError("Sku didn't match with Ecomdash records "+str(self.sku))
 
         try:
             if self.ecomdashid is None:

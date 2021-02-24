@@ -28,7 +28,8 @@
 									{% for p in bed_sheets %} 
 									<div class="fl-product">
 										<!-- <div class="image sale-product"> -->
-										<div class="image" style="width: 200px; 
+										<!-- asagidaki dive class="image" ekle eger uzerine geldiginde ikinci foto gostersin istiyorsan -->	
+										<div style="width: 200px; 
 										height: 200px;
 										/*background-color: red;*/
 										/*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
@@ -38,8 +39,8 @@
 										margin: 0 auto;">
 											<a href="{{ p.get_absolute_url }}">
 													
-												<img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.productimage_set.all.0.image.url }}" class="img-fluid" alt="">
-												<img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.productimage_set.all.1.image.url }}" class="img-fluid" alt="">
+												<img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.image.url }}" class="img-fluid" alt="">
+												<!-- <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.productimage_set.all.1.image.url }}" class="img-fluid" alt=""> -->
 											</a>
 											<!-- wishlist icon -->
 											<!-- <span class="wishlist-icon">
@@ -99,11 +100,19 @@
 									
 									<div class="fl-product">
 										<!-- <div class="image sale-product"> -->
-											<div class="image">
+											<!-- asagidaki dive class="image" ekle eger uzerine geldiginde ikinci foto gostersin istiyorsan -->	
+											<div style="width: 200px; 
+											height: 200px;
+											/*background-color: red;*/
+											/*background-image: url('{{ MEDIA_URL }}{{ product.image.url }}') ;*/
+											background-repeat: no-repeat;
+											background-size: contain;
+											background-position: center;
+											margin: 0 auto;">
 												<a href="{{ p.get_absolute_url }}">
 													
-													<img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.productimage_set.all.0.image.url }}" class="img-fluid" alt="">
-													<img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.productimage_set.all.1.image.url }}" class="img-fluid" alt="">
+													<img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.image.url }}" class="img-fluid" alt="">
+													<!-- <img style="height: 200px; width: auto; object-fit: cover; margin:auto;" src="{{ p.productimage_set.all.1.image.url }}" class="img-fluid" alt=""> -->
 												</a>
 												<!-- wishlist icon -->
 												<!-- <span class="wishlist-icon">

@@ -15,9 +15,9 @@ import os
 import braintree
 import mimetypes
 from decouple import config
+
+
 mimetypes.add_type("text/css", ".css", True)
-
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR3 =  Path(__file__).resolve(strict=True).parent.parent #aslinda boyleydi. ecommerce'in icinde bi tane daha ecommerce acinca bi parenti silmek gerekti. eger setting.py sonrada olusturulan ecommerce klasorunden cikartilacaksa iki tane parent yazan kullanilacak veya parents[1] yazilacak
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django_celery_beat',
     'django_celery_results',
+    'debug_toolbar',
 
 
     'storages',
@@ -76,13 +77,7 @@ INSTALLED_APPS = [
     'orders',
     'coupons.apps.CouponsConfig',
     'Delivery',
-    'marketing',
-
-    
-
-    
-    
-    
+    'marketing',   
 ]
 
 MIDDLEWARE = [
@@ -94,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     
 ]
 
@@ -272,3 +268,24 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 EMAIL_SUBJECT_PREFIX = 'SAM&M - '
 
+CELERY_IMPORTS = (
+    'orders.tasks',
+    'account.tasks',
+)
+
+
+
+DEBUG_TOOLBAR_PANELS = [
+    #'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]

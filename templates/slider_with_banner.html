@@ -14,13 +14,13 @@
 							<div class="col-lg-3 col-xl-2 col-md-4">
 								<!--=======  sidebar  =======-->
 								
-								<div class="slider-sidebar">
+								<div class="slider-sidebar" style="height:640px;">
 									<h3 class="slider-sidebar-title">AREA RUGS</h3>
-									<div class="sidebar-list">
+									<div class="sidebar-list" style=" height:90%; overflow:auto;">
 										<ul>
 											{% for c in area_rugs %}
 										
-											<li><a href="{{ c.get_absolute_url }}">{{ c.get_cat_name }}</a></li>
+											<li><a style="font-size: small;" href="{{ c.get_absolute_url }}">{{ c.get_cat_name }}</a></li>
 											{% endfor %}
 										</ul>
 									</div>

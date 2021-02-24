@@ -54,28 +54,25 @@ def login_form(request):
 
 def home_page(request):
     sliders = Slider.objects.filter(active=1)
+    top_level_cats = Category.objects.filter(parent__isnull=True, active=1).select_related('parent')
     
-    top_level_cats = Category.objects.filter(parent__isnull=True)
-
-    
+    print(top_level_cats)
     search_form = SearchForm()
     try:
         area_rug = Category.objects.get(slug__contains="area-rugs")
-        area_rugs = Category.objects.filter(parent_id=area_rug.id)
+        area_rugs = Category.objects.filter(parent_id=area_rug.id, active=1).select_related('parent')
     except:
         area_rugs = []
     
     try:
         bed_sheet = Category.objects.get(slug__contains="bed-sheets")
-        bed_sheets = Product.objects.filter(category_id=bed_sheet.id)
+        bed_sheets = Product.objects.filter(category_id=bed_sheet.id)[:10].select_related('category')
     except:
         bed_sheets = []
 
     try:
         towel = Category.objects.get(slug__contains="towel")
-        print(towel, "bunu print ediyor mu")
-        towels = Product.objects.filter(category_id=towel.id)
-        
+        towels = Product.objects.filter(category_id=towel.id)[0:10].select_related('category')
     except:
         towels= []
     
@@ -97,7 +94,7 @@ def about_page(request):
         "title": "About Page",
         "content": " This is about us page"
     }
-    return render(request, "home_page.html", context)
+    return render(request, "about.html", context)
 
 def contact_page(request):
     area_rugs = Category.objects.filter(parent_id=18)
@@ -156,3 +153,7 @@ def order_details(request, order_id):
         'order': order,
     }
     return render(request, 'order_details.html', context)
+
+
+def tee(request):
+    return render(request, 'tee/tee.html')
