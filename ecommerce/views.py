@@ -6,6 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.core.files.storage import FileSystemStorage
 from .forms import ContactForm, LoginForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from orders.models import Order
@@ -157,3 +158,4 @@ def order_details(request, order_id):
 
 def tee(request):
     return render(request, 'tee/tee.html')
+

@@ -44,6 +44,8 @@ urlpatterns = [
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
+    
+
 
     path('coupons/', include('coupons.urls', namespace='coupons')),
     path('cart/', include('cart.urls', namespace='cart')),
@@ -53,6 +55,7 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog')),
     path('account/', include('account.urls', namespace='account')),
     path('delivery/', include('Delivery.urls', namespace='delivery')),
+    path('ship_station/', include('ship_station.urls', namespace='ship_station')),
     path('__debug__/', include(debug_toolbar.urls)),
     
     

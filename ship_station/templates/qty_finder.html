@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block blank %}
+<!--=============================================
+	=            breadcrumb area         =
+	=============================================-->
+	
+	<div class="breadcrumb-area pt-15 pb-15">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<!--=======  breadcrumb container  =======-->
+					
+					<div class="breadcrumb-container">
+						<nav>
+							<ul>
+								<li class="parent-page"><a href="/">Home</a></li>
+								<li>QTY Finder</li>
+							</ul>
+						</nav>
+					</div>
+					
+					<!--=======  End of breadcrumb container  =======-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <!--=====  End of breadcrumb area  ======-->
+    
+    <!--=============================================
+	=            Checkout page content         =
+	=============================================-->
+	
+	<div class="page-section mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+					Upload your source file here (Only csv). First column header must be SKU (all capital)
+                    <form id="source" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<p><a href="{{ source.document.url }}">Download Latest Source File</a></p>
+						<p>Latest update: {{ source.uploaded_at}}</p>
+					  </form>
+					  <script>
+						  $( document ).ready(function() {
+    						$('#source').change(function(){
+								$('#source').submit();
+							})
+						});
+					  </script>
+					  <br>
+					  <hr>
+					  <br>
+					  Upload your lookup file here (Only csv). First column header must be SKU (all capital)
+					  <form id="lookup" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						<input type="file" name="myfile">
+						
+					  </form>
+					  <script>
+						$( document ).ready(function() {
+						  $('#lookup').change(function(){
+							  $('#lookup').submit();
+						  })
+					  });
+					</script>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

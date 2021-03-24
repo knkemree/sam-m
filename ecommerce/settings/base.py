@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'coupons.apps.CouponsConfig',
     'Delivery',
     'marketing',   
+    'ship_station'
 ]
 
 MIDDLEWARE = [
