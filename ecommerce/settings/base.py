@@ -59,6 +59,14 @@ INSTALLED_APPS = [
     'django_celery_results',
     'debug_toolbar',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    'allauth',
+    
+
+    'rest_auth',
+    'rest_auth.registration',
 
     'storages',
     'phonenumber_field',
@@ -66,7 +74,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'ckeditor',
     'import_export',
-    
     'editorjs_field',
 
     'payment.apps.PaymentConfig',

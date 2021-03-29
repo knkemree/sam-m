@@ -34,8 +34,6 @@ def choose_size(request, product_id):
         for item in request.POST:
             key = item
             val = request.POST[key]
-            print("variant val and key")
-            print(val, key)
             if val == "-----":
                 try:
                     del request.session["variation_id"]
@@ -199,9 +197,6 @@ def updateQtyView(request):
                             
                             updated_stock = int(i["QuantityOnHand"]) + int(qty) 
 
-                        print("yeni stock")
-                        print(updated_stock)
-
                         payload1 = [{'Sku': str(sku), 'Quantity': updated_stock, 'WarehouseId': 2019007911.0}]
                         payload = str(payload1)
                         headers = {
@@ -212,7 +207,6 @@ def updateQtyView(request):
                         conn.request("POST", "/api/inventory/updateQuantityOnHand", payload, headers)
                         res = conn.getresponse()
                         data = res.read()
-                        print(data.decode("utf-8"))
                 except:
                     pass
             
@@ -228,8 +222,6 @@ def updateQtyView(request):
             #response = HttpResponse(csv, content_type='text/csv')
             #response['Content-Disposition'] = 'attachment; filename= "{}"'.format(request.FILES["upload"].name+".csv")
             #return response
-            print(sku_list)
-            print(new_stock_list)
     else:
         form = updateQtyForm()
     return render(request, "updateQty.html", {'form': form })

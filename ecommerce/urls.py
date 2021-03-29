@@ -21,7 +21,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import home_page, about_page, contact_page, dashboard
 from ecommerce.views import login_form, order_details, tee
+from rest_framework.routers import DefaultRouter
+from products.api.urls import router_products
+from orders.api.urls import router_orders
 
+class ContainerRouter(DefaultRouter):
+    def register_router(self, router):
+        self.registry.extend(router.registry)
+
+router = ContainerRouter()
+router.register_router(router_products)
+router.register_router(router_orders)
 
 
 urlpatterns = [
@@ -44,6 +54,14 @@ urlpatterns = [
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
+
+    path('api/', include(router.urls)),
+    # path('api/products/', include('products.api.urls', namespace='products_api')),
+    # path('api/orders/', include('orders.api.urls', namespace='orders_api')),
+
+    path("api-auth/", include("rest_framework.urls")),
+    path("api/rest-auth/", include("rest_auth.urls")),
+    path("api/rest-auth/registration/", include("rest_auth.registration.urls")),
     
 
 
@@ -52,6 +70,7 @@ urlpatterns = [
     path('orders/', include('orders.urls', namespace='orders')),
     path('payment/', include('payment.urls', namespace='payment')),
     path('products/', include('products.urls', namespace='products')),
+    
     path('blog/', include('blog.urls', namespace='blog')),
     path('account/', include('account.urls', namespace='account')),
     path('delivery/', include('Delivery.urls', namespace='delivery')),
