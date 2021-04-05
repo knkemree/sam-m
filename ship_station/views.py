@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import DocumentForm
-from .models import Document
+from .models import Document, Source
 import pandas as pd
 
 # Create your views here.

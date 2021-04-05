@@ -112,3 +112,4 @@ get-pip.py
 .mypy_cache/
 
 *.sqlite3
+backup/
