@@ -74,7 +74,7 @@ def lookup(request):
         uploaded_file_url = fs.path(filename)  
         
 
-        file = pd.read_csv(source.document.path).dropna(subset=['SKU'])
+        file = pd.read_csv(source.document.url).dropna(subset=['SKU'])
         file['SKU'] = file['SKU'].astype(str)
 
         lookup = pd.read_csv(uploaded_file_url).dropna(subset=['SKU'])
@@ -84,7 +84,7 @@ def lookup(request):
         print(left_join)
         csv = left_join.to_csv(index=False)
         response = HttpResponse(csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename= "{}"'.format(myfile.name+".csv")
+        response['Content-Disposition'] = 'attachment; filename= "{}"'.format(myfile.name)
         return response
     else:
         context['source']=source
