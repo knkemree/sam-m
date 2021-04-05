@@ -114,3 +114,5 @@ get-pip.py
 *.sqlite3
 static_cdn
 db.sqlite3
+*.csv
+.csv
