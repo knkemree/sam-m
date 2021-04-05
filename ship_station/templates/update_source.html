@@ -41,25 +41,7 @@
 						{% csrf_token %}
 						{{ form.as_p }}
 						<input type="submit" name="" id="" value="Submit">
-						<p><a href="{{ source.document.url }}">Download Latest Source File</a></p>
-						<p>Latest update: {{ source.uploaded_at}}</p>
 					  </form>
-					  
-					  <br>
-					  <hr>
-					  <br>
-					  Upload your lookup file here (Only csv). First column header must be SKU (all capital)
-					  <form id="lookup" method="post" enctype="multipart/form-data">
-						{% csrf_token %}
-						<input type="file" name="myfile">
-					  </form>
-					  <script>
-						$( document ).ready(function() {
-						  $('#lookup').change(function(){
-							  $('#lookup').submit();
-						  })
-					  });
-					</script>
                 </div>
             </div>
         </div>

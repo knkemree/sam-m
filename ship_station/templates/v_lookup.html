@@ -15,7 +15,7 @@
 						<nav>
 							<ul>
 								<li class="parent-page"><a href="/">Home</a></li>
-								<li>QTY Finder</li>
+								<li>V lookup</li>
 							</ul>
 						</nav>
 					</div>
@@ -36,30 +36,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-					Upload your source file here (Only csv). First column header must be SKU (all capital)
-                    <form id="source" method="post" enctype="multipart/form-data">
-						{% csrf_token %}
-						{{ form.as_p }}
-						<input type="submit" name="" id="" value="Submit">
-						<p><a href="{{ source.document.url }}">Download Latest Source File</a></p>
-						<p>Latest update: {{ source.uploaded_at}}</p>
-					  </form>
-					  
-					  <br>
-					  <hr>
-					  <br>
-					  Upload your lookup file here (Only csv). First column header must be SKU (all capital)
+					Upload your lookup file here (Only csv). First column header must be SKU (all capital)
 					  <form id="lookup" method="post" enctype="multipart/form-data">
 						{% csrf_token %}
 						<input type="file" name="myfile">
+                        {% if source %}<input type="submit" value="Submit">{% else %} upload a source file first{% endif %}
 					  </form>
-					  <script>
+                      
+					  <!-- <script>
 						$( document ).ready(function() {
 						  $('#lookup').change(function(){
 							  $('#lookup').submit();
 						  })
 					  });
-					</script>
+					</script> -->
                 </div>
             </div>
         </div>

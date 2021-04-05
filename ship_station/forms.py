@@ -1,9 +1,9 @@
 from django import forms
-from .models import Document
+from .models import File
 
-class DocumentForm(forms.ModelForm):
-    document = forms.FileField(required=False)
+class FileForm(forms.ModelForm):
+    document = forms.FileField(required=True)
     class Meta:
-        model = Document
-        fields = ('document', )
+        model = File
+        fields = ('document',)
 
