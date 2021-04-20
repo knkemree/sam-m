@@ -11,7 +11,7 @@ class InventoryLogAdmin(admin.ModelAdmin):
         return obj.current_stock
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['model','size','color','in_stock']
+    list_display = ['model','size','color','in_stock','created_at']
     readonly_fields = ['in_stock']
     list_filter = ['size','color','model','model__brand']
     search_fields = ['size__name','color__name','model__name','model__brand__name']
