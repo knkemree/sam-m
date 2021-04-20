@@ -13,7 +13,7 @@ class InventoryLogAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['model','size','color','in_stock']
     readonly_fields = ['in_stock']
-    list_filter = ['size','color']
+    list_filter = ['size','color','model','model__brand']
     search_fields = ['size__name','color__name','model__name','model__brand__name']
 
     def in_stock(self, obj):
