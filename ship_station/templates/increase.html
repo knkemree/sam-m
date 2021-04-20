@@ -55,7 +55,7 @@
     <main role="main" class="container">
 
       <div class="starter-template">
-        <h1>Increasing...</h1>
+        <h1 style="color: blue;">Increasing...</h1>
         <form id="increase" action="{% url 'ship_station:increase' %}" method="POST">{% csrf_token%}
             {{ form.as_p }}
             <input type="submit" value="submit">
