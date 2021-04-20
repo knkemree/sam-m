@@ -7,3 +7,9 @@ class FileForm(forms.ModelForm):
         model = File
         fields = ('document',)
 
+
+class GTINForm(forms.Form):
+    gtin = forms.CharField(widget=forms.NumberInput)
+
+    
+

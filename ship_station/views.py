@@ -1,9 +1,17 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import FileForm
 from .models import File
 import pandas as pd
+from django.views.generic import TemplateView
+from django.views.generic.edit import FormView
+from ship_station.forms import GTINForm
+from ship_station.models import Brand, Color, InventoryLog, Model, Product, Size
+import requests
+import json
+from gtin import GTIN
+from django.views import generic
 
 # Create your views here.
 
@@ -89,5 +97,78 @@ def lookup(request):
     else:
         context['source']=source
         return render(request, 'v_lookup.html', context)
+
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+
+
+def increase(request):
+    data = {}
+    form = GTINForm()
+    if request.method == "POST" and request.is_ajax():
+        form = GTINForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data
+            gtin = form.cleaned_data.get('gtin')
+            gtin = str(GTIN(raw='{}'.format(gtin)))
+            try:
+                product = Product.objects.get(gtin=gtin)
+                log = InventoryLog.objects.create(product=product, quantity=1)
+                
+            except:
+                headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                }
+                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(str(gtin)), headers=headers)
+                data = json.loads(resp.text)
+                for item in data['items']:
+                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                    color, created = Color.objects.get_or_create(name=item['color'])
+                    size, created = Size.objects.get_or_create(name=item['size'])
+                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,gtin=item['ean'])
+                    log = InventoryLog.objects.create(product=product, quantity=1)
+    
+            data['gtin']=gtin
+            return JsonResponse(data)
+    return render(request, "increase.html", {"form": form})
+
+def decrease(request):
+    data = {}
+    form = GTINForm()
+    if request.method == "POST" and request.is_ajax():
+        form = GTINForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data
+            gtin = form.cleaned_data.get('gtin')
+            gtin = str(GTIN(raw='{}'.format(gtin)))
+            try:
+                product = Product.objects.get(gtin=gtin)
+                log = InventoryLog.objects.create(product=product, quantity=-1)
+                
+            except:
+                headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                }
+                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(str(gtin)), headers=headers)
+                data = json.loads(resp.text)
+                for item in data['items']:
+                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                    color, created = Color.objects.get_or_create(name=item['color'])
+                    size, created = Size.objects.get_or_create(name=item['size'])
+                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,gtin=item['ean'])
+                    log = InventoryLog.objects.create(product=product, quantity=-1)
+    
+            data['gtin']=gtin
+            return JsonResponse(data)
+    return render(request, "decrease.html", {"form": form})
+
+class ProductDetailView(generic.DetailView):
+    model = Product
+
 
 
