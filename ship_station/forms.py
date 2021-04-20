@@ -9,7 +9,7 @@ class FileForm(forms.ModelForm):
 
 
 class GTINForm(forms.Form):
-    gtin = forms.CharField(widget=forms.NumberInput)
+    gtin = forms.CharField(widget=forms.NumberInput, label='')
 
     
 
