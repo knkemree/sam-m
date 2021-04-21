@@ -77,7 +77,7 @@
                           success : function(response){
                             console.log(response.result)
                             if(response.result == 429){
-                              alert('exceeded rate limit');
+                              alert('System stopped 24 hours');
                             }
                             $('#id_gtin').val('');
                             $("#id_gtin").focus();
