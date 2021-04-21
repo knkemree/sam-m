@@ -71,6 +71,12 @@
                $("#increase").submit(function(e){
                 // prevent from normal form behaviour
                 $('#submit-button').prop('disabled',true)
+                
+                function disableInput() {
+                  $('#id_gtin').prop('disabled',true)
+                };
+                setTimeout(disableInput,200)
+
                  console.log('submit edildi')
                       e.preventDefault();
                     // serialize the form data  
@@ -85,6 +91,12 @@
                               $('#submit-button').prop('disabled',false)
                             }
                             setTimeout(enableButton,2000)
+
+                            function enableInput() {
+                              $('#id_gtin').prop('disabled',false)
+                              $("#id_gtin").focus();
+                            };
+                            setTimeout(enableInput,2000)
                             
                             console.log(response)
                             if(response.result == 429){

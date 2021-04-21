@@ -70,6 +70,11 @@
                 $("#id_gtin").focus();
                $("#decrease").submit(function(e){
                 $('#submit-button').prop('disabled',true)
+
+                function disableInput() {
+                  $('#id_gtin').prop('disabled',true)
+                };
+                setTimeout(disableInput,200)
                 // prevent from normal form behaviour
                  console.log('submit edildi')
                       e.preventDefault();
@@ -85,6 +90,12 @@
                               $('#submit-button').prop('disabled',false)
                             }
                             setTimeout(enableButton,2000)
+
+                            function enableInput() {
+                              $('#id_gtin').prop('disabled',false)
+                              $("#id_gtin").focus();
+                            };
+                            setTimeout(enableInput,2000)
 
                             console.log(response);
                             if(response.result == 429){
