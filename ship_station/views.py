@@ -13,6 +13,7 @@ import json
 from gtin import GTIN
 from django.views import generic
 from re import search, IGNORECASE
+from .forms import GTINForm
 
 # Create your views here.
 
@@ -99,8 +100,38 @@ def lookup(request):
         context['source']=source
         return render(request, 'v_lookup.html', context)
 
-class IndexView(TemplateView):
+class IndexView(FormView):
     template_name = 'index.html'
+    form_class = GTINForm
+
+    def form_valid(self, form):
+        data = {}
+        raw_number = str(form.cleaned_data.get('gtin'))
+        print('string: ',raw_number)
+        print('string length: ',len(str(raw_number)))
+        possible_eans = []
+        if len(raw_number)>=12:
+            for i in range(len(raw_number)-11):
+                possible_upc = raw_number[0+i:12+i]
+                possible_ean = str(GTIN(raw='{}'.format(possible_upc)))
+                possible_eans.append(possible_ean)
+                print('tried this: ',possible_ean)
+                #requstte bulunmadan once database'e bak bu urun kayitli mi diye, eger bulursa stogu arttir. bulamazsan gunluk 100 limiti olan reques'ti calistir
+                for possible_ean in possible_eans:
+                    try:
+                        #find the product in database and increase the quantity
+                        product = Product.objects.get(ean=possible_ean)
+                        data['itemName'] = str(product)
+                        data['itemQuantity'] = product.current_stock
+                        return JsonResponse(data)
+                    except:
+                        data['itemName'] = 'Item not found'
+                        data['itemQuantity'] = 'None'
+                        return JsonResponse(data)
+        else:
+            data['itemName'] = 'Barcode invalid'
+            data['itemQuantity'] = 'Try again'
+            return JsonResponse(data)
 
 
 

@@ -44,7 +44,8 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#id_gtin").focus();
-               $("#decrease").submit(function(e){
+
+              $("#decrease").submit(function(e){
                 $('#submit-button').prop('disabled',true)
 
                 function disableInput() {
@@ -52,48 +53,47 @@
                 };
                 setTimeout(disableInput,200)
                 // prevent from normal form behaviour
-                 console.log('submit edildi')
-                      e.preventDefault();
-                    // serialize the form data  
-            
-                      var serializedData = $(this).serialize();
-                      $.ajax({
-                          type : 'POST',
-                          url :  "{% url 'ship_station:decrease' %}",
-                          data : serializedData,
-                          success : function(response){
-                            function enableButton(params) {
-                              $('#submit-button').prop('disabled',false)
-                            }
-                            setTimeout(enableButton,2000)
+                console.log('submit edildi')
+                e.preventDefault();
+                // serialize the form data  
+                var serializedData = $(this).serialize();
+                $.ajax({
+                    type : 'POST',
+                    url :  "{% url 'ship_station:decrease' %}",
+                    data : serializedData,
+                    success : function(response){
+                      function enableButton(params) {
+                        $('#submit-button').prop('disabled',false)
+                      }
+                      setTimeout(enableButton,2000)
 
-                            function enableInput() {
-                              $('#id_gtin').prop('disabled',false)
-                              $("#id_gtin").focus();
-                            };
-                            setTimeout(enableInput,2000)
+                      function enableInput() {
+                        $('#id_gtin').prop('disabled',false)
+                        $("#id_gtin").focus();
+                      };
+                      setTimeout(enableInput,2000)
 
-                            console.log(response);
-                            if(response.result == 429){
-                              document.getElementById('alarm-sound').play();
-                              alert('System stopped for 24 hours'); 
-                            }
-                            if(response.result == 'invalid_barcode'){
-                              document.getElementById('alarm-sound').play();
-                              alert('invalid barcode'); 
-                            }
-                            if(response.result == 'sold'){
-                              document.getElementById('success-sound').play();
-                              $('#item-name').html(response.itemName);
-                              $('#item-quantity').html(response.itemQuantity);
-                            }
-                            $('#id_gtin').val('');
-                            $("#id_gtin").focus();
-                          },
-                          error : function(response){
-                              console.log(response)
-                          }
-                      });
+                      console.log(response);
+                      if(response.result == 429){
+                        document.getElementById('alarm-sound').play();
+                        alert('System stopped for 24 hours'); 
+                      }
+                      if(response.result == 'invalid_barcode'){
+                        document.getElementById('alarm-sound').play();
+                        alert('invalid barcode'); 
+                      }
+                      if(response.result == 'sold'){
+                        document.getElementById('success-sound').play();
+                        $('#item-name').html(response.itemName);
+                        $('#item-quantity').html(response.itemQuantity);
+                      }
+                      $('#id_gtin').val('');
+                      $("#id_gtin").focus();
+                    },
+                    error : function(response){
+                        console.log(response)
+                    }
+                });
                });
             });
             </script>
