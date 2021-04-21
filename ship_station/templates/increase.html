@@ -75,7 +75,10 @@
                           url :  "{% url 'ship_station:increase' %}",
                           data : serializedData,
                           success : function(response){
-                            console.log(response)
+                            console.log(response.result)
+                            if(response.result == 429){
+                              alert('exceeded rate limit');
+                            }
                             $('#id_gtin').val('');
                             $("#id_gtin").focus();
                           },

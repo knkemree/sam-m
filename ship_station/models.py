@@ -161,10 +161,11 @@ class ArchivedSize(Size):
 
 class Product(BaseModel, SoftDeletableModel):
     name = models.CharField(max_length=60, blank=True, null=True, help_text='title of the product')
-    model = models.ForeignKey(Model, on_delete=models.CASCADE, blank=True, null=True)
+    model = models.ForeignKey(Model, on_delete=models.CASCADE, blank=True, null=True, help_text='if model is unfamiliar, search item ean at upcitemdb.com')
     color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
-    gtin = models.CharField(max_length=20, blank=False, null=True)
+    ean = models.CharField(max_length=20, blank=False, null=True)
+    note = models.CharField(max_length=120, blank=True, null=True, help_text='type your notes here about this item')
 
     def __str__(self):
         return "{} | {} | {}".format(str(self.model),str(self.size),str(self.color))
