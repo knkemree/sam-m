@@ -56,6 +56,8 @@
 
       <div class="starter-template">
         <h1 style="color: red;">Decreasing...</h1>
+        <audio id='alarm-sound' src="{% static 'img/mixkit-classic-alarm-995.wav' %}"></audio>
+        <audio id='success-sound' src="{% static 'img/mixkit-player-losing-or-failing-2042.wav' %}"></audio>
         <form id="decrease" action="{% url 'ship_station:decrease' %}" method="POST">{% csrf_token%}
             {{ form.as_p }}
             <input type="submit" value="submit">
@@ -75,7 +77,18 @@
                           url :  "{% url 'ship_station:decrease' %}",
                           data : serializedData,
                           success : function(response){
-                            console.log(response)
+                            console.log(response);
+                            if(response.result == 429){
+                              document.getElementById('alarm-sound').play();
+                              alert('System stopped for 24 hours'); 
+                            }
+                            if(response.result == 'invalid_barcode'){
+                              document.getElementById('alarm-sound').play();
+                              alert('invalid barcode'); 
+                            }
+                            if(response.result == 'sold'){
+                              document.getElementById('success-sound').play();
+                            }
                             $('#id_gtin').val('');
                             $("#id_gtin").focus();
                           },
