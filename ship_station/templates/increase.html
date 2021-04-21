@@ -55,18 +55,22 @@
     <main role="main" class="container">
 
       <div class="starter-template">
-        <h1 style="color: blue;">Increasing...</h1>
+        <h1 style="color: blue;">Increase</h1>
         <audio id='alarm-sound' src="{% static 'img/mixkit-classic-alarm-995.wav' %}"></audio>
         <audio id='success-sound' src="{% static 'img/mixkit-ethereal-fairy-win-sound-2019.wav' %}"></audio>
+        <p id="item-name"></p>
+        <br>
+        <strong><p id="item-quantity"></p></strong>
         <form id="increase" action="{% url 'ship_station:increase' %}" method="POST">{% csrf_token%}
             {{ form.as_p }}
-            <input type="submit" value="submit">
+            <input id="submit-button" type="submit" value="submit">
         </form>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#id_gtin").focus();
                $("#increase").submit(function(e){
                 // prevent from normal form behaviour
+                $('#submit-button').prop('disabled',true)
                  console.log('submit edildi')
                       e.preventDefault();
                     // serialize the form data  
@@ -77,6 +81,11 @@
                           url :  "{% url 'ship_station:increase' %}",
                           data : serializedData,
                           success : function(response){
+                            function enableButton(params) {
+                              $('#submit-button').prop('disabled',false)
+                            }
+                            setTimeout(enableButton,2000)
+                            
                             console.log(response)
                             if(response.result == 429){
                               document.getElementById('alarm-sound').play();
@@ -88,6 +97,8 @@
                             }
                             if(response.result == 'restocked'){
                               document.getElementById('success-sound').play();
+                              $('#item-name').html(response.itemName);
+                              $('#item-quantity').html(response.itemQuantity);
                             }
                             $('#id_gtin').val('');
                             $("#id_gtin").focus();

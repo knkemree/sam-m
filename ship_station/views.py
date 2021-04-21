@@ -135,6 +135,8 @@ def increase(request):
                         log = InventoryLog.objects.create(product=product, quantity=1)
                         print('item restocked:',possible_ean)
                         data['result'] = 'restocked'
+                        data['itemName'] = str(product)
+                        data['itemQuantity'] = product.current_stock
                         return JsonResponse(data)
                     except:
                         pass
@@ -230,6 +232,8 @@ def decrease(request):
                         log = InventoryLog.objects.create(product=product, quantity=-1)
                         print('item sold:',possible_ean)
                         data['result'] = 'sold'
+                        data['itemName'] = str(product)
+                        data['itemQuantity'] = product.current_stock
                         return JsonResponse(data)
                     except:
                         pass
