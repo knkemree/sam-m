@@ -119,7 +119,6 @@ def increase(request):
             print('string: ',raw_number)
             print('string length: ',len(str(raw_number)))
             if len(raw_number) >=12:
-                
                 possible_eans = []
                 for i in range(len(raw_number)-11):
                     possible_upc = raw_number[0+i:12+i]
@@ -158,25 +157,50 @@ def increase(request):
 
                 #valid eanler saptandiktan sonra    
                 #eger stringin icinde birden fazla valid ean varsa
-                if not valid_eans:
-                    print('listenin ici bos: ',valid_eans)
-                    #eger listenin ici bossa
+                if not valid_eans: #eger listenin ici bossa
+                    print('listenin ici bos: ',valid_eans) 
                     return render(request, "increase.html", {"form": form})
                 elif len(valid_eans) > 1:
-                    print('more than one valid eans in the string: ',valid_eans)
+                    print('more than one valid eans in the string:',valid_eans)
                     for ean in valid_eans:
                         print(ean)
-                        brand = data['items'][0]['brand']
+                        brand = data['items'][0]['brand'] #burasi degisebilir eger upcitemdb kullanmazsam
                         if search('gildan',brand, IGNORECASE):
                             print('gildan valid eans: ',valid_eans)
+                            possible_gildan_ean = ean[2:15]
+                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_gildan_ean), headers=headers)
+                            if resp.status_code == 200 :
+                                data = json.loads(resp.text)
+                                for item in data['items']:
+                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                    color, created = Color.objects.get_or_create(name=item['color'])
+                                    size, created = Size.objects.get_or_create(name=item['size'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    log = InventoryLog.objects.create(product=product, quantity=1)
+                            else:
+                                print('cannot find item')
+                            
                         elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
+                            possible_bella_ean = ean[3:16]
                             print('bella canvas valid eans: ',valid_eans)
+                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_bella_ean), headers=headers)
+                            if resp.status_code == 200 :
+                                data = json.loads(resp.text)
+                                for item in data['items']:
+                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                    color, created = Color.objects.get_or_create(name=item['color'])
+                                    size, created = Size.objects.get_or_create(name=item['size'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    log = InventoryLog.objects.create(product=product, quantity=1)
+                            else:
+                                print('cannot find item')
                         else:
                             #eger birden fazla valid ean var ve bella veya gildan oldugu saptanamiyprsa hic birsey yapma ve sayfayi yeniden ac
                             return render(request, "increase.html", {"form": form})
                     return render(request, "increase.html", {"form": form})
-                #yoksa kalsik metodtan devam
-                else:
+                else: #yoksa kalsik metodtan devam
                     resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(valid_eans[0]), headers=headers)
                     data = json.loads(resp.text)
                     for item in data['items']:
@@ -266,8 +290,34 @@ def decrease(request):
                         brand = data['items'][0]['brand']
                         if search('gildan',brand, IGNORECASE):
                             print('gildan valid eans: ',valid_eans)
+                            possible_gildan_ean = ean[2:15]
+                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_gildan_ean), headers=headers)
+                            if resp.status_code == 200 :
+                                data = json.loads(resp.text)
+                                for item in data['items']:
+                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                    color, created = Color.objects.get_or_create(name=item['color'])
+                                    size, created = Size.objects.get_or_create(name=item['size'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    log = InventoryLog.objects.create(product=product, quantity=-1)
+                            else:
+                                print('cannot find item')
                         elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
                             print('bella canvas valid eans: ',valid_eans)
+                            possible_bella_ean = ean[3:16]
+                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_bella_ean), headers=headers)
+                            if resp.status_code == 200 :
+                                data = json.loads(resp.text)
+                                for item in data['items']:
+                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                    color, created = Color.objects.get_or_create(name=item['color'])
+                                    size, created = Size.objects.get_or_create(name=item['size'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    log = InventoryLog.objects.create(product=product, quantity=1)
+                            else:
+                                print('cannot find item')
                         else:
                             #eger birden fazla valid ean var ve bella veya gildan oldugu saptanamiyprsa hic birsey yapma ve sayfayi yeniden ac
                             return render(request, "decrease.html", {"form": form})
