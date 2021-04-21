@@ -55,15 +55,14 @@
     <main role="main" class="container">
 
       <div class="starter-template">
-        <h1 style="color: red;">Decrease</h1>
         <audio id='alarm-sound' src="{% static 'img/mixkit-classic-alarm-995.wav' %}"></audio>
         <audio id='success-sound' src="{% static 'img/mixkit-player-losing-or-failing-2042.wav' %}"></audio>
         <p id="item-name"></p>
         <br>
-        <strong><p id="item-quantity"></p></strong>
+        <strong><p style='font-size:40px;' id="item-quantity"></p></strong>
         <form id="decrease" action="{% url 'ship_station:decrease' %}" method="POST">{% csrf_token%}
             {{ form.as_p }}
-            <input id="submit-button" type="submit" value="submit">
+            <input class="btn btn-danger btn-lg" id="submit-button" type="submit" value="DECREASE">
         </form>
         <script type="text/javascript">
             $(document).ready(function(){

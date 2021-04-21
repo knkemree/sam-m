@@ -55,15 +55,14 @@
     <main role="main" class="container">
 
       <div class="starter-template">
-        <h1 style="color: blue;">Increase</h1>
         <audio id='alarm-sound' src="{% static 'img/mixkit-classic-alarm-995.wav' %}"></audio>
         <audio id='success-sound' src="{% static 'img/mixkit-ethereal-fairy-win-sound-2019.wav' %}"></audio>
         <p id="item-name"></p>
         <br>
-        <strong><p id="item-quantity"></p></strong>
+        <strong><p style='font-size:40px;' id="item-quantity"></p></strong>
         <form id="increase" action="{% url 'ship_station:increase' %}" method="POST">{% csrf_token%}
             {{ form.as_p }}
-            <input id="submit-button" type="submit" value="submit">
+            <input class="btn btn-primary btn-lg" id="submit-button" type="submit" value="INCREASE">
         </form>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -71,7 +70,7 @@
                $("#increase").submit(function(e){
                 // prevent from normal form behaviour
                 $('#submit-button').prop('disabled',true)
-                
+
                 function disableInput() {
                   $('#id_gtin').prop('disabled',true)
                 };
