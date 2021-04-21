@@ -111,6 +111,7 @@ def increase(request):
         'Accept': 'application/json',
     }
     form = GTINForm()
+    quantity = 1
     if request.method == "POST" and request.is_ajax():
         form = GTINForm(request.POST)
         if form.is_valid():
@@ -131,7 +132,7 @@ def increase(request):
                     try:
                         #find the product in database and increase the quantity
                         product = Product.objects.get(ean=possible_ean)
-                        log = InventoryLog.objects.create(product=product, quantity=1)
+                        log = InventoryLog.objects.create(product=product, quantity=quantity)
                         print('item restocked:',possible_ean)
                         data['result'] = 'restocked'
                         data['itemName'] = str(product)
@@ -167,33 +168,38 @@ def increase(request):
                         brand = data['items'][0]['brand'] #burasi degisebilir eger upcitemdb kullanmazsam
                         if search('gildan',brand, IGNORECASE):
                             print('gildan valid eans: ',valid_eans)
-                            possible_gildan_ean = ean[2:15]
-                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_gildan_ean), headers=headers)
-                            if resp.status_code == 200 :
-                                data = json.loads(resp.text)
-                                for item in data['items']:
-                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                    color, created = Color.objects.get_or_create(name=item['color'])
-                                    size, created = Size.objects.get_or_create(name=item['size'])
-                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                    log = InventoryLog.objects.create(product=product, quantity=1)
+                            if ean == raw_number[2:15]:
+                                possible_gildan_ean = ean[2:15]
+                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
+                                if resp.status_code == 200 :
+                                    data = json.loads(resp.text)
+                                    for item in data['items']:
+                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                        color, created = Color.objects.get_or_create(name=item['color'])
+                                        size, created = Size.objects.get_or_create(name=item['size'])
+                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
+                                else:
+                                    print('cannot find item')
                             else:
                                 print('cannot find item')
                             
                         elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
-                            possible_bella_ean = ean[3:16]
                             print('bella canvas valid eans: ',valid_eans)
-                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_bella_ean), headers=headers)
-                            if resp.status_code == 200 :
-                                data = json.loads(resp.text)
-                                for item in data['items']:
-                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                    color, created = Color.objects.get_or_create(name=item['color'])
-                                    size, created = Size.objects.get_or_create(name=item['size'])
-                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                    log = InventoryLog.objects.create(product=product, quantity=1)
+                            if ean == raw_number[3:16]:
+                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
+                                if resp.status_code == 200 :
+                                    data = json.loads(resp.text)
+                                    for item in data['items']:
+                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                        color, created = Color.objects.get_or_create(name=item['color'])
+                                        size, created = Size.objects.get_or_create(name=item['size'])
+                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
+                                else:
+                                    print('cannot find item')
                             else:
                                 print('cannot find item')
                         else:
@@ -209,7 +215,7 @@ def increase(request):
                         color, created = Color.objects.get_or_create(name=item['color'])
                         size, created = Size.objects.get_or_create(name=item['size'])
                         product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                        log = InventoryLog.objects.create(product=product, quantity=1)  
+                        log = InventoryLog.objects.create(product=product, quantity=quantity)  
                     print("new item created and stocked: ", valid_eans[0])
                     return JsonResponse(data)
             else:
@@ -231,6 +237,7 @@ def decrease(request):
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     }
+    quantity = -1
     form = GTINForm()
     if request.method == "POST" and request.is_ajax():
         form = GTINForm(request.POST)
@@ -253,7 +260,7 @@ def decrease(request):
                     try:
                         #find the product in database and increase the quantity
                         product = Product.objects.get(ean=possible_ean)
-                        log = InventoryLog.objects.create(product=product, quantity=-1)
+                        log = InventoryLog.objects.create(product=product, quantity=quantity)
                         print('item sold:',possible_ean)
                         data['result'] = 'sold'
                         data['itemName'] = str(product)
@@ -290,32 +297,36 @@ def decrease(request):
                         brand = data['items'][0]['brand']
                         if search('gildan',brand, IGNORECASE):
                             print('gildan valid eans: ',valid_eans)
-                            possible_gildan_ean = ean[2:15]
-                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_gildan_ean), headers=headers)
-                            if resp.status_code == 200 :
-                                data = json.loads(resp.text)
-                                for item in data['items']:
-                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                    color, created = Color.objects.get_or_create(name=item['color'])
-                                    size, created = Size.objects.get_or_create(name=item['size'])
-                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                    log = InventoryLog.objects.create(product=product, quantity=-1)
+                            if ean == raw_number[2:15]:
+                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
+                                if resp.status_code == 200 :
+                                    data = json.loads(resp.text)
+                                    for item in data['items']:
+                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                        color, created = Color.objects.get_or_create(name=item['color'])
+                                        size, created = Size.objects.get_or_create(name=item['size'])
+                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
+                                else:
+                                    print('cannot find item')
                             else:
                                 print('cannot find item')
                         elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
                             print('bella canvas valid eans: ',valid_eans)
-                            possible_bella_ean = ean[3:16]
-                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_bella_ean), headers=headers)
-                            if resp.status_code == 200 :
-                                data = json.loads(resp.text)
-                                for item in data['items']:
-                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                    color, created = Color.objects.get_or_create(name=item['color'])
-                                    size, created = Size.objects.get_or_create(name=item['size'])
-                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                    log = InventoryLog.objects.create(product=product, quantity=1)
+                            if ean == raw_number[3:16]:
+                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_bella_ean), headers=headers)
+                                if resp.status_code == 200 :
+                                    data = json.loads(resp.text)
+                                    for item in data['items']:
+                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                        color, created = Color.objects.get_or_create(name=item['color'])
+                                        size, created = Size.objects.get_or_create(name=item['size'])
+                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
+                                else:
+                                    print('cannot find item')
                             else:
                                 print('cannot find item')
                         else:
@@ -332,7 +343,7 @@ def decrease(request):
                         color, created = Color.objects.get_or_create(name=item['color'])
                         size, created = Size.objects.get_or_create(name=item['size'])
                         product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                        log = InventoryLog.objects.create(product=product, quantity=-1)  
+                        log = InventoryLog.objects.create(product=product, quantity=quantity)  
                     print("new item created and sold: ", valid_eans[0])
                     return JsonResponse(data)
             else:

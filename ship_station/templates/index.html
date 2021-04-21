@@ -24,32 +24,7 @@
 
   <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="/ship_station/index/">Aviva</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'ship_station:increase' %}">Increase</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'ship_station:decrease' %}">Decrease</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/ship_station/product/">Check Status</a>
-          </li>
-          
-        </ul>
-        <!-- <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form> -->
-      </div>
-    </nav>
+    {% include 'aviva_navbar.html' %}
 
     <main role="main" class="container">
 
@@ -57,11 +32,11 @@
         <h1>Aviva San Antonio</h1>
         <p class="lead">Aviva San Antonio inventory management system.</p>
         <form action="{% url 'ship_station:increase' %}" >
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Increase</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Increase +</button>
         </form><br>
 
         <form action="{% url 'ship_station:decrease' %}">
-            <button type="submit" class="btn btn-danger btn-lg btn-block">Decrease</button>
+            <button type="submit" class="btn btn-danger btn-lg btn-block">Decrease -</button>
         </form><br><br><br>
         
         <form action="/admin/ship_station/product/">
