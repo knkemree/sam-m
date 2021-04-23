@@ -164,7 +164,7 @@ class Product(BaseModel, SoftDeletableModel):
     model = models.ForeignKey(Model, on_delete=models.CASCADE, blank=True, null=True, help_text='if model is unfamiliar, search item ean at upcitemdb.com')
     color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
-    ean = models.CharField(max_length=20, blank=False, null=True)
+    ean = models.CharField(max_length=100, blank=False, null=True)
     note = models.CharField(max_length=120, blank=True, null=True, help_text='type your notes here about this item')
 
     def __str__(self):
