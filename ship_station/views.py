@@ -289,8 +289,11 @@ def increase(request):
                 data['itemQuantity'] = product.current_stock
                 return JsonResponse(data)
         else:
-            print('form is not valid')
-            return render(request, "increase.html", {"form": form})
+            data['result'] = 'restocked'
+            data['itemName'] = 'cannot find item'
+            return JsonResponse(data)
+            #print('form is not valid')
+            #return render(request, "increase.html", {"form": form})
     else:
         print('no post or ajax request')
         return render(request, "increase.html", {"form": form})
