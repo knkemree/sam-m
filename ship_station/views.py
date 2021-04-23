@@ -121,7 +121,7 @@ class IndexView(FormView):
                 for possible_ean in possible_eans:
                     try:
                         #find the product in database and increase the quantity
-                        product = Product.objects.get(ean=possible_ean)
+                        product = Product.objects.get(ean2=possible_ean)
                         data['itemName'] = str(product)
                         data['itemQuantity'] = product.current_stock
                         return JsonResponse(data)
@@ -176,7 +176,7 @@ def increase(request):
                 possible_ean = str(GTIN(raw='{}'.format(possible_ean)))
                 try:
                     #find the product in database and increase the quantity
-                    product = Product.objects.get(ean=possible_ean)
+                    product = Product.objects.get(ean2=possible_ean)
                     log = InventoryLog.objects.create(product=product, quantity=quantity)
                     print('item restocked:',possible_ean)
                     data['result'] = 'restocked'
@@ -228,7 +228,7 @@ def increase(request):
                                     model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
                                     color, created = Color.objects.get_or_create(name=item['color'])
                                     size, created = Size.objects.get_or_create(name=item['size'])
-                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean2=item['ean'])
                                     log = InventoryLog.objects.create(product=product, quantity=quantity)
                                 data['result'] = 'restocked'
                                 data['itemName'] = str(product)
@@ -249,7 +249,7 @@ def increase(request):
                                     model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
                                     color, created = Color.objects.get_or_create(name=item['color'])
                                     size, created = Size.objects.get_or_create(name=item['size'])
-                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean2=item['ean'])
                                     log = InventoryLog.objects.create(product=product, quantity=quantity)
                                 data['result'] = 'restocked'
                                 data['itemName'] = str(product)
@@ -270,7 +270,7 @@ def increase(request):
                     model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
                     color, created = Color.objects.get_or_create(name=item['color'])
                     size, created = Size.objects.get_or_create(name=item['size'])
-                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean2=item['ean'])
                     log = InventoryLog.objects.create(product=product, quantity=quantity)  
                 print("new item created and stocked: ", valid_eans[0])
                 data['result'] = 'restocked'
@@ -324,7 +324,7 @@ def decrease(request):
             for possible_ean in possible_eans:
                 try:
                     #find the product in database and increase the quantity
-                    product = Product.objects.get(ean=possible_ean)
+                    product = Product.objects.get(ean2=possible_ean)
                     log = InventoryLog.objects.create(product=product, quantity=quantity)
                     print('item sold:',possible_ean)
                     data['result'] = 'sold'
