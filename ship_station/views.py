@@ -201,7 +201,7 @@ def increase(request):
                 else:
                     data['result'] = resp.status_code
                     print('response status code:',resp.status_code)
-                    return JsonResponse(data)
+                    #return JsonResponse(data)
                 
                 
                 
@@ -212,8 +212,9 @@ def increase(request):
                 print('listenin ici bos: ',valid_eans)
                 data['result'] = 'restocked'
                 data['itemName'] = 'valid ean ici bos'
+                return JsonResponse(data)
                 #data['itemQuantity'] = 'valid ean ici bos'
-                return render(request, "increase.html", {"form": form})
+                #return render(request, "increase.html", {"form": form})
             elif len(valid_eans) > 1:
                 print('more than one valid eans in the string:',valid_eans)
                 for ean in valid_eans:
