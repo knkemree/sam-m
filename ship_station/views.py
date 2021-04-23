@@ -189,6 +189,7 @@ def increase(request):
             #database'e bakti ve bulamadiysa hicbirsey return edemeycek ve sira bu limitli requesti calistirmaya gelecek    
             valid_eans = []
             for possible_ean in possible_eans:
+                time.sleep(1) #requesti yavaslatmak icin bir saniye koydum
                 resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_ean), headers=headers)
                 data = json.loads(resp.text)
                 if resp.status_code == 200 and data['total'] != 0:
@@ -200,7 +201,7 @@ def increase(request):
                     data['result'] = resp.status_code
                     print('response status code:',resp.status_code)
                     #return JsonResponse(data)
-                time.sleep(1) #requesti yavaslatmak icin bir saniye koydum
+                
                 
                 
             print(valid_eans,'valid eands')
