@@ -209,7 +209,10 @@ def increase(request):
             #valid eanler saptandiktan sonra    
             #eger stringin icinde birden fazla valid ean varsa
             if not valid_eans: #eger listenin ici bossa
-                print('listenin ici bos: ',valid_eans) 
+                print('listenin ici bos: ',valid_eans)
+                data['result'] = 'restocked'
+                data['itemName'] = 'valid ean ici bos'
+                #data['itemQuantity'] = 'valid ean ici bos'
                 return render(request, "increase.html", {"form": form})
             elif len(valid_eans) > 1:
                 print('more than one valid eans in the string:',valid_eans)
@@ -234,8 +237,12 @@ def increase(request):
                                 data['itemName'] = str(product)
                                 data['itemQuantity'] = product.current_stock
                             else:
+                                data['result'] = 'restocked'
+                                data['itemName'] = 'cannot find item'
                                 print('cannot find item')
                         else:
+                            data['result'] = 'restocked'
+                            data['itemName'] = 'cannot find item'
                             print('cannot find item')
                         
                     elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
@@ -255,8 +262,12 @@ def increase(request):
                                 data['itemName'] = str(product)
                                 data['itemQuantity'] = product.current_stock
                             else:
+                                data['result'] = 'restocked'
+                                data['itemName'] = 'cannot find item'
                                 print('cannot find item')
                         else:
+                            data['result'] = 'restocked'
+                            data['itemName'] = 'cannot find item'
                             print('cannot find item')
                     else:
                         #eger birden fazla valid ean var ve bella veya gildan oldugu saptanamiyprsa hic birsey yapma ve sayfayi yeniden ac

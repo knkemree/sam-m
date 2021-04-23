@@ -12,7 +12,7 @@ class InventoryLogAdmin(admin.ModelAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['model','size','color','in_stock','created_at']
-    fields = ['ean','in_stock','name','model','size','color','note']
+    fields = ['ean','ean2','in_stock','name','model','size','color','note']
     #readonly_fields = ['ean','in_stock','name','model','size','color',]
     readonly_fields = ['in_stock']
     list_filter = ['size','color','model','model__brand']
