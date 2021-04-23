@@ -201,7 +201,7 @@ def increase(request):
                 else:
                     data['result'] = resp.status_code
                     print('response status code:',resp.status_code)
-                    return JsonResponse(data)
+                    #return JsonResponse(data)
                 
                 
                 
