@@ -35,7 +35,6 @@
         <audio id='alarm-sound' src="{% static 'img/mixkit-classic-alarm-995.wav' %}"></audio>
         <audio id='success-sound' src="{% static 'img/mixkit-player-losing-or-failing-2042.wav' %}"></audio>
         <p id="item-name"></p>
-        <br>
         <strong><p style='font-size:40px;' id="item-quantity"></p></strong>
         <form id="decrease" action="{% url 'ship_station:decrease' %}" method="POST">{% csrf_token%}
             {{ form.as_p }}
@@ -83,6 +82,11 @@
                         alert('invalid barcode'); 
                       }
                       if(response.result == 'sold'){
+                        document.getElementById('success-sound').play();
+                        $('#item-name').html(response.itemName);
+                        $('#item-quantity').html(response.itemQuantity);
+                      };
+                      if(response.result == 'not_found'){
                         document.getElementById('success-sound').play();
                         $('#item-name').html(response.itemName);
                         $('#item-quantity').html(response.itemQuantity);

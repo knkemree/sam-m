@@ -14,6 +14,7 @@ from gtin import GTIN
 from django.views import generic
 from re import search, IGNORECASE
 from .forms import GTINForm
+import time
 
 # Create your views here.
 
@@ -130,10 +131,11 @@ class IndexView(FormView):
                         return JsonResponse(data)
         else:
             data['itemName'] = 'Barcode invalid'
-            data['itemQuantity'] = 'Try again'
+            data['itemQuantity'] = 'Barcode length less than 12'
             return JsonResponse(data)
 
-
+def convert_to_ean(number):
+        return str(GTIN(raw='{}'.format(number)))
 
 def increase(request):
     data = {}
@@ -143,6 +145,7 @@ def increase(request):
     }
     form = GTINForm()
     quantity = 1
+
     if request.method == "POST" and request.is_ajax():
         form = GTINForm(request.POST)
         if form.is_valid():
@@ -150,109 +153,128 @@ def increase(request):
             raw_number = str(form.cleaned_data.get('gtin'))
             print('string: ',raw_number)
             print('string length: ',len(str(raw_number)))
-            if len(raw_number) >=12:
-                possible_eans = []
-                for i in range(len(raw_number)-11):
-                    possible_upc = raw_number[0+i:12+i]
-                    possible_ean = str(GTIN(raw='{}'.format(possible_upc)))
-                    possible_eans.append(possible_ean)
-                    print('tried this: ',possible_ean)
+            possible_eans = []
+            if len(raw_number) >=14:
+                possible_eans.append(str(convert_to_ean(raw_number[2:14])))
+                possible_eans.append(str(convert_to_ean(raw_number[3:15])))
+                # for i in range(len(raw_number)-11):
+                #     possible_upc = raw_number[0+i:12+i]
+                #     possible_ean = str(GTIN(raw='{}'.format(possible_upc)))
+                #     print('tried this: ',possible_ean)
 
                 #requstte bulunmadan once database'e bak bu urun kayitli mi diye, eger bulursa stogu arttir. bulamazsan gunluk 100 limiti olan reques'ti calistir
-                for possible_ean in possible_eans:
-                    try:
-                        #find the product in database and increase the quantity
-                        product = Product.objects.get(ean=possible_ean)
-                        log = InventoryLog.objects.create(product=product, quantity=quantity)
-                        print('item restocked:',possible_ean)
-                        data['result'] = 'restocked'
-                        data['itemName'] = str(product)
-                        data['itemQuantity'] = product.current_stock
-                        return JsonResponse(data)
-                    except:
-                        pass
-
-                #database'e bakti ve bulamadiysa hicbirsey return edemeycek ve sira bu limitli requesti calistirmaya gelecek    
-                valid_eans = []
-                for possible_ean in possible_eans:
-                    resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_ean), headers=headers)
-                    if resp.status_code == 200 :
-                        #eger string icerisinde ikiden fazla valid ean varsa istenmeyen urunler de stoga girecek
-                        valid_ean = possible_ean
-                        print('valid ean: ', valid_ean)
-                        valid_eans.append(valid_ean)
-                    else:
-                        data['result'] = resp.status_code
-                        print('response status code:',resp.status_code)
-                        return JsonResponse(data)
-                    
-
-                #valid eanler saptandiktan sonra    
-                #eger stringin icinde birden fazla valid ean varsa
-                if not valid_eans: #eger listenin ici bossa
-                    print('listenin ici bos: ',valid_eans) 
-                    return render(request, "increase.html", {"form": form})
-                elif len(valid_eans) > 1:
-                    print('more than one valid eans in the string:',valid_eans)
-                    for ean in valid_eans:
-                        print(ean)
-                        brand = data['items'][0]['brand'] #burasi degisebilir eger upcitemdb kullanmazsam
-                        if search('gildan',brand, IGNORECASE):
-                            print('gildan valid eans: ',valid_eans)
-                            if ean == raw_number[2:15]:
-                                possible_gildan_ean = ean[2:15]
-                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
-                                if resp.status_code == 200 :
-                                    data = json.loads(resp.text)
-                                    for item in data['items']:
-                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                        color, created = Color.objects.get_or_create(name=item['color'])
-                                        size, created = Size.objects.get_or_create(name=item['size'])
-                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
-                                else:
-                                    print('cannot find item')
-                            else:
-                                print('cannot find item')
-                            
-                        elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
-                            print('bella canvas valid eans: ',valid_eans)
-                            if ean == raw_number[3:16]:
-                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
-                                if resp.status_code == 200 :
-                                    data = json.loads(resp.text)
-                                    for item in data['items']:
-                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                        color, created = Color.objects.get_or_create(name=item['color'])
-                                        size, created = Size.objects.get_or_create(name=item['size'])
-                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
-                                else:
-                                    print('cannot find item')
-                            else:
-                                print('cannot find item')
-                        else:
-                            #eger birden fazla valid ean var ve bella veya gildan oldugu saptanamiyprsa hic birsey yapma ve sayfayi yeniden ac
-                            return render(request, "increase.html", {"form": form})
-                    return render(request, "increase.html", {"form": form})
-                else: #yoksa kalsik metodtan devam
-                    resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(valid_eans[0]), headers=headers)
-                    data = json.loads(resp.text)
-                    for item in data['items']:
-                        brand, created = Brand.objects.get_or_create(name=item['brand'])
-                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                        color, created = Color.objects.get_or_create(name=item['color'])
-                        size, created = Size.objects.get_or_create(name=item['size'])
-                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                        log = InventoryLog.objects.create(product=product, quantity=quantity)  
-                    print("new item created and stocked: ", valid_eans[0])
-                    return JsonResponse(data)
+            elif len(raw_number) == 13:
+                possible_eans.append(str(raw_number[1:13]))
+            elif len(raw_number) == 12:
+                possible_eans.append(str(convert_to_ean(raw_number)))
             else:
                 print('string length in correnct: ',raw_number)
                 data['result'] = 'invalid_barcode'
                 return render(request, "increase.html", {"form": form})
+
+            for possible_ean in possible_eans:
+                possible_ean = str(GTIN(raw='{}'.format(possible_ean)))
+                try:
+                    #find the product in database and increase the quantity
+                    product = Product.objects.get(ean=possible_ean)
+                    log = InventoryLog.objects.create(product=product, quantity=quantity)
+                    print('item restocked:',possible_ean)
+                    data['result'] = 'restocked'
+                    data['itemName'] = str(product)
+                    data['itemQuantity'] = product.current_stock
+                    return JsonResponse(data)
+                except:
+                    pass
+            print(possible_eans)
+            #database'e bakti ve bulamadiysa hicbirsey return edemeycek ve sira bu limitli requesti calistirmaya gelecek    
+            valid_eans = []
+            for possible_ean in possible_eans:
+                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_ean), headers=headers)
+                data = json.loads(resp.text)
+                if resp.status_code == 200 and data['total'] != 0:
+                    #eger string icerisinde ikiden fazla valid ean varsa istenmeyen urunler de stoga girecek
+                    valid_ean = possible_ean
+                    print('valid ean: ', valid_ean)
+                    valid_eans.append(valid_ean)
+                else:
+                    data['result'] = resp.status_code
+                    print('response status code:',resp.status_code)
+                    #return JsonResponse(data)
+                time.sleep(1) #requesti yavaslatmak icin bir saniye koydum
+                
+                
+            print(valid_eans,'valid eands')
+            #valid eanler saptandiktan sonra    
+            #eger stringin icinde birden fazla valid ean varsa
+            if not valid_eans: #eger listenin ici bossa
+                print('listenin ici bos: ',valid_eans) 
+                return render(request, "increase.html", {"form": form})
+            elif len(valid_eans) > 1:
+                print('more than one valid eans in the string:',valid_eans)
+                for ean in valid_eans:
+                    print(ean)
+                    brand = data['items'][0]['brand'] #burasi degisebilir eger upcitemdb kullanmazsam
+                    if search('gildan',brand, IGNORECASE):
+                        print('gildan valid eans: ',valid_eans)
+                        if ean == raw_number[2:15]:
+                            possible_gildan_ean = ean[2:15]
+                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
+                            if resp.status_code == 200 :
+                                data = json.loads(resp.text)
+                                for item in data['items']:
+                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                    color, created = Color.objects.get_or_create(name=item['color'])
+                                    size, created = Size.objects.get_or_create(name=item['size'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    log = InventoryLog.objects.create(product=product, quantity=quantity)
+                                data['result'] = 'restocked'
+                                data['itemName'] = str(product)
+                                data['itemQuantity'] = product.current_stock
+                            else:
+                                print('cannot find item')
+                        else:
+                            print('cannot find item')
+                        
+                    elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
+                        print('bella canvas valid eans: ',valid_eans)
+                        if ean == raw_number[3:16]:
+                            resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
+                            if resp.status_code == 200 :
+                                data = json.loads(resp.text)
+                                for item in data['items']:
+                                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                                    color, created = Color.objects.get_or_create(name=item['color'])
+                                    size, created = Size.objects.get_or_create(name=item['size'])
+                                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                                    log = InventoryLog.objects.create(product=product, quantity=quantity)
+                                data['result'] = 'restocked'
+                                data['itemName'] = str(product)
+                                data['itemQuantity'] = product.current_stock
+                            else:
+                                print('cannot find item')
+                        else:
+                            print('cannot find item')
+                    else:
+                        #eger birden fazla valid ean var ve bella veya gildan oldugu saptanamiyprsa hic birsey yapma ve sayfayi yeniden ac
+                        return render(request, "increase.html", {"form": form})
+                return render(request, "increase.html", {"form": form})
+            else: #yoksa kalsik metodtan devam
+                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(valid_eans[0]), headers=headers)
+                data = json.loads(resp.text)
+                for item in data['items']:
+                    brand, created = Brand.objects.get_or_create(name=item['brand'])
+                    model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
+                    color, created = Color.objects.get_or_create(name=item['color'])
+                    size, created = Size.objects.get_or_create(name=item['size'])
+                    product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
+                    log = InventoryLog.objects.create(product=product, quantity=quantity)  
+                print("new item created and stocked: ", valid_eans[0])
+                data['result'] = 'restocked'
+                data['itemName'] = str(product)
+                data['itemQuantity'] = product.current_stock
+                return JsonResponse(data)
         else:
             print('form is not valid')
             return render(request, "increase.html", {"form": form})
@@ -277,110 +299,42 @@ def decrease(request):
             raw_number = str(form.cleaned_data.get('gtin'))
             print('string: ',raw_number)
             print('string length: ',len(str(raw_number)))
-            if len(raw_number) >=12:
-                
-                possible_eans = []
-                for i in range(len(raw_number)-11):
-                    possible_upc = raw_number[0+i:12+i]
-                    possible_ean = str(GTIN(raw='{}'.format(possible_upc)))
-                    possible_eans.append(possible_ean)
-                    print('tried this: ',possible_ean)
+            possible_eans = []
+            if len(raw_number) >=14:
+                possible_eans.append(str(convert_to_ean(raw_number[2:14])))
+                possible_eans.append(str(convert_to_ean(raw_number[3:15])))
+                # for i in range(len(raw_number)-11):
+                #     possible_upc = raw_number[0+i:12+i]
+                #     possible_ean = str(GTIN(raw='{}'.format(possible_upc)))
+                #     print('tried this: ',possible_ean)
 
                 #requstte bulunmadan once database'e bak bu urun kayitli mi diye, eger bulursa stogu arttir. bulamazsan gunluk 100 limiti olan reques'ti calistir
-                for possible_ean in possible_eans:
-                    try:
-                        #find the product in database and increase the quantity
-                        product = Product.objects.get(ean=possible_ean)
-                        log = InventoryLog.objects.create(product=product, quantity=quantity)
-                        print('item sold:',possible_ean)
-                        data['result'] = 'sold'
-                        data['itemName'] = str(product)
-                        data['itemQuantity'] = product.current_stock
-                        return JsonResponse(data)
-                    except:
-                        pass
-
-                #database'e bakti ve bulamadiysa hicbirsey return edemeycek ve sira bu limitli requesti calistirmaya gelecek    
-                valid_eans = []
-                for possible_ean in possible_eans:
-                    resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_ean), headers=headers)
-                    if resp.status_code == 200 :
-                        #eger string icerisinde ikiden fazla valid ean varsa istenmeyen urunler de stoga girecek
-                        valid_ean = possible_ean
-                        print('valid ean: ', valid_ean)
-                        valid_eans.append(valid_ean)
-                    else:
-                        data['result'] = resp.status_code
-                        print('response status code:',resp.status_code)
-                        return JsonResponse(data)
-                    
-
-                #valid eanler saptandiktan sonra    
-                #eger stringin icinde birden fazla valid ean varsa
-                if not valid_eans:
-                    print('listenin ici bos: ',valid_eans)
-                    #eger listenin ici bossa
-                    return render(request, "decrease.html", {"form": form})
-                elif len(valid_eans) > 1:
-                    print('more than one valid eans in the string: ',valid_eans)
-                    for ean in valid_eans:
-                        print(ean)
-                        brand = data['items'][0]['brand']
-                        if search('gildan',brand, IGNORECASE):
-                            print('gildan valid eans: ',valid_eans)
-                            if ean == raw_number[2:15]:
-                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(ean), headers=headers)
-                                if resp.status_code == 200 :
-                                    data = json.loads(resp.text)
-                                    for item in data['items']:
-                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                        color, created = Color.objects.get_or_create(name=item['color'])
-                                        size, created = Size.objects.get_or_create(name=item['size'])
-                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
-                                else:
-                                    print('cannot find item')
-                            else:
-                                print('cannot find item')
-                        elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
-                            print('bella canvas valid eans: ',valid_eans)
-                            if ean == raw_number[3:16]:
-                                resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_bella_ean), headers=headers)
-                                if resp.status_code == 200 :
-                                    data = json.loads(resp.text)
-                                    for item in data['items']:
-                                        brand, created = Brand.objects.get_or_create(name=item['brand'])
-                                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                                        color, created = Color.objects.get_or_create(name=item['color'])
-                                        size, created = Size.objects.get_or_create(name=item['size'])
-                                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                                        log = InventoryLog.objects.create(product=product, quantity=quantity)
-                                else:
-                                    print('cannot find item')
-                            else:
-                                print('cannot find item')
-                        else:
-                            #eger birden fazla valid ean var ve bella veya gildan oldugu saptanamiyprsa hic birsey yapma ve sayfayi yeniden ac
-                            return render(request, "decrease.html", {"form": form})
-                    return render(request, "decrease.html", {"form": form})
-                #yoksa kalsik metodtan devam
-                else:
-                    resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(valid_eans[0]), headers=headers)
-                    data = json.loads(resp.text)
-                    for item in data['items']:
-                        brand, created = Brand.objects.get_or_create(name=item['brand'])
-                        model, created = Model.objects.get_or_create(brand=brand, name=item['model'])
-                        color, created = Color.objects.get_or_create(name=item['color'])
-                        size, created = Size.objects.get_or_create(name=item['size'])
-                        product = Product.objects.create(name=item['title'],model=model,color=color,size=size,ean=item['ean'])
-                        log = InventoryLog.objects.create(product=product, quantity=quantity)  
-                    print("new item created and sold: ", valid_eans[0])
-                    return JsonResponse(data)
+            elif len(raw_number) == 13:
+                possible_eans.append(str(raw_number[1:13]))
+            elif len(raw_number) == 12:
+                possible_eans.append(str(convert_to_ean(raw_number)))
             else:
                 print('string length in correnct: ',raw_number)
                 data['result'] = 'invalid_barcode'
                 return JsonResponse(data)
+
+            #requstte bulunmadan once database'e bak bu urun kayitli mi diye, eger bulursa stogu arttir. bulamazsan gunluk 100 limiti olan reques'ti calistir
+            for possible_ean in possible_eans:
+                try:
+                    #find the product in database and increase the quantity
+                    product = Product.objects.get(ean=possible_ean)
+                    log = InventoryLog.objects.create(product=product, quantity=quantity)
+                    print('item sold:',possible_ean)
+                    data['result'] = 'sold'
+                    data['itemName'] = str(product)
+                    data['itemQuantity'] = product.current_stock
+                    return JsonResponse(data)
+                except:
+                    data['result'] = 'not_found'
+                    data['itemName'] = 'item does not exist'
+                    data['itemQuantity'] = 'not found'
+                    return JsonResponse(data)
+
         else:
             print('form is not valid')
             return render(request, "decrease.html", {"form": form})
