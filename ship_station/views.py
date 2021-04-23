@@ -189,8 +189,9 @@ def increase(request):
             #database'e bakti ve bulamadiysa hicbirsey return edemeycek ve sira bu limitli requesti calistirmaya gelecek    
             valid_eans = []
             for possible_ean in possible_eans:
-                time.sleep(1) #requesti yavaslatmak icin bir saniye koydum
+                time.sleep(0.5) #requesti yavaslatmak icin bir saniye koydum
                 resp = requests.get('https://api.upcitemdb.com/prod/trial/lookup?upc={}'.format(possible_ean), headers=headers)
+                time.sleep(0.5) #requesti yavaslatmak icin bir saniye koydum
                 data = json.loads(resp.text)
                 if resp.status_code == 200 and data['total'] != 0:
                     #eger string icerisinde ikiden fazla valid ean varsa istenmeyen urunler de stoga girecek
