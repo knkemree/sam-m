@@ -201,7 +201,7 @@ def increase(request):
                 else:
                     data['result'] = resp.status_code
                     print('response status code:',resp.status_code)
-                    #return JsonResponse(data)
+                    return JsonResponse(data)
                 
                 
                 
@@ -236,14 +236,17 @@ def increase(request):
                                 data['result'] = 'restocked'
                                 data['itemName'] = str(product)
                                 data['itemQuantity'] = product.current_stock
+                                return JsonResponse(data)
                             else:
                                 data['result'] = 'restocked'
                                 data['itemName'] = 'cannot find item'
                                 print('cannot find item')
+                                return JsonResponse(data)
                         else:
                             data['result'] = 'restocked'
                             data['itemName'] = 'cannot find item'
                             print('cannot find item')
+                            return JsonResponse(data)
                         
                     elif search('bella',brand, IGNORECASE) or search('canvas',brand, IGNORECASE):
                         print('bella canvas valid eans: ',valid_eans)
@@ -261,14 +264,17 @@ def increase(request):
                                 data['result'] = 'restocked'
                                 data['itemName'] = str(product)
                                 data['itemQuantity'] = product.current_stock
+                                return JsonResponse(data)
                             else:
                                 data['result'] = 'restocked'
                                 data['itemName'] = 'cannot find item'
                                 print('cannot find item')
+                                return JsonResponse(data)
                         else:
                             data['result'] = 'restocked'
                             data['itemName'] = 'cannot find item'
                             print('cannot find item')
+                            return JsonResponse(data)
                     else:
                         #eger birden fazla valid ean var ve bella veya gildan oldugu saptanamiyprsa hic birsey yapma ve sayfayi yeniden ac
                         return render(request, "increase.html", {"form": form})
