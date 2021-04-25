@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from django.utils import timezone
 from django.db.models import Sum
+from decimal import Decimal
 
 
 
@@ -118,7 +119,7 @@ class ArchivedModel(Model):
 
 class Color(BaseModel, SoftDeletableModel):
     name=models.CharField(max_length=100, blank=False, null=True)
-    colorCode=models.IntegerField(blank=False, null=False)
+    colorCode=models.CharField(max_length=100,blank=False, null=False)
 
 
     def __str__(self):
@@ -166,15 +167,15 @@ class ArchivedSize(Size):
 
 class Product(BaseModel, SoftDeletableModel):
     sku = models.CharField(max_length=100, blank=True, null=True)
-    skuID_Master = models.CharField(max_length=100, blank=True, null=True)
+    #skuID_Master = models.CharField(max_length=100, blank=True, null=True)
     #ean = models.CharField(max_length=500, blank=False, null=True)
     gtin = models.CharField(max_length=500, blank=False, null=True)
-    name = models.CharField(max_length=60, blank=True, null=True, help_text='title of the product')
+    #name = models.CharField(max_length=60, blank=True, null=True, help_text='title of the product')
     model = models.ForeignKey(Model, on_delete=models.CASCADE, blank=True, null=True, help_text='if model is unfamiliar, search item ean at upcitemdb.com')
     color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
     caseQty = models.IntegerField(blank=True, null=True)
-    ean2 = models.TextField(blank=False, null=True)
+    #ean2 = models.TextField(blank=False, null=True)
     note = models.CharField(max_length=120, blank=True, null=True, help_text='type your notes here about this item')
 
     def __str__(self):
@@ -182,7 +183,12 @@ class Product(BaseModel, SoftDeletableModel):
 
     @property
     def current_stock(self):
-        total = self.logs.all().aggregate(Sum('quantity'))['quantity__sum']
+        try:
+            total = self.logs.all().aggregate(Sum('quantity'))['quantity__sum']
+            if total is None:
+                return Decimal(0)
+        except:
+            return Decimal(0)
         return total
 
 class ArchivedProductManager(models.Manager):

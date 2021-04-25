@@ -39,35 +39,27 @@ class ProductResource(resources.ModelResource):
         report_skipped = True
         import_id_fields = ('gtin',)
         #published = Field(attribute='created', column_name='created_date')
-        fields = ('sku','gtin','model_name','size_name','model_styleID','color_name',)
+        fields = ('sku','gtin','model_styleID','model_name','size_name','color_name','caseQty')
         #exclude = ('imported', )
         #export_order = ('id', 'name', 'category__name','created')
-           
         #widgets = {'published': {'format': '%d.%m.%Y'},}
     # def dehydrate_full_title(self, product):
     #     return '%s by %s' % (product.name, product.category.name)
 
     def before_import_row(self, row, **kwargs):
-        
-        
         #Category.objects.get_or_create(name=row.get('child_collection'))
         #row['child_collection'] = cat.name
         #cat = Category.objects.get_or_create(id=row.get('category'))
         #category = Category.objects.get(id=row['category'])
         #Product.objects.get_or_create(id=row.get('id'), category_id=row['category'])
-        
-        
-        
-        
         #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
-
         return super().before_import_row(row, **kwargs)
 
 class ProductAdmin(ImportExportModelAdmin):
     list_display = ['id','model','size','color','in_stock','created_at']
-    fields = ['sku','skuID_Master','gtin','ean2','in_stock','name','model','size','color','note']
+    fields = ['sku','gtin','in_stock','model','size','color','caseQty','note']
     #readonly_fields = ['ean','in_stock','name','model','size','color',]
-    readonly_fields = ['in_stock']
+    readonly_fields = ['in_stock','caseQty']
     list_filter = ['size','color','model','model__brand']
     search_fields = ['size__name','color__name','model__name','model__brand__name','gtin']
     resource_class = ProductResource
