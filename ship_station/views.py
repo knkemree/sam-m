@@ -155,11 +155,6 @@ def increase(request):
                         data['itemName'] = str(gtin[0])
                         data['itemQuantity'] = gtin[0].current_stock
                         return JsonResponse(data)
-                    else:
-                        data['result'] = 'invalid_barcode'
-                        data['itemName'] = 'Item with this gtin does not exist.'
-                        data['itemQuantity'] = 'Not Found'
-                        return JsonResponse(data)
             else:
                 data['result'] = 'invalid_barcode'
                 data['itemName'] = 'Barcode invalid'
