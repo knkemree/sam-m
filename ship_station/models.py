@@ -92,6 +92,8 @@ class ArchivedBrand(Brand):
 class Model(BaseModel, SoftDeletableModel):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, blank=True, null=True)
     name=models.CharField(max_length=20, blank=False, null=True)
+    styleID = models.CharField(max_length=20, blank=False)
+
 
     def __str__(self):
         return "{} | {}".format(self.brand, self.name)
@@ -116,6 +118,8 @@ class ArchivedModel(Model):
 
 class Color(BaseModel, SoftDeletableModel):
     name=models.CharField(max_length=20, blank=False, null=True)
+    colorCode=models.IntegerField(blank=False, null=False)
+
 
     def __str__(self):
         return str(self.name)
@@ -138,6 +142,7 @@ class ArchivedColor(Color):
 
 class Size(BaseModel, SoftDeletableModel):
     name=models.CharField(max_length=20, blank=False, null=True)
+    sizeCode=models.IntegerField(blank=False, null=False)
 
     def __str__(self):
         return str(self.name)
@@ -160,11 +165,15 @@ class ArchivedSize(Size):
 
 
 class Product(BaseModel, SoftDeletableModel):
+    sku = models.CharField(max_length=60, blank=True, null=True)
+    skuID_Master = models.CharField(max_length=60, blank=True, null=True)
+    #ean = models.CharField(max_length=500, blank=False, null=True)
+    gtin = models.CharField(max_length=500, blank=False, null=True)
     name = models.CharField(max_length=60, blank=True, null=True, help_text='title of the product')
     model = models.ForeignKey(Model, on_delete=models.CASCADE, blank=True, null=True, help_text='if model is unfamiliar, search item ean at upcitemdb.com')
     color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
-    ean = models.CharField(max_length=500, blank=False, null=True)
+    caseQty = models.IntegerField(blank=True, null=True)
     ean2 = models.TextField(blank=False, null=True)
     note = models.CharField(max_length=120, blank=True, null=True, help_text='type your notes here about this item')
 
