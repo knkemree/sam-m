@@ -67,7 +67,7 @@ class BaseModel(models.Model):
        abstract = True
 
 class Brand(BaseModel, SoftDeletableModel):
-    name=models.CharField(max_length=20, blank=False, null=True)
+    name=models.CharField(max_length=100, blank=False, null=True)
 
     def __str__(self):
         return str(self.name)
@@ -117,7 +117,7 @@ class ArchivedModel(Model):
 
 
 class Color(BaseModel, SoftDeletableModel):
-    name=models.CharField(max_length=20, blank=False, null=True)
+    name=models.CharField(max_length=100, blank=False, null=True)
     colorCode=models.IntegerField(blank=False, null=False)
 
 
@@ -141,7 +141,7 @@ class ArchivedColor(Color):
         super().hard_delete()
 
 class Size(BaseModel, SoftDeletableModel):
-    name=models.CharField(max_length=20, blank=False, null=True)
+    name=models.CharField(max_length=100, blank=False, null=True)
     sizeCode=models.IntegerField(blank=False, null=False)
 
     def __str__(self):
@@ -165,8 +165,8 @@ class ArchivedSize(Size):
 
 
 class Product(BaseModel, SoftDeletableModel):
-    sku = models.CharField(max_length=60, blank=True, null=True)
-    skuID_Master = models.CharField(max_length=60, blank=True, null=True)
+    sku = models.CharField(max_length=100, blank=True, null=True)
+    skuID_Master = models.CharField(max_length=100, blank=True, null=True)
     #ean = models.CharField(max_length=500, blank=False, null=True)
     gtin = models.CharField(max_length=500, blank=False, null=True)
     name = models.CharField(max_length=60, blank=True, null=True, help_text='title of the product')
