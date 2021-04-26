@@ -231,6 +231,12 @@ class ProductDetailView(generic.DetailView):
     model = Product
 
 
+
 class ProductListView(generic.ListView):
     model = Product
     paginate_by = 25
+
+    # def get_queryset(self):
+    #     items =Product.objects.all().order_by('current_stock')
+        
+    #     return items

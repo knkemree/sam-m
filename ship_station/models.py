@@ -186,9 +186,9 @@ class Product(BaseModel, SoftDeletableModel):
         try:
             total = self.logs.all().aggregate(Sum('quantity'))['quantity__sum']
             if total is None:
-                return Decimal(0)
+                return 0
         except:
-            return Decimal(0)
+            return 0
         return total
 
 class ArchivedProductManager(models.Manager):
