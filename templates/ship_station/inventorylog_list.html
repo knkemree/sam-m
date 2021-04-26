@@ -11,7 +11,10 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Product</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Model</th>
+        <th scope="col">Color</th>
+        <th scope="col">Size</th>
         <th scope="col">On Hand</th>
       </tr>
     </thead>
@@ -19,7 +22,10 @@
     {% for object in object_list %}
       <tr>
         <th scope="row">#{{ object.product.id }}</th>
-        <td>{{ object.product }}</td>
+        <td>{{ object.product.model.brand }}</td>
+        <td>{{ object.product.model.name }}</td>
+        <td>{{ object.product.color }}</td>
+        <td>{{ object.product.size }}</td>
         <td>{{ object.current_stock }}</td>
       </tr>
     {% endfor %}
