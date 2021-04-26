@@ -233,3 +233,4 @@ class ProductDetailView(generic.DetailView):
 
 class ProductListView(generic.ListView):
     model = Product
+    paginate_by = 25
