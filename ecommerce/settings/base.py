@@ -76,7 +76,7 @@ INSTALLED_APPS = [
     'import_export',
     'editorjs_field',
 
-    'payment.apps.PaymentConfig',
+    #'payment.apps.PaymentConfig',
     "products",
     "account",
     "blog",
