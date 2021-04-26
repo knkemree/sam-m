@@ -144,7 +144,7 @@ def increase(request):
             raw_number = str(form.cleaned_data.get('gtin'))
             print('string: ',raw_number)
             print('string length: ',len(str(raw_number)))
-            if len(raw_number) >=14:
+            if len(raw_number) >14:
                 for i in range(len(raw_number)-13):
                     possible_gtin = raw_number[0+i:14+i]
                     gtin = Product.objects.filter(gtin__icontains=possible_gtin)
@@ -155,10 +155,12 @@ def increase(request):
                         data['itemName'] = str(gtin[0])
                         data['itemQuantity'] = gtin[0].current_stock
                         return JsonResponse(data)
-            else:
-                data['result'] = 'invalid_barcode'
-                data['itemName'] = 'Barcode invalid'
-                data['itemQuantity'] = 'Try Again'
+            elif len(raw_number) == 14:
+                gtin = Product.objects.filter(gtin__icontains=possible_gtin)
+                InventoryLog.objects.create(product=gtin[0],quantity=quantity)
+                data['result'] = 'restocked'
+                data['itemName'] = str(gtin[0])
+                data['itemQuantity'] = gtin[0].current_stock
                 return JsonResponse(data)
         else:
             data['result'] = 'form is not valid'
@@ -198,6 +200,13 @@ def decrease(request):
                         data['itemName'] = str(gtin[0])
                         data['itemQuantity'] = gtin[0].current_stock
                         return JsonResponse(data)
+            elif len(raw_number) == 14:
+                gtin = Product.objects.filter(gtin__icontains=possible_gtin)
+                InventoryLog.objects.create(product=gtin[0],quantity=quantity)
+                data['result'] = 'restocked'
+                data['itemName'] = str(gtin[0])
+                data['itemQuantity'] = gtin[0].current_stock
+                return JsonResponse(data)
         else:
             data['result'] = 'form is not valid'
             data['itemName'] = 'cannot find item'
