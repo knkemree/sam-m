@@ -201,11 +201,16 @@ def decrease(request):
                         data['itemQuantity'] = gtin[0].current_stock
                         return JsonResponse(data)
             elif len(raw_number) == 14:
-                gtin = Product.objects.filter(gtin__icontains=possible_gtin)
-                InventoryLog.objects.create(product=gtin[0],quantity=quantity)
-                data['result'] = 'restocked'
-                data['itemName'] = str(gtin[0])
-                data['itemQuantity'] = gtin[0].current_stock
+                try:
+                    Product.objects.get(gtin=raw_number)
+                    InventoryLog.objects.create(product=gtin[0],quantity=quantity)
+                    data['result'] = 'restocked'
+                    data['itemName'] = str(gtin[0])
+                    data['itemQuantity'] = gtin[0].current_stock
+                except:
+                    data['result'] = 'invalid_barcode'
+                    data['itemName'] = 'This item does not exist. Check GTIN!'
+                    data['itemQuantity'] = 'Not Found'
                 return JsonResponse(data)
         else:
             data['result'] = 'form is not valid'
