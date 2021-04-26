@@ -15,8 +15,6 @@ def menu(request):
         bed_sheets = Product.objects.filter(category_id=bed_sheet.id).select_related('category')
     except:
         bed_sheets = []
-    print("bed_sheets")
-    print(bed_sheets)
 
     try:
         towel = Category.objects.filter(slug__contains="towels").select_related('parent')

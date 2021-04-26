@@ -21,11 +21,7 @@ from products.forms import SearchForm
 def login_form(request):
        #buranin ismini login koyma
     valuenext= request.META.get('HTTP_REFERER')
-    print("valuenext!!!!!!")
-    print(valuenext)
     context2 = {"valuenext":valuenext}
-    
-    print(request.session.get("nexti"))
     if request.method == 'POST':
         
         next_url = request.POST['next'] 
@@ -56,8 +52,6 @@ def login_form(request):
 def home_page(request):
     sliders = Slider.objects.filter(active=1)
     top_level_cats = Category.objects.filter(parent__isnull=True, active=1).select_related('parent')
-    
-    print(top_level_cats)
     search_form = SearchForm()
     try:
         area_rug = Category.objects.get(slug__contains="area-rugs")
@@ -112,9 +106,6 @@ def contact_page(request):
     }
     if contact_form.is_valid():
         print(contact_form.cleaned_data)
-    #if request.method=="POST":
-        #print(request.POST.get("Company_name"))
-        #print(request.POST)
     
     return render(request, "contact/view.html", context)
 
