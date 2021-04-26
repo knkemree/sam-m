@@ -8,10 +8,10 @@ from .models import Customers
 
 class CustomersAdmin(UserAdmin):
     
-    list_display = ('email', 'company_name', 'first_name', 'last_name','ein', 'ein_verified','is_active','phone','last_login', 'date_joined' )
+    list_display = ('id', 'company_name', 'fullname','ein_verified','admin','staff','is_active','last_login', 'date_joined' )
     search_fields = ('email', 'company_name', 'first_name', 'last_name','ein','phone')
     ordering = ['-date_joined']
-    readonly_fields = ('ein','stripe_customer','date_joined','last_login')
+    readonly_fields = ('ein','stripe_customer','date_joined','last_login','fullname')
     filter_horizontal = ('groups', 'user_permissions',)
     list_filter = ()
     fieldsets = (
@@ -29,6 +29,8 @@ class CustomersAdmin(UserAdmin):
         ),
     )
     
+    def fullname(self,obj):
+        return obj.get_full_name()
 
 
     
