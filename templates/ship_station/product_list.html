@@ -1,0 +1,27 @@
+{% extends 'aviva_base.html' %}
+{% block content %}
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">GTIN</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Model</th>
+        <th scope="col">Color</th>
+        <th scope="col">Size</th>
+        <th scope="col">On Hand</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <th scope="row">{{ object.gtin }}</th>
+        <td>{{ object.model.brand }}</td>
+        <td>{{ object.brand }}</td>
+        <td>{{ object.color }}</td>
+        <td>{{ object.size }}</td>
+        <td>{{ object.current_stock }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -231,4 +231,5 @@ class ProductDetailView(generic.DetailView):
     model = Product
 
 
-
+class ProductListView(generic.ListView):
+    model = Product

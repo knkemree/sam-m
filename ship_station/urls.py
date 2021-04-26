@@ -1,5 +1,5 @@
 from django.urls import path
-from ship_station.views import IndexView, ProductDetailView, decrease, increase, lookup, update_source_file
+from ship_station.views import IndexView, ProductDetailView, ProductListView, decrease, increase, lookup, update_source_file
 
 
 app_name = 'ship_station'
@@ -12,4 +12,5 @@ urlpatterns = [
     path('increase/',increase,name='increase'),
     path('decrease/',decrease,name='decrease'),
     path('product/<int:pk>', ProductDetailView.as_view(), name='product-detail'),
+    path('products/', ProductListView.as_view(), name='product-list'),
 ]
