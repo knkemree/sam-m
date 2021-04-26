@@ -246,5 +246,5 @@ class InventoryLogListView(generic.ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        logs = InventoryLog.objects.order_by('-created_at').distinct('product_id')
+        logs = InventoryLog.objects.distinct('product_id').order_by('-created_at')
         return logs
