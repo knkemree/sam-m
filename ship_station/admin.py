@@ -67,6 +67,8 @@ class ProductAdmin(ImportExportModelAdmin):
     def in_stock(self, obj):
         return obj.current_stock
 
+    #in_stock.admin_order_field = 'current_stock'
+
 class ArchivedProductAdmin(admin.ModelAdmin):
     list_display = ['model','size','color','created_at']
     fields = ['ean','name','model','size','color','note','deleted_ts']

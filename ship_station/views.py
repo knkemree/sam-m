@@ -240,3 +240,11 @@ class ProductListView(generic.ListView):
         items =Product.objects.all()
         qs = [i.current_stock for i in items]
         return qs.sort(reverse=True)
+
+class InventoryLogListView(generic.ListView):
+    model = InventoryLog
+    paginate_by = 50
+
+    def get_queryset(self):
+        logs = InventoryLog.objects.order_by('-created_at').distinct('product_id')
+        return logs

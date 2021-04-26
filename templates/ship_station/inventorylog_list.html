@@ -1,0 +1,22 @@
+{% extends 'aviva_base.html' %}
+{% block content %}
+<table class="table table-striped" id="myTable">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product</th>
+        <th scope="col">On Hand</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <th scope="row">{{ object.id }}</th>
+        <td>{{ object.product }}</td>
+        <td>{{ object.current_stock }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% include 'aviva_pagination.html' %}
+{% endblock %}
