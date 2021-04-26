@@ -7,7 +7,7 @@ from import_export.widgets import ForeignKeyWidget
 from import_export.admin import ImportExportModelAdmin
 
 class InventoryLogAdmin(admin.ModelAdmin):
-    list_display = ['product','quantity','in_stock']
+    list_display = ['product','quantity','in_stock','created_at']
     
     readonly_fields = ['in_stock']
 
