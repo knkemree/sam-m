@@ -13,7 +13,7 @@ class CustomersAdmin(UserAdmin):
     ordering = ['-date_joined']
     readonly_fields = ('ein','stripe_customer','date_joined','last_login','fullname')
     filter_horizontal = ('groups', 'user_permissions',)
-    list_filter = ()
+    list_filter = ('admin','staff',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name','last_name','phone','admin','staff','is_superuser',)}),
