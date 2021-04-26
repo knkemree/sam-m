@@ -236,7 +236,7 @@ class ProductListView(generic.ListView):
     model = Product
     paginate_by = 50
 
-    # def get_queryset(self):
-    #     items =Product.objects.all().order_by('current_stock')
-        
-    #     return items
+    def get_queryset(self):
+        items =Product.objects.all()
+        qs = [i.current_stock for i in items]
+        return qs.sort(reverse=True)

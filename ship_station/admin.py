@@ -60,7 +60,7 @@ class ProductAdmin(ImportExportModelAdmin):
     fields = ['sku','gtin','in_stock','model','size','color','caseQty','note']
     #readonly_fields = ['ean','in_stock','name','model','size','color',]
     readonly_fields = ['in_stock','caseQty']
-    list_filter = ['size','color','model','model__brand']
+    list_filter = ['model','model__brand']
     search_fields = ['size__name','color__name','model__name','model__brand__name','gtin']
     resource_class = ProductResource
 

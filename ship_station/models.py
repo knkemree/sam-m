@@ -183,13 +183,14 @@ class Product(BaseModel, SoftDeletableModel):
 
     @property
     def current_stock(self):
-        try:
-            total = self.logs.all().aggregate(Sum('quantity'))['quantity__sum']
-            if total is None:
+        if self.logs.all():
+            try:
+                total = self.logs.all().aggregate(Sum('quantity'))['quantity__sum']
+                return int(total)
+            except:
                 return 0
-        except:
-            return 0
-        return total
+        return 0
+        
 
 class ArchivedProductManager(models.Manager):
     def get_queryset(self):
