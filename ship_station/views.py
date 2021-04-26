@@ -122,7 +122,7 @@ class IndexView(FormView):
                     return JsonResponse(data)
         else:
             data['itemName'] = 'Barcode invalid'
-            data['itemQuantity'] = 'Barcode length less than 12'
+            data['itemQuantity'] = 'Not Found'
             return JsonResponse(data)
 
 def convert_to_ean(number):
