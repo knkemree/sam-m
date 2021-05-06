@@ -175,9 +175,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 
-STATICFILES_DIRS = [
-    BASE_DIR4 / "static_my_proj",
-]
+
 
 #STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR4, 'static_cdn', 'static_root')

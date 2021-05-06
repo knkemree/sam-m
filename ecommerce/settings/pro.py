@@ -51,6 +51,10 @@ STATIC_ROOT = os.path.join(BASE_DIR4, 'static_cdn', 'static_root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR4, 'static_cdn', 'media_root')
 
+STATICFILES_DIRS = [
+    BASE_DIR4 / "static_cdn",
+]
+
 
 CELERY_BROKER_URL='amqp://localhost'
 CELERY_RESULT_BACKEND='amqp://localhost'
