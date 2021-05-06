@@ -52,7 +52,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR4, 'static_cdn', 'media_root')
 
 STATICFILES_DIRS = [
-    BASE_DIR4 / "static_cdn",
+    BASE_DIR4 / "static_my_proj",
 ]
 
 
