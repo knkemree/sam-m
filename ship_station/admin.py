@@ -4,8 +4,7 @@ from ship_station.models import ArchivedBrand, ArchivedColor, ArchivedInventoryL
 from import_export import resources, fields
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
-from import_export.admin import ImportExportModelAdmin
-
+from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 
 class InventoryLogAdmin(admin.ModelAdmin):
     list_display = ['product','quantity','in_stock','created_at']
@@ -64,7 +63,7 @@ class ProductResource(resources.ModelResource):
         #Variation.objects.get_or_create(product=row.get('product.id'), sku=row.get('sku')) 
         return super().before_import_row(row, **kwargs)
 
-class ProductAdmin(ImportExportModelAdmin):
+class ProductAdmin(ImportExportActionModelAdmin):
     list_display = ['id','model','size','color','in_stock','created_at']
     fields = ['sku','gtin','in_stock','model','size','color','caseQty','note']
     #readonly_fields = ['ean','in_stock','name','model','size','color',]
