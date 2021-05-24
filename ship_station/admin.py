@@ -1,10 +1,11 @@
 from django.contrib import admin
 from .models import File
 from ship_station.models import ArchivedBrand, ArchivedColor, ArchivedInventoryLog, ArchivedModel, ArchivedProduct, ArchivedSize, Brand, Color, InventoryLog, Model, Product, Size
-from import_export import resources
+from import_export import resources, fields
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 from import_export.admin import ImportExportModelAdmin
+
 
 class InventoryLogAdmin(admin.ModelAdmin):
     list_display = ['product','quantity','in_stock','created_at']
@@ -32,6 +33,11 @@ class ProductResource(resources.ModelResource):
             attribute='model',
             widget=ForeignKeyWidget(Model, 'styleID')
             )
+
+    onHand = Field()
+
+    
+        
     
     class Meta:
         model = Product
@@ -45,6 +51,9 @@ class ProductResource(resources.ModelResource):
         #widgets = {'published': {'format': '%d.%m.%Y'},}
     # def dehydrate_full_title(self, product):
     #     return '%s by %s' % (product.name, product.category.name)
+
+    def dehydrate_onHand(self, product):
+        return str(product.current_stock)
 
     def before_import_row(self, row, **kwargs):
         #Category.objects.get_or_create(name=row.get('child_collection'))
