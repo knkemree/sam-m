@@ -33,7 +33,15 @@ class ProductResource(resources.ModelResource):
             widget=ForeignKeyWidget(Model, 'styleID')
             )
 
+    # style = Field(
+    #         column_name='style',
+    #         attribute='model',
+    #         widget=ForeignKeyWidget(Model, 'name')
+    #         )
+
     onHand = Field()
+    brand = Field()
+    style = Field()
 
     
         
@@ -44,15 +52,21 @@ class ProductResource(resources.ModelResource):
         report_skipped = True
         import_id_fields = ('gtin',)
         #published = Field(attribute='created', column_name='created_date')
-        fields = ('sku','gtin','model_styleID','model_name','size_name','color_name','caseQty')
+        fields = ('sku','gtin','model_styleID','size_name','color_name','caseQty')
         #exclude = ('imported', )
-        #export_order = ('id', 'name', 'category__name','created')
+        export_order = ('gtin','sku','brand','style','color_name','size_name','onHand','caseQty','model_styleID')
         #widgets = {'published': {'format': '%d.%m.%Y'},}
     # def dehydrate_full_title(self, product):
     #     return '%s by %s' % (product.name, product.category.name)
 
     def dehydrate_onHand(self, product):
         return str(product.current_stock)
+
+    def dehydrate_brand(self, product):
+        return "{}".format(product.model.brand.name)
+
+    def dehydrate_style(self, product):
+        return "{}".format(product.model.name)
 
     def before_import_row(self, row, **kwargs):
         #Category.objects.get_or_create(name=row.get('child_collection'))
