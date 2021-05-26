@@ -8,7 +8,7 @@ from import_export.admin import ImportExportModelAdmin, ImportExportActionModelA
 
 class InventoryLogAdmin(admin.ModelAdmin):
     list_display = ['product','quantity','in_stock','created_at']
-    
+    search_fields = ['product__model__name','product__model__brand__name','product__color__name','product__size__name']
     readonly_fields = ['in_stock']
 
     def in_stock(self, obj):
